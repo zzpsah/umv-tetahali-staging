@@ -1,1 +1,0 @@
-# umv-tetahali-staging

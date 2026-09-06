@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="hi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>निजी एवं गोपनीय दस्तावेज़ | Admin</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+<header class="bg-slate-900 text-white"><div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between gap-4"><div><div class="text-xs text-red-300 font-semibold">RESTRICTED • ADMIN ONLY</div><h1 class="text-xl md:text-2xl font-black mt-1">निजी एवं गोपनीय दस्तावेज़</h1><p class="text-sm text-slate-400">उच्च माध्यमिक विद्यालय, तेतहली</p></div><button id="logout" class="px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-sm font-bold">Logout</button></div></header>
+<main class="max-w-6xl mx-auto px-4 py-8">
+<div id="loading" class="bg-white border rounded-3xl p-6">सुरक्षित सत्र जाँचा जा रहा है…</div>
+<div id="app" class="hidden">
+<div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm text-amber-900"><b>सुरक्षा:</b> यह पृष्ठ केवल authenticated admin session के लिए है। वास्तविक Google Drive files को भी private रखना होगा; Drive access बाद में authenticated server-side/Apps Script workflow से दिया जाएगा।</div>
+<section class="mt-6 bg-white border rounded-3xl p-6"><div class="flex items-start gap-4"><div class="text-3xl">📁</div><div><h2 class="text-xl font-black">Google Drive — File Server Structure</h2><p class="text-sm text-slate-500 mt-1">पहले से तय path के अनुसार files/folders व्यवस्थित किए जाएँगे।</p></div></div>
+<div class="mt-6 grid md:grid-cols-2 gap-4 text-sm">
+<div class="rounded-2xl bg-slate-50 p-5"><b>01_Official_Documents</b><div class="mt-2 text-slate-600">Education_Department · DEO_Siwan · DEO_Darbhanga · School · BSEB · Rules_Regulations</div></div>
+<div class="rounded-2xl bg-slate-50 p-5"><b>02_Forms</b><div class="mt-2 text-slate-600">Official_Forms · Editable_Forms · Generated_PDF</div></div>
+<div class="rounded-2xl bg-slate-50 p-5"><b>03_Notices_Circulars</b><div class="mt-2 text-slate-600">Education_Department · DEO · BSEB · School</div></div>
+<div class="rounded-2xl bg-slate-50 p-5"><b>04_School_Records</b><div class="mt-2 text-slate-600">विद्यालय के संरक्षित administrative records</div></div>
+<div class="rounded-2xl bg-red-50 p-5 border border-red-100"><b>05_Private_Documents</b><div class="mt-2 text-slate-600">Administration · Teachers · Students · Confidential</div></div>
+<div class="rounded-2xl bg-sky-50 p-5"><b>06_Smart_Class</b><div class="mt-2 text-slate-600">Smart Class / ICT related records and generated reports</div></div>
+<div class="rounded-2xl bg-violet-50 p-5"><b>07_AI_Automation</b><div class="mt-2 text-slate-600">Input · Processing · Output · Logs</div></div>
+<div class="rounded-2xl bg-slate-100 p-5"><b>99_Archive</b><div class="mt-2 text-slate-600">पुराने records और year/session-wise archive</div></div>
+</div></section>
+<div class="mt-6 rounded-2xl border bg-white p-5 text-sm"><b>अगला integration चरण:</b> Drive में folder path के आधार पर folder auto-create → file upload → Drive File ID/URL → metadata → authorised admin view. Public pages पर केवल वही official documents दिखेंगे जिन्हें public किया गया हो।</div>
+<a href="admin-dashboard.html" class="inline-flex mt-6 rounded-xl bg-slate-900 text-white px-5 py-3 text-sm font-bold">← Admin Dashboard</a>
+</div></main>
+<script>
+const SUPABASE_URL='https://sxfnrwugsyfypqgfglzc.supabase.co';
+const SUPABASE_KEY='sb_publishable_NARdPew6T6Zk8gYfxY3Hog_G7jcceKw';
+const {createClient}=supabase;const client=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+(async()=>{const {data,error}=await client.auth.getUser();if(error||!data.user){location.href='admin-login.html';return;}document.getElementById('loading').classList.add('hidden');document.getElementById('app').classList.remove('hidden');})();
+document.getElementById('logout').addEventListener('click',async()=>{await client.auth.signOut();location.href='admin-login.html';});
+</script></body></html>

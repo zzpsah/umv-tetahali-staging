@@ -1,15 +1,15 @@
-# Gemini AI Office — UMV Tetahali (Staging)
+# Gemini AI Office / AI Workbench — UMV Tetahali (Staging)
 
 ## Purpose
 
-`ai-office.html` is the staging browser interface for the school's controlled Gemini gateway. It is designed as the first UI layer for future document AI and agent workflows.
+`ai-workbench.html` is the staging browser interface for the school's controlled Gemini gateway. It is designed for AI-assisted webpage review, document intelligence, content drafting and image generation while keeping API credentials server-side.
 
-## Current verified architecture
+## Current architecture
 
 ```text
-Browser: ai-office.html
+Browser: ai-workbench.html
         |
-        | POST JSON
+        | POST JSON / base64 file
         v
 Supabase Edge Function
  gemini-ai-gateway
@@ -17,13 +17,14 @@ Supabase Edge Function
         | server-side GEMINI_API_KEY
         v
 Gemini API
- gemini-3.6-flash
+ ├── gemini-3.6-flash       text / multimodal analysis
+ └── gemini-3.1-flash-image image generation
         |
         v
-{ success, action, model, output }
+AI output
         |
         v
-Human review / approved workflow
+Human verification / controlled update
 ```
 
 Gateway endpoint:
@@ -36,8 +37,13 @@ The Gemini API key is **never stored in this repository or sent to the browser**
 - `ask` — general question or instruction
 - `analyze` — analysis workflow
 - `generate-readme` — README drafting workflow
+- `analyze-webpage` — reads a public webpage server-side and reviews structure/content
+- `analyze-file` — multimodal analysis of PDF/image/text files supplied as base64
+- `generate-image` — image generation through the configured image-capable Gemini model
 
-Request format:
+## Request examples
+
+### Ask
 
 ```json
 {
@@ -47,58 +53,105 @@ Request format:
 }
 ```
 
-Expected success shape:
+### Webpage review
 
 ```json
 {
-  "success": true,
-  "action": "ask",
-  "model": "gemini-3.6-flash",
-  "output": "GEMINI GATEWAY TEST OK"
+  "action": "analyze-webpage",
+  "url": "https://example.com/page.html",
+  "prompt": "Check Hindi wording, missing sections and information architecture."
 }
 ```
 
-## Staging test result
+Only public `http(s)` URLs should be supplied. The gateway blocks common localhost/private-network targets. Login-protected pages require a separate authenticated automation workflow.
 
-The gateway was successfully tested independently with the response:
+### File analysis
 
-`GEMINI GATEWAY TEST OK`
+```json
+{
+  "action": "analyze-file",
+  "prompt": "Extract fields, dates and missing information.",
+  "file": {
+    "name": "notice.pdf",
+    "mimeType": "application/pdf",
+    "data": "BASE64_DATA"
+  }
+}
+```
 
-This verifies the Edge Function → Gemini path. Browser-side invocation must still be tested from the published staging page.
+The staging UI limits browser uploads to 8 MB. Do not upload confidential student records or credentials to the public staging page.
 
-## How to use
+### Image generation
 
-1. Open the staging AI Office page.
-2. Choose an action.
-3. Enter a non-sensitive prompt.
-4. Click **Gemini को भेजें** or **Gateway Test**.
-5. Review the returned output.
-6. Do not treat AI output as an official record without human verification.
+```json
+{
+  "action": "generate-image",
+  "prompt": "Create a professional Hindi school cleanliness campaign poster for UMV Tetahali.",
+  "model": "gemini-3.1-flash-image"
+}
+```
+
+The response can contain generated image data as a data URL for display in the Workbench. Generated visuals are drafts and must be reviewed before official publication.
+
+## Webpage reviewer workflow
+
+```text
+Existing public webpage
+        ↓
+Server-side fetch
+        ↓
+Extract readable text
+        ↓
+Gemini reviewer
+        ↓
+Structure + gaps + wording + recommendations
+        ↓
+Improved HTML/content draft
+        ↓
+Human verification
+        ↓
+Manual / controlled GitHub update
+```
+
+The reviewer is instructed not to invent official facts, contacts, dates, URLs or school data.
 
 ## Security rules
 
 - Never enter Gemini API keys into HTML, JavaScript, GitHub, Google Sites, or browser storage.
-- Never place passwords, OTPs, CAPTCHA values, private student records, or confidential documents in prompts.
+- Never place passwords, OTPs, CAPTCHA values, private student records, or confidential documents in prompts/uploads.
 - Production must use authenticated users, authorization/least privilege, rate limiting as appropriate, logging, and human approval for sensitive actions.
-- Staging is not production and should not be used for confidential records.
+- The current gateway source committed in this repository is documentation/source reference; **GitHub commit does not deploy the Supabase Edge Function automatically** unless a separate deployment pipeline is configured.
+- Do not treat AI output as an official record without human verification.
+
+## Supabase deployment note
+
+The current working Supabase function is separate from the GitHub Pages repository. The source is now stored at:
+
+```text
+supabase/functions/gemini-ai-gateway/index.ts
+```
+
+After reviewing this commit, deploy that source to the Supabase function `gemini-ai-gateway` and keep the existing `GEMINI_API_KEY` secret. Do not change the database/schema.
+
+For production, restore JWT verification/authentication before exposing sensitive workflows.
 
 ## Future agent architecture
 
 ```text
 AI Agent
 ├── ask
-├── analyze
-├── document.extract
-├── document.generate
-├── drive.list       [future, authenticated]
-├── drive.read       [future, authorized]
-├── drive.create     [future, approval required]
-├── github.read      [future]
-├── github.update    [future, approval required]
-└── audit.log        [future]
+├── analyze-webpage
+├── analyze-file
+├── generate-image
+├── document.extract       [future]
+├── document.generate      [future]
+├── drive.list             [future, authenticated]
+├── drive.read             [future, authorized]
+├── drive.create           [future, approval required]
+├── github.read            [future]
+├── github.update          [future, approval required]
+└── audit.log              [future]
 ```
-
-The Gemini model should provide reasoning/content generation; privileged operations should be performed by explicitly authorized tools rather than by giving the model unrestricted credentials.
 
 ## Promotion rule
 
@@ -116,27 +169,31 @@ Human approval
 PRODUCTION
 ```
 
-Do not copy this page to the production repository until browser testing, authentication and authorization have been finalized.
-
 ## Troubleshooting
 
-### `Missing Authorization header`
-This came from an older gateway implementation that manually required an Authorization header. If JWT verification is disabled for staging and this exact error remains, confirm the newly deployed function code is actually active.
+### `Invalid action`
+If the deployed Edge Function still says only `ask, analyze, generate-readme` are allowed, the new gateway source has not yet been deployed to Supabase. The GitHub source commit alone does not change the deployed function.
 
 ### Model 404 / unavailable
-The old `gemini-2.5-flash` model produced a 404 for this account. The working staging configuration is `gemini-3.6-flash`.
+The previous `gemini-2.5-flash` configuration returned a model-unavailable error for this account. The verified text model is `gemini-3.6-flash`. Image generation uses a separate image-capable model.
 
 ### Browser CORS error
-Confirm the Edge Function returns CORS headers for `POST` and `OPTIONS`, and inspect the browser network response. Do not solve CORS by exposing the Gemini key.
+Confirm the Edge Function returns CORS headers for `POST` and `OPTIONS`. Do not solve CORS by exposing the Gemini key.
 
-### Gateway returns success but UI fails
-Inspect the browser Network response and confirm the JSON fields `success`, `action`, `model`, and `output` are present.
+### Image request succeeds but no image appears
+Check that the deployed gateway returns an `images` array containing `dataUrl` values. Confirm the configured image-capable model is enabled for the Gemini API key.
+
+### Webpage review cannot read a site
+The gateway only supports public HTTP(S) pages. Login-protected/private portals need authenticated automation and must not receive credentials through this public staging UI.
 
 ## Files
 
 ```text
-ai-office.html
+ai-workbench.html
 └── Browser UI + gateway client
+
+supabase/functions/gemini-ai-gateway/index.ts
+└── Gateway source reference
 
 it-services/ai-office/README.md
 └── This documentation

@@ -1,22 +1,48 @@
 <!doctype html>
 <html lang="hi">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Office | UMV Tetahali</title><meta name="description" content="Authenticated AI automation gateway for UMV Tetahali."><script src="https://cdn.tailwindcss.com"></script><link rel="icon" href="assets/umv-logo-color.jpeg"></head>
-<body class="bg-slate-50 text-slate-800 min-h-screen"><header class="bg-white border-b"><div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3"><img src="assets/umv-logo-color.jpeg" class="w-10 h-10 object-contain rounded-lg border" alt="विद्यालय लोगो"><div><b>AI Office</b><div class="text-xs text-slate-500">उच्च माध्यमिक विद्यालय, तेतहली</div></div><a href="it-services.html" class="ml-auto text-sm font-bold text-blue-700">IT Services →</a></div></header><main class="max-w-5xl mx-auto px-4 py-10"><div class="rounded-2xl bg-slate-900 text-white p-7"><div class="text-xs font-bold tracking-widest text-blue-300">AI AUTOMATION GATEWAY</div><h1 class="text-3xl font-black mt-2">School AI Office</h1><p class="mt-3 text-slate-300 leading-7">A controlled interface for authenticated AI-assisted school workflows. Gemini and other AI services should be called through a server-side gateway; API keys never belong in this webpage.</p></div><section class="mt-6 grid md:grid-cols-3 gap-4"><div class="bg-white border rounded-2xl p-5"><b>Ask / Analyze</b><p class="text-sm text-slate-500 mt-2">AI-assisted document and workflow analysis.</p></div><div class="bg-white border rounded-2xl p-5"><b>Approved Tools</b><p class="text-sm text-slate-500 mt-2">Drive, GitHub and document tools exposed through explicit permissions.</p></div><div class="bg-white border rounded-2xl p-5"><b>Review</b><p class="text-sm text-slate-500 mt-2">Important actions remain subject to human verification and authorization.</p></div></section><div class="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm"><b>Not connected yet.</b> This staging page is the user interface foundation. The Gemini API key and tool permissions must be configured in a secure server-side function before live commands are enabled.</div><section class="mt-6 bg-white border rounded-2xl p-6"><h2 class="text-xl font-black">System flow</h2><pre class="mt-4 text-xs md:text-sm overflow-auto">User / ChatGPT
-      |
-      v
-Authentication
-      |
-      v
-AI Gateway
-      |
- +----+-----+------+
- |          |      |
- v          v      v
-Gemini    Drive   GitHub
- |          |      |
- +----------+------+
-            v
-      Human Review
-            |
-            v
-        Audit Log</pre></section></main><footer class="border-t bg-white"><div class="max-w-5xl mx-auto px-4 py-5 text-xs text-slate-500">UMV Tetahali • AI Office • Staging</div></footer></body></html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Office | Gemini Gateway | उच्च माध्यमिक विद्यालय, तेतहली</title>
+<meta name="description" content="UMV Tetahali staging AI Office powered by the controlled Gemini gateway.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="icon" href="assets/umv-logo-color.jpeg">
+<style>body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.hero{background:linear-gradient(135deg,#0f172a,#312e81 58%,#2563eb)}.panel{box-shadow:0 12px 35px rgba(15,23,42,.08)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}.dot{width:8px;height:8px;border-radius:999px;display:inline-block}</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b"><div class="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3"><a href="index.html" class="flex items-center gap-2.5 min-w-0"><img src="assets/umv-logo-color.jpeg" alt="विद्यालय लोगो" class="w-10 h-10 rounded-lg object-contain border"><div><b class="block text-sm">AI Office</b><span class="text-[10px] text-slate-500">उच्च माध्यमिक विद्यालय, तेतहली</span></div></a><div class="flex items-center gap-2"><span class="text-[10px] font-black px-2 py-1 rounded-full bg-amber-100 text-amber-800">STAGING</span><a href="it-services.html" class="px-3 py-1.5 rounded-lg border text-xs font-bold">IT Services</a></div></div></header>
+<section class="hero text-white"><div class="max-w-6xl mx-auto px-4 py-8 md:py-11"><div class="flex items-center gap-4"><img src="assets/UMV_LOGO_White.png" alt="विद्यालय लोगो" class="w-16 h-16 object-contain"><div><div class="text-[10px] tracking-widest font-black text-indigo-200">CONTROLLED AI WORKSPACE</div><h1 class="text-2xl md:text-4xl font-black mt-1">Gemini AI Office</h1><p class="mt-2 text-sm text-indigo-100 max-w-2xl">विद्यालय के controlled Gemini gateway के माध्यम से प्रश्न, विश्लेषण और knowledge-base drafting का staging interface.</p></div></div></div></section>
+<main class="max-w-6xl mx-auto px-4 py-7">
+<div class="panel bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm"><b>⚠️ STAGING:</b> परीक्षण वातावरण। Production secrets, OTP, passwords, CAPTCHA, private student records या confidential documents यहां न डालें। Gemini API key browser में नहीं आती; gateway server-side secret का उपयोग करता है।</div>
+<section class="grid lg:grid-cols-[.85fr_1.15fr] gap-5 mt-6">
+<div class="panel bg-white border rounded-2xl p-5"><div class="text-[10px] font-black tracking-widest text-blue-700">REQUEST</div><h2 class="text-xl font-black mt-1">Gemini से पूछें</h2>
+<label class="block text-xs font-bold mt-5 mb-1">Action</label><select id="action" class="w-full border rounded-xl px-3 py-2.5 text-sm"><option value="ask">Ask / सामान्य प्रश्न</option><option value="analyze">Analyze / विश्लेषण</option><option value="generate-readme">Generate README / README बनाना</option></select>
+<label class="block text-xs font-bold mt-4 mb-1">Prompt</label><textarea id="prompt" rows="11" class="w-full border rounded-xl px-3 py-3 text-sm leading-6" placeholder="उदाहरण: विद्यालय के लिए एक संक्षिप्त README का उद्देश्य और उपयोग समझाइए।"></textarea>
+<div class="flex flex-wrap gap-2 mt-4"><button id="send" class="rounded-xl bg-blue-600 text-white px-4 py-2.5 text-sm font-bold">Gemini को भेजें →</button><button id="test" class="rounded-xl border px-4 py-2.5 text-sm font-bold">Gateway Test</button><button id="clear" class="rounded-xl border px-4 py-2.5 text-sm font-bold">Clear</button></div><div id="status" class="mt-4 text-xs text-slate-500"><span class="dot bg-slate-400"></span> Ready</div></div>
+<div class="panel bg-white border rounded-2xl p-5"><div class="flex items-center justify-between gap-3"><div><div class="text-[10px] font-black tracking-widest text-emerald-700">RESPONSE</div><h2 class="text-xl font-black mt-1">Gemini Output</h2></div><button id="copy" class="hidden rounded-lg border px-3 py-1.5 text-xs font-bold">Copy</button></div><div id="response" class="mt-5 min-h-[360px] rounded-xl bg-slate-950 text-slate-100 p-4 text-sm leading-6 mono">Response यहां दिखाई देगा…</div><div id="meta" class="mt-3 text-[10px] text-slate-500"></div></div>
+</section>
+<section class="panel bg-white border rounded-2xl p-5 mt-6"><div class="text-[10px] font-black tracking-widest text-violet-700">ARCHITECTURE</div><h2 class="text-lg font-black mt-1">Staging AI Flow</h2><div class="grid sm:grid-cols-5 gap-2 mt-4 text-center text-[11px]"><div class="rounded-xl bg-slate-50 border p-3"><b>1</b><br>Browser UI</div><div class="rounded-xl bg-slate-50 border p-3"><b>2</b><br>Supabase Edge Function</div><div class="rounded-xl bg-slate-50 border p-3"><b>3</b><br>Gemini 3.6 Flash</div><div class="rounded-xl bg-slate-50 border p-3"><b>4</b><br>Structured response</div><div class="rounded-xl bg-slate-50 border p-3"><b>5</b><br>Human review</div></div><pre class="mt-4 bg-slate-50 border rounded-xl p-4 text-[11px] overflow-auto">ai-office.html
+   │ POST { action, prompt, model }
+   ▼
+Supabase: gemini-ai-gateway
+   │ server-side GEMINI_API_KEY
+   ▼
+Gemini API / gemini-3.6-flash
+   │
+   ▼
+{ success, action, model, output }
+   │
+   ▼
+AI Office → human verification → approved workflow</pre></section>
+<section class="panel bg-white border rounded-2xl p-5 mt-6"><div class="text-[10px] font-black tracking-widest text-slate-600">NEXT PHASE</div><h2 class="text-lg font-black mt-1">Controlled Agent Roadmap</h2><div class="grid md:grid-cols-3 gap-3 mt-4 text-xs"><div class="rounded-xl border p-3"><b>📄 Document AI</b><p class="mt-1 text-slate-500 leading-5">PDF-first extraction, verification and structured summaries.</p></div><div class="rounded-xl border p-3"><b>📁 Drive Tools</b><p class="mt-1 text-slate-500 leading-5">List/read/create operations only after authenticated authorization.</p></div><div class="rounded-xl border p-3"><b>🐙 GitHub Tools</b><p class="mt-1 text-slate-500 leading-5">Read, draft and controlled update workflows with audit trail.</p></div><div class="rounded-xl border p-3"><b>🧾 BSEB Workflow</b><p class="mt-1 text-slate-500 leading-5">Reference matching, portal preparation and human approval.</p></div><div class="rounded-xl border p-3"><b>🔐 Authorization</b><p class="mt-1 text-slate-500 leading-5">Production gateway must require authenticated users and least-privilege actions.</p></div><div class="rounded-xl border p-3"><b>📝 Audit Log</b><p class="mt-1 text-slate-500 leading-5">Record action, timestamp, result and approval state without storing secrets.</p></div></div></section>
+</main><footer class="border-t bg-white"><div class="max-w-6xl mx-auto px-4 py-5 text-xs"><b>उच्च माध्यमिक विद्यालय, तेतहली</b><div class="text-[10px] text-slate-500 mt-1">AI Office • STAGING • UDISE 10160203806</div></div></footer>
+<script>
+const GATEWAY_URL='https://sxfnrwugsyfypqgfglzc.supabase.co/functions/v1/gemini-ai-gateway';
+const $=id=>document.getElementById(id);
+function status(text,kind='ready'){const c={ready:'bg-slate-400',working:'bg-amber-400',ok:'bg-emerald-500',error:'bg-red-500'}[kind]||'bg-slate-400';$('status').innerHTML=`<span class="dot ${c}"></span> ${text}`;}
+async function callGateway(action,prompt){status('Gateway को request भेजी जा रही है…','working');$('send').disabled=true;$('test').disabled=true;try{const r=await fetch(GATEWAY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,prompt,model:'gemini-3.6-flash'})});const d=await r.json().catch(()=>({error:'Invalid JSON response'}));if(!r.ok||d.success!==true)throw new Error(d.error||`HTTP ${r.status}`);$('response').textContent=d.output||'(Empty response)';$('copy').classList.remove('hidden');$('meta').textContent=`Action: ${d.action} • Model: ${d.model} • HTTP ${r.status}`;status('Gateway + Gemini सफल','ok');}catch(e){$('response').textContent=`ERROR\n\n${e.message}\n\nयदि browser से CORS/auth error आए, Supabase function configuration और deployed version जांचें।`;$('meta').textContent='';status('Request failed','error');}finally{$('send').disabled=false;$('test').disabled=false;}}
+$('send').onclick=()=>{const p=$('prompt').value.trim();if(!p){status('Prompt required','error');$('prompt').focus();return;}callGateway($('action').value,p);};
+$('test').onclick=()=>callGateway('ask','Reply with exactly: GEMINI GATEWAY TEST OK');
+$('clear').onclick=()=>{$('prompt').value='';$('response').textContent='Response यहां दिखाई देगा…';$('meta').textContent='';$('copy').classList.add('hidden');status('Ready','ready');};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('response').textContent);status('Response copied','ok');}catch(e){status('Clipboard unavailable','error');}};
+</script>
+</body></html>

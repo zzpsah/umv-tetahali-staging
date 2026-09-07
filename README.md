@@ -4,13 +4,13 @@
 
 This repository is the **staging/development version** of the digital platform for **UCHCH MADHYAMIK VIDYALAY, TETAHALI**, Barharia, Siwan, Bihar.
 
-The README is the project's **living map**. Whenever a page, integration, important link, workflow, asset, or architecture rule is changed, the README should be updated in the same change or immediately after it.
+The README is the project's **living map**. Whenever a page, integration, important link, workflow, asset, or architecture rule changes, update the README and the detailed `knowledge-base.md`.
 
 > **Staging first:** develop and test here before promoting anything to the live repository.
 >
-> **Database safety:** do not change database tables/schema/data unless explicitly requested and the architecture is finalized.
+> **Database safety:** do not change database tables/schema/data unless explicitly requested.
 >
-> **Source of truth:** official PDFs/images and authoritative government sources take priority over copied summaries.
+> **Source of truth:** original official PDFs/images and authoritative government sources take priority over copied summaries.
 
 ---
 
@@ -24,7 +24,6 @@ The README is the project's **living map**. Whenever a page, integration, import
 | Category | 10 - Secondary with Higher Secondary |
 | Type | 3 - Co-Educational |
 | Classes | 9 to 12 |
-| Pre-primary | NA |
 | Status | Operational |
 | Management | Department of Education |
 | District | SIWAN |
@@ -34,1016 +33,435 @@ The README is the project's **living map**. Whenever a page, integration, import
 | Longitude | `84.470910` |
 
 ### Academic mediums
+- Secondary: Hindi_English, Hindi_English_Urdu
+- Higher Secondary: Hindi_English, Urdu_English, Hindi_English_Urdu
 
-- **Secondary:** Hindi_English, Hindi_English_Urdu
-- **Higher Secondary:** Hindi_English, Urdu_English, Hindi_English_Urdu
-
-Do not invent principal name, phone, email, opening hours, facilities, or other school facts unless verified from an authoritative source.
+Do not invent principal name, phone, email, facilities, opening hours, or other school facts unless verified from an authoritative source.
 
 ---
 
-## 2. Platform in One View
+## 2. Platform Architecture
 
 ```text
-                         UMV TETAHALI DIGITAL PLATFORM
-                                      │
-             ┌────────────────────────┼────────────────────────┐
-             │                        │                        │
-             ▼                        ▼                        ▼
-      PUBLIC WEBSITE             IT SERVICES             RESTRICTED OFFICE
-             │                        │                        │
-             │                        │                        ├── Admin Login
-             │                        │                        ├── Private Records
-             │                        │                        └── Future Workflows
-             │                        │
-             ├── School               ├── Photo/Signature
-             ├── Academics            ├── OCR / AI Extraction
-             ├── Notices              ├── Student Matching
-             ├── BSEB                 ├── BSEB Assistance
-             ├── Portals              ├── BEPC Smart Class
-             ├── Smart Class          └── Future AI Agents
-             ├── Services
-             ├── Documents
-             ├── Forms
-             └── Guides
-                                      │
-                                      ▼
-                              SUPABASE / AUTH
-                                      │
-                         ┌────────────┴────────────┐
-                         ▼                         ▼
-                  Auth / Roles              Edge Functions
-                                                   │
-                                                   ▼
-                                        Google Drive / Apps Script
-                                                   │
-                                                   ▼
-                                           Files / Automation
+Public Website / Google Sites entry
+            │
+            ▼
+     GitHub Pages Staging
+            │
+ ┌──────────┼──────────────────────┐
+ ▼          ▼                      ▼
+School   IT Services        Portal Guidance
+Pages    OCR/AI/Tools        Guides + PDFs
+            │
+            ▼
+       Supabase / Auth
+            │
+     ┌──────┴──────┐
+     ▼             ▼
+Edge Functions   Future Roles
+     │
+ ┌───┴───────────────┐
+ ▼                   ▼
+External Portals   Google Drive / Apps Script
 ```
 
-The website is the human-facing layer. IT Services is the operational automation layer. Authentication and authorization control restricted operations. Google Drive is the intended file server, while Google Apps Script is the planned document/automation layer.
+Google Drive is the intended file repository. Apps Script is the planned automation/document layer. Supabase is the structured/authentication layer. Public GitHub Pages must never be treated as private storage.
 
 ---
 
-## 3. Main Navigation Rules
+## 3. Navigation Convention
 
-### Permanent navigation convention
+- Main navigation labels are **Hindi only**.
+- Dropdown contents are **Hindi + English**.
+- Dropdowns open on hover/focus and close when pointer/focus leaves.
+- `BSEB` remains a separate module from Education Department.
+- **Portal ≠ Document:** live portal links and official PDFs are different records.
+- Important Links normally use the portal **Home Page**. Task-specific login/registration/download links belong in the Portal Guidance Centre.
 
-- **Main navigation labels:** Hindi only.
-- **Dropdown contents:** Hindi + English.
-- Dropdowns should open on **hover/focus** and disappear when the pointer/focus leaves the navigation area.
-- Do not duplicate the same link unnecessarily.
-- **Portal ≠ Document:** a live government portal link is not an official PDF/document.
+Main navigation:
 
 ```text
-मुख्य पृष्ठ
-│
-├── विद्यालय
-├── शैक्षणिक गतिविधियाँ ▼
-│   ├── माध्यमिक स्तर / Secondary
-│   ├── उच्च माध्यमिक स्तर / Higher Secondary
-│   └── अध्ययन सामग्री / Study Material
-├── IT Services
-├── सूचनाएँ
-├── BSEB ▼
-│   ├── BSEB Centre
-│   ├── Secondary
-│   ├── Intermediate
-│   ├── Forms & विज्ञप्तियाँ
-│   └── Year-wise Archive
-├── महत्वपूर्ण पोर्टल
-├── Smart Class
-├── सेवाएँ ▼
-│   ├── विद्यार्थी सेवाएँ / Student Services
-│   ├── शिक्षक सेवाएँ / Teacher Services
-│   ├── प्रमाण-पत्र एवं अभिलेख / Certificates & Records
-│   └── प्रपत्र / Forms
-├── दस्तावेज़ ▼
-│   ├── आधिकारिक दस्तावेज़ केन्द्र / Official Documents Centre
-│   ├── सूचना एवं परिपत्र / Notices & Circulars
-│   ├── शिक्षा विभाग / Education Department
-│   ├── DEO सिवान / DEO Siwan
-│   ├── DEO दरभंगा / DEO Darbhanga
-│   ├── BSEB दस्तावेज़ / BSEB Documents
-│   ├── विद्यालय एवं कार्यालय दस्तावेज़ / School & Office Documents
-│   ├── नियमावली / Rules & Regulations
-│   ├── प्रपत्र / Forms
-│   └── Google Drive File Server
-├── मार्गदर्शिका
-└── संपर्क
+विद्यालय
+शैक्षणिक गतिविधियाँ ▼
+IT Services
+सूचनाएँ
+BSEB ▼
+महत्वपूर्ण पोर्टल
+Smart Class
+सेवाएँ ▼
+दस्तावेज़ ▼
+मार्गदर्शिका
+संपर्क
 ```
 
 ---
 
-## 4. Page Catalogue
+## 4. Current Page Map
 
-The following is the current page map. When a page is added, removed, renamed, or its purpose changes, update this section.
-
-| File / Page | Purpose | Access / Role | Main destination |
-|---|---|---|---|
-| `index.html` | Main school home + navigation hub | Public | All major modules |
-| `it-services.html` | IT tools and automation directory | Public entry; individual tools may be restricted | IT tools |
-| `notices.html` | Central notices/circulars repository | Public | Official documents |
-| `official-documents.html` | Central official document catalogue | Public | Government/school files |
-| `education-department.html` | Bihar Education Department documents | Public | Department documents |
-| `deo-siwaan.html` | DEO Siwan documents | Public | District documents |
-| `deo-darbhanga.html` | DEO Darbhanga documents | Public | District documents |
-| `bseb.html` | BSEB central module | Public | Secondary/Intermediate |
-| `secondary.html` | BSEB Secondary portal module | Public | Secondary portals |
-| `intermediate.html` | BSEB Intermediate portal module | Public | Intermediate portals |
-| `portals.html` | Important external government/education portals | Public | Live portals |
-| `smart-class.html` | School Smart Class dashboard + BEPC integration | Authenticated backend; production access must be authorized | BEPC tracker data |
-| `login.html` | Future role-based entry point | Public entry | Student/Teacher/Admin |
-| `admin-login.html` | Administrator authentication | Restricted | Admin dashboard |
-| `admin-dashboard.html` | Administrative workspace | Admin only | Private/automation tools |
-| `private-documents.html` | Private & Confidential workspace | Admin only | Restricted Drive records |
-| `prapatra.html` | Forms catalogue + editable HTML forms | Public/role-dependent per form | HTML/PDF/official document |
-| `guide.html` | Digital office guide | Public | Operational instructions |
-| `margdarshika.html` | Detailed मार्गदर्शिका / how-to centre | Public | Instructions/references |
-| `niyamawali.html` | Rules/regulations repository | Public | Official rules/documents |
-| `drive-structure.html` | Google Drive file-server architecture | Public documentation | Drive structure |
-
----
-
-## 5. Page Details
-
-### `index.html` — Main School Website
-
-**Purpose:** central public home page.
-
-Contains school identity, verified information, academic overview, notices entry point, BSEB entry point, portals, Smart Class, IT Services, documents, services, guides and contact navigation.
-
-**Staging URL:** `https://zzpsah.github.io/umv-tetahali-staging/`
+| Page | Purpose |
+|---|---|
+| `index.html` | Main public school website |
+| `it-services.html` | IT tools and automation directory |
+| `ai-workbench.html` | AI Workbench: AI-assisted controlled workspace |
+| `notices.html` | Date-wise notices/circulars |
+| `official-documents.html` | Official document catalogue |
+| `education-department.html` | Education Department documents |
+| `deo-siwaan.html` | DEO Siwan documents |
+| `deo-darbhanga.html` | DEO Darbhanga documents |
+| `bseb.html` | BSEB central module |
+| `secondary.html` | BSEB Secondary module |
+| `intermediate.html` | BSEB Intermediate module |
+| `portals.html` | Important live government/education portals |
+| `portal-guides.html` | **Step-by-step Portal Guidance Centre** |
+| `smart-class.html` | Smart Class / BEPC integration |
+| `login.html` | Future role-based entry |
+| `admin-login.html` | Admin authentication |
+| `admin-dashboard.html` | Restricted administration |
+| `private-documents.html` | Private/confidential workspace |
+| `prapatra.html` | Forms / प्रपत्र |
+| `guide.html` | Digital office guide |
+| `margdarshika.html` | Detailed मार्गदर्शिका |
+| `niyamawali.html` | Rules & Regulations |
+| `drive-structure.html` | Google Drive architecture |
 
 ---
 
-### `it-services.html` — IT Services
+## 5. Portal Guidance Centre — NEW
 
-**Purpose:** central directory for school-specific digital tools and future automation.
+**Page:** `portal-guides.html`
 
-Current/defined services:
+**Purpose:** `पोर्टल मार्गदर्शन — महत्वपूर्ण सरकारी एवं शैक्षणिक पोर्टलों के उपयोग से संबंधित सहायता सामग्री।`
 
-1. **Photo & Signature Studio**
-   - Process student photo/signature
-   - Crop/clean/prepare portal-ready assets
-   - Produce downloadable output
-
-2. **Chandra OCR**
-   - Extract text/data from scanned forms, PDFs and images
-   - Human verification remains mandatory for important fields
-
-3. **Gemini Document Vision**
-   - AI-assisted identification of document regions such as photo/signature
-
-4. **Student Reference Matching**
-   - Compare current hardcopy/OCR data with reference records
-   - Show discrepancies instead of silently overwriting current submission
-
-5. **Google Drive Upload**
-   - Intended document/file storage destination
-   - Physical folder management depends on available Drive integration
-
-6. **BSEB Registration Assistant**
-   - Prepare verified registration data/assets
-   - Future portal assistance/automation
-   - Final review before submission
-
-7. **Future AI / Agent Automation**
-   - Controlled tools rather than unrestricted AI access
-   - Authentication + authorization + audit + human approval for sensitive actions
-
----
-
-### `notices.html` — Notice & Circular Centre
-
-**Purpose:** central date-wise repository for notices, circulars, forms and विज्ञप्तियाँ.
-
-Each record should contain:
+Every portal guide follows this standard:
 
 ```text
-Date
-Type
-Title / Letter
-Description
-Official Document / PDF
+Portal
+  ↓
+Purpose / Who is it for?
+  ↓
+Official Home
+  ↓
+Registration / Login
+  ↓
+Services / Modules
+  ↓
+Step-by-step procedure
+  ↓
+Required documents / data
+  ↓
+Precautions / common errors
+  ↓
+Official letter / notification / order / guideline
+  ↓
+Original official PDF
+  ↓
+Related school workflow
 ```
 
-Rules:
-- Newest first.
-- Old documents remain in archive.
-- Original official PDF/image is the source of truth.
-- If exact official PDF cannot be verified, leave the PDF field blank or link the authoritative official page.
-- Do not invent government URLs.
+### Current guides
 
-BSEB, Education Department, DEO/District and School documents may all be represented here as the central notice repository. BSEB also has its own dedicated module.
+1. **OFSS Bihar** — Intermediate admission; official home, CAF workflow and Common Prospectus PDF.
+2. **e-Shikshakosh Bihar** — school/teacher/education-service workflow; login and record-verification guidance.
+3. **UDISE+** — school data/reporting workflow and official 2024–25 key-results PDF reference.
+4. **SHVR** — Swachh Evam Harit Vidyalaya Rating; self-assessment and official resources/manuals.
+5. **BSEB Secondary** — registration/exam workflow, 2027–28 registration portal and official exam advertisement PDF.
+6. **BSEB Intermediate** — registration/exam/declaration workflow and verified official PDFs.
+7. **BEPC School Tracker** — ICT/Smart Class workflow and server-side authenticated integration notes.
+8. **National Scholarship Portal (NSP)** — OTR, scholarship application and verification workflow.
+9. **Bihar e-Kalyan** — student welfare/scholarship workflow.
+10. **Bihar Post-Matric Scholarship — Institute** — institution registration and verification workflow.
+11. **SATHEE** — student learning/exam preparation resources and official booklet PDF.
+12. **Bihar VidyaSathi** — education/scholarship information discovery with official-portal verification rule.
+13. **विद्यार्थी सहयोग कार्यक्रम** — grievance/request/suggestion registration, tracking, helpline 1100 and official information.
 
----
+### Maintenance policy
 
-### `official-documents.html` — Official Documents Centre
+Portal guides are living documents. When a portal changes its URL, login flow, menu, service, session/year, date, eligibility, notification or PDF:
 
-**Purpose:** the main **file catalogue**, not merely a portal list.
-
-```text
-Official Documents Centre
-│
-├── Bihar Education Department
-│   ├── विज्ञप्तियाँ
-│   ├── आदेश / पत्र
-│   ├── Forms
-│   └── Archive
-│
-├── DEO / District
-│   ├── Siwan
-│   ├── Darbhanga
-│   ├── विज्ञप्तियाँ
-│   ├── आदेश / पत्र
-│   ├── Forms
-│   └── Archive
-│
-├── BSEB
-│   ├── Secondary
-│   ├── Intermediate
-│   ├── Forms & विज्ञप्तियाँ
-│   └── Year-wise Archive
-│
-└── School
-    ├── School Notices
-    ├── Office Orders
-    ├── Forms
-    └── Archive
-```
-
-Document metadata standard:
-
-```text
-Date + Type + Title + Description + Official Document/PDF
-```
-
-Use descriptive titles such as `BSEB Secondary Registration Document`, not generic names such as only `BSEB`.
+1. Verify from the official source.
+2. Update the relevant guide.
+3. Update `portals.html` only if the Home Page/card changes.
+4. Add the original official PDF/letter where available.
+5. Preserve useful historical documents as archive/reference.
+6. Update `knowledge-base.md` and README when the change is materially architectural or workflow-related.
 
 ---
 
-### `bseb.html` — BSEB Centre
+## 6. Important Portals — Current Inventory
 
-**Purpose:** dedicated BSEB module.
+`portals.html` currently groups live services under:
 
-BSEB remains separate from the Bihar Education Department section.
+### School Administration
+- OFSS Bihar
+- e-Shikshakosh Bihar
+- UDISE+
+- SHVR
 
-Contains:
-- Secondary
-- Intermediate
-- Forms & विज्ञप्तियाँ
-- Year-wise archive
+### BSEB
+- Secondary Exam
+- Intermediate Exam/Registration
+- Secondary Registration 2027–28
+- BSEB Official Home
 
-Portal links and official documents remain separate concepts.
+### ICT / Lab / Smart Class
+- BEPC School Tracker
 
----
+### Scholarship
+- National Scholarship Portal
+- Bihar e-Kalyan
+- Bihar PMS Institute
 
-### `secondary.html` — BSEB Secondary
+### Students & Parents
+- SATHEE
+- OFSS Bihar
+- Bihar VidyaSathi
+- विद्यार्थी सहयोग शिविर
 
-**Purpose:** Secondary Classes 9–10 BSEB portal/module.
-
-Current destinations:
-
-- Registration 2027–28: `https://reg28.biharboardonline.org/`
-- Registration 2026–27 / BSEB official home: `https://www.biharboardonline.org/home`
-- Examination 2026–27: `https://exam.biharboardonline.org/home`
-- Forms & विज्ञप्तियाँ: document repository
-
----
-
-### `intermediate.html` — BSEB Intermediate
-
-**Purpose:** Intermediate Classes 11–12 BSEB portal/module.
-
-Current destinations:
-
-- Examination 2027: `https://intermediate.biharboardonline.com/`
-- Registration Card: `https://intermediate.biharboardonline.com/Reg/DownloadRegCard.aspx`
-- Forms & विज्ञप्तियाँ: document repository
+The Important Links page now follows the rule that **Home Page links are preferred**, while specific service URLs are documented in `portal-guides.html`.
 
 ---
 
-### `portals.html` — Important Portals
+## 7. Verified Portal URLs & Official Documents
 
-**Purpose:** live external government/education services.
+### BSEB
+- Secondary Registration 2027–28: `https://reg28.biharboardonline.org/`
+- BSEB Secondary Home: `https://www.biharboardonline.org/home`
+- Secondary Exam: `https://exam.biharboardonline.org/home`
+- Intermediate Home: `https://intermediate.biharboardonline.com/`
+- Intermediate Registration Card: `https://intermediate.biharboardonline.com/Reg/DownloadRegCard.aspx`
+- Intermediate Student Registration Card: `https://intermediate.biharboardonline.com/StudentRegCardDownload.aspx`
+- Commerce Private PDF: `https://intermediate.biharboardonline.com/assets/Notifications/CommercePrivate.pdf`
+- Declaration Not Uploaded list PDF: `https://intermediate.biharboardonline.com/assets/Notifications/Declaration%20Not%20Uploaded%20college%20List._3.pdf`
+- Exam Advertisement PDF: `https://examapi.biharboardonline.org/files/others/exam-advertisement.pdf`
+- Matric Exam AC Notification PDF: `https://examapi.biharboardonline.org/files/others/matric-exam-ac-notification.pdf`
+- Compartment Application Form PDF: `https://examapi.biharboardonline.org/files/others/compart-application-form.pdf`
 
-```text
-Important Portals
-│
-├── School Administration
-│   ├── OFSS Bihar
-│   ├── e-Shikshakosh
-│   ├── UDISE+
-│   └── SHVR
-│
-├── BSEB
-│   ├── Secondary Exam
-│   ├── Intermediate Registration Card
-│   ├── Secondary Registration
-│   └── BSEB Official Home
-│
-├── ICT / Smart Class
-│   └── BEPC School Tracker
-│
-└── Other verified government/education portals
-```
+### Other current official/portal resources
+- OFSS: `https://ofssbihar.net/`
+- e-Shikshakosh: `https://eshikshakosh.bihar.gov.in/`
+- UDISE+: `https://udiseplus.gov.in/`
+- SHVR: `https://shvr.education.gov.in/`
+- SHVR resources: `https://shvr.education.gov.in/resources`
+- BEPC Tracker: `https://tracker.bepcssa.in/`
+- NSP: `https://nsp.gov.in/`
+- Bihar e-Kalyan: `https://ekalyan.bihar.gov.in/`
+- Bihar PMS Institute: `https://instpmsonline.bihar.gov.in/`
+- SATHEE: `https://sathee.iitk.ac.in/`
+- Bihar VidyaSathi: `https://www.biharvidyasathi.com/`
+- विद्यार्थी सहयोग: `https://vidyarthisahyog.bihar.gov.in/`
 
-A portal is a live service. It is not itself an official document record.
+Only publish direct PDFs/pages after verification. Never invent URLs.
 
 ---
 
-### `smart-class.html` — Smart Class Dashboard
+## 8. मार्गदर्शिका & नियमावली
 
-**Purpose:** display authenticated BEPC Smart Class/ICT tracker information inside the school dashboard without requiring normal users to be redirected to the BEPC login page.
+`margdarshika.html` now contains a dedicated **पोर्टल मार्गदर्शन** card linking to `portal-guides.html` and a **📜 नियम एवं विनियम** card linking to `niyamawali.html`.
 
-Backend function:
+`niyamawali.html` is the public rules/regulations repository. Official source documents should be attached/linked when verified.
 
+---
+
+## 9. IT Services
+
+Current service inventory:
+
+1. Photo & Signature Studio
+2. Chandra OCR
+3. Gemini Document Vision (technical/legacy reference)
+4. Student Reference Matching
+5. Google Drive Upload
+6. BSEB Registration Assistant
+7. BEPC Smart Class Automation
+8. Smart Autofill — Chrome Extension
+9. **AI Workbench**
+10. AI / Agent Automation
+
+### AI Workbench
+
+Public-facing name is **AI Workbench**. Features include Ask AI, Webpage Review, File/PDF analysis and Image Generation. Workflow:
+
+`Read → Extract → Diagnose → Suggest → Draft → Human Review`
+
+Gateway:
+`https://sxfnrwugsyfypqgfglzc.supabase.co/functions/v1/gemini-ai-gateway`
+
+Backend actions designed for the gateway:
+`ask`, `analyze`, `generate-readme`, `analyze-webpage`, `analyze-file`, `generate-image`.
+
+Never expose API keys in GitHub/frontend/chat.
+
+### Smart Autofill
+
+Manifest V3 extension. Scans actual webpage labels/placeholders/ARIA/nearby text; supports text/email/tel/number, textarea, select, radio and checkbox; skips hidden/disabled/readOnly/password/file/submit; dispatches input/change; highlights filled fields and supports rescanning multi-step forms.
+
+The original ZIP is an install artifact and should not be claimed as stored in GitHub unless actually uploaded.
+
+---
+
+## 10. BEPC Smart Class Architecture
+
+Official tracker:
+`https://tracker.bepcssa.in/`
+
+Backend:
 `https://sxfnrwugsyfypqgfglzc.supabase.co/functions/v1/bepc-smart-tracker`
 
-Official BEPC source page:
-
-`https://tracker.bepcssa.in/ICT_Smart_Class/SmartClass_Daily_Attendance.aspx`
-
-#### BEPC authentication flow
+Flow:
 
 ```text
-User opens Smart Class
-          │
-          ▼
-School frontend
-          │
-          ▼
-Supabase Edge Function: bepc-smart-tracker
-          │
-          ├── Server-side BEPC credentials
-          ├── GET LoginPage.aspx
-          ├── Read ASP.NET hidden fields
-          ├── Read __VIEWSTATE / __EVENTVALIDATION
-          ├── Read required dynamic token
-          ├── POST login form
-          ├── Preserve session cookies
-          ├── Request SmartClass_Daily_Attendance.aspx
-          └── Extract tables / records / media links
-          │
-          ▼
-Structured JSON
-          │
-          ▼
 Smart Class dashboard
+      ↓
+Supabase Edge Function
+      ↓
+Server-side BEPC credentials
+      ↓
+GET ASP.NET login page
+      ↓
+Read hidden state / dynamic token
+      ↓
+POST login
+      ↓
+Preserve session cookies
+      ↓
+Request authenticated Smart Class page
+      ↓
+Extract tables / records
+      ↓
+Structured JSON
+      ↓
+Dashboard
 ```
 
-**Credential rule:** BEPC username/password must never be placed in frontend JavaScript or GitHub. They belong in server-side secrets.
-
-During staging troubleshooting, Edge Function JWT verification was disabled to test the backend call. **Before production, authentication/JWT/role authorization must be enforced again.**
+Credentials must remain server-side. During staging diagnostics JWT verification was disabled; **production must re-enable authentication/authorization before deployment.**
 
 ---
 
-### `login.html` — Role Selection
+## 11. Student Registration / OCR Workflow
 
-**Purpose:** future common login entry point.
+Current hardcopy is the primary source. Reference data is used to verify, not silently overwrite.
 
-Roles planned:
-- Student
-- Teacher
-- Admin
-
-Admin is the currently defined restricted route. Student/Teacher role workflows remain future work unless separately implemented.
+`Hardcopy/scan → OCR/AI → Current Form Data → Reference Matching + Photo/Signature → Discrepancy Review → Verified Record → BSEB Registration Assistance → Human Final Review → Submission`
 
 ---
 
-### `admin-login.html` — Admin Login
-
-**Purpose:** Supabase Auth login for restricted administration.
-
-Unauthenticated users should not reach restricted administrative content.
-
----
-
-### `admin-dashboard.html` — Admin Dashboard
-
-**Purpose:** restricted school administration workspace.
-
-Defined areas include:
-- Private & Confidential
-- Restricted Documents
-- Notice Management
-- Automation
-
-Authentication is checked before access.
-
----
-
-### `private-documents.html` — Private & Confidential
-
-**Purpose:** admin-only workspace for restricted records.
+## 12. PDF-First Document Workflow
 
 ```text
-Private & Confidential
-├── Administration
-├── Teachers
-├── Students
-└── Confidential
+Original Official PDF/Image
+        ↓
+Extract
+        ↓
+Verify
+        ↓
+Automate
+        ↓
+Generate PDF/output
+        ↓
+Google Drive
+        ↓
+Website catalogue/link
 ```
 
-A frontend login gate alone is not sufficient to secure a Drive file. Real Drive permissions and authenticated server-side access are required.
+Original official PDF/image remains the source of truth.
 
-**Never put private/confidential records in the public GitHub repository.**
-
----
-
-### `prapatra.html` — Forms / प्रपत्र
-
-**Purpose:** forms catalogue and editable HTML form area.
-
-Current example:
-- **वेतन विपत्र / Vetan Vipatra**
-
-Each form may provide:
-- Editable HTML
-- PDF/Print output
-- Official Document/PDF link if a verified official source exists
-
-If an official document cannot be verified, leave the official-document field blank rather than adding an unofficial URL.
-
----
-
-### `guide.html` — Digital Office Guide
-
-**Purpose:** simple PDF-first office workflow guide.
+Drive architecture:
 
 ```text
-Official PDF received
-        ↓
-Data extraction
-        ↓
-Verification
-        ↓
-Automation
-        ↓
-Generated PDF
-        ↓
-Archive in Drive
+UMV Tetahali/
+├── 01_Official_Documents/
+│   ├── Education_Department/
+│   ├── DEO_Siwan/
+│   ├── DEO_Darbhanga/
+│   ├── School/
+│   ├── BSEB/Secondary/
+│   ├── BSEB/Intermediate/
+│   └── Rules_Regulations/
+├── 02_Forms/
+├── 03_Notices_Circulars/
+├── 04_School_Records/
+├── 05_Private_Documents/
+├── 06_Smart_Class/
+├── 07_AI_Automation/
+└── 99_Archive/
 ```
 
----
-
-### `margdarshika.html` — मार्गदर्शिका
-
-**Purpose:** detailed how-to/instruction centre.
-
-Sections include:
-- How-to instructions
-- Instructional material
-- Portal guidance
-- Downloads and references
-
----
-
-### `niyamawali.html` — नियमावली
-
-**Purpose:** rules, regulations, office instructions and applicable guidelines.
-
-Official source documents should be added when verified.
-
----
-
-### `drive-structure.html` — Google Drive File Server
-
-**Purpose:** documentation of the agreed Drive storage architecture.
-
-Root folder supplied for the school:
-
+Root supplied by user:
 `https://drive.google.com/drive/folders/1NfTXy76MbZwCII4E1_A90gpw6qntDal?usp=sharing`
 
-The repository documents the structure; it must not claim that physical Drive folders were created unless Drive access actually confirms that.
+Do not claim physical Drive folders were created unless Drive access confirms them.
 
 ---
 
-## 6. Google Drive File Server Structure
-
-```text
-UMV Tetahali
-│
-├── 01_Official_Documents
-│   ├── Education_Department
-│   ├── DEO_Siwan
-│   ├── DEO_Darbhanga
-│   ├── School
-│   ├── BSEB
-│   │   ├── Secondary
-│   │   ├── Intermediate
-│   │   └── Archive
-│   └── Rules_Regulations
-│
-├── 02_Forms
-│   ├── Official_Forms
-│   ├── Editable_Forms
-│   └── Generated_PDF
-│
-├── 03_Notices_Circulars
-│   ├── Education_Department
-│   ├── DEO
-│   ├── BSEB
-│   └── School
-│
-├── 04_School_Records
-│
-├── 05_Private_Documents
-│   ├── Administration
-│   ├── Teachers
-│   ├── Students
-│   └── Confidential
-│
-├── 06_Smart_Class
-│
-├── 07_AI_Automation
-│   ├── Input
-│   ├── Processing
-│   ├── Output
-│   └── Logs
-│
-└── 99_Archive
-```
-
-### Public/private separation
-
-```text
-PUBLIC
-├── Official documents
-├── Notices/circulars
-├── Public forms
-├── Smart Class public dashboard data
-└── Approved school information
-
-PRIVATE
-├── Administration
-├── Teacher records
-├── Student records
-└── Confidential documents
-```
-
-Private material must never become public simply because a GitHub page exists.
-
----
-
-## 7. PDF-First Document Philosophy
-
-The website is primarily a **reference and workflow interface**. The actual administrative system is document/PDF driven.
-
-```text
-Original PDF / Image
-        │
-        ▼
-Data Extraction
-        │
-        ▼
-Verification
-        │
-        ▼
-Structured Data / Workflow
-        │
-        ▼
-Automation
-        │
-        ▼
-Generated PDF / Output
-        │
-        ▼
-Google Drive
-        │
-        ▼
-Hyperlink / Website Catalogue
-```
-
-### Source hierarchy
-
-1. Original official PDF/image
-2. Official government/department portal
-3. Verified structured data
-4. AI/OCR extracted information
-5. Human-approved working data
-
-AI/OCR assists extraction. It does not replace the original source document.
-
----
-
-## 8. Student Registration / OCR Workflow
-
-The intended workflow uses the student's current hardcopy as the primary source.
-
-```text
-Student Hardcopy / Scan
-          │
-          ▼
-OCR / AI Extraction
-          │
-          ▼
-Current Form Data
-          │
-          ├───────────────┐
-          │               │
-          ▼               ▼
-Reference Student     Photo/Signature
-Data                  Processing
-          │               │
-          ▼               ▼
-Field-by-field        Portal-ready
-Matching              Assets
-          │               │
-          └───────┬───────┘
-                  ▼
-          Discrepancy Review
-                  │
-                  ▼
-          Verified Record
-                  │
-                  ▼
-       BSEB Registration Assistance
-                  │
-                  ▼
-          Human Final Review
-                  │
-                  ▼
-       Final Submission / Record
-```
-
-**Important:** reference data must not silently overwrite current submitted information. Differences should be shown to the operator.
-
----
-
-## 9. Photo & Signature Processing
-
-```text
-Student Form / Image / PDF
-          │
-          ▼
-Locate photo + signature
-          │
-      ┌───┴────┐
-      ▼        ▼
-   Photo    Signature
-      │        │
-      ▼        ▼
- Crop/Clean Crop/Clean
-      │        │
-      ▼        ▼
- Background / formatting
-      │        │
-      ▼        ▼
- Portal-ready output
-      └────┬───┘
-           ▼
- Download / Store
-           ▼
- BSEB / other portal use
-```
-
----
-
-## 10. Authentication & Authorization Architecture
-
-Future automation must be **authentication-based and authorization-based**.
-
-```text
-User
- │
- ▼
-GitHub Pages Web App
- │
- ▼
-Supabase Auth
- │
- ▼
-Role + Permission Check
- │
- ├── Public → public content only
- │
- ├── Student → student-authorized services
- │
- ├── Teacher → teacher-authorized services
- │
- └── Admin → administration/private/automation
- │
- ▼
-Authorized Edge Function / Tool
- │
- ▼
-External Portal / Drive / Automation
- │
- ▼
-Audit / Result / Approval
-```
-
-AI agents should receive **controlled tools**, not unrestricted credentials or database access.
-
-Sensitive actions should support a human approval step where appropriate.
-
----
-
-## 11. IT Services / Automation Architecture
-
-```text
-                    IT SERVICES
-                         │
-      ┌──────────────────┼──────────────────┐
-      │                  │                  │
-      ▼                  ▼                  ▼
-Photo/Signature      OCR / AI         Portal Assistance
-      │                  │                  │
-      └──────────┬───────┴──────────┬───────┘
-                 ▼                  ▼
-          Student Data         Portal Assets
-                 │                  │
-                 └────────┬─────────┘
-                          ▼
-                   Verified Workflow
-                          │
-                          ▼
-                 Supabase / Edge Functions
-                          │
-             ┌────────────┼────────────┐
-             ▼            ▼            ▼
-        Google Drive   Apps Script   External Portals
-             │            │            │
-             └────────────┼────────────┘
-                          ▼
-                    Output / PDF / Log
-```
-
----
-
-## 12. BEPC Smart Class Integration — Technical Summary
-
-The BEPC tracker uses an ASP.NET-style login flow. The integration is designed to authenticate server-side and then read the authenticated Smart Class page.
-
-Known login components include:
-
-- `aspnetForm`
-- `__VIEWSTATE`
-- `__VIEWSTATEGENERATOR`
-- `__EVENTVALIDATION`
-- `__EVENTTARGET`
-- `__EVENTARGUMENT`
-- `ctl00$ContentPlaceHolder1$txtLoginName`
-- `ctl00$ContentPlaceHolder1$txtPassword`
-- `ctl00$ContentPlaceHolder1$chkRememberme`
-- `ctl00$ContentPlaceHolder1$btnLogin`
-- dynamic page token used by the login script
-
-The Edge Function preserves session cookies, follows redirects, requests the target page, extracts HTML tables and converts them into structured records.
-
-### Important production rule
-
-The browser must not receive the BEPC username/password. Credentials stay in Supabase server-side secrets.
-
----
-
-## 13. Repository Tree
-
-The tree below describes the important current structure. Update it when files are added/removed.
-
-```text
-umv-tetahali-staging/
-│
-├── index.html
-├── it-services.html
-├── notices.html
-├── official-documents.html
-│
-├── bseb.html
-├── secondary.html
-├── intermediate.html
-│
-├── portals.html
-├── smart-class.html
-│
-├── education-department.html
-├── deo-siwaan.html
-├── deo-darbhanga.html
-│
-├── prapatra.html
-├── guide.html
-├── margdarshika.html
-├── niyamawali.html
-├── drive-structure.html
-│
-├── login.html
-├── admin-login.html
-├── admin-dashboard.html
-├── private-documents.html
-│
-├── assets/
-│   ├── .gitkeep
-│   ├── umv-logo-color.jpeg
-│   └── [future approved icons/images]
-│
-└── README.md
-```
-
-> **Assets folder:** upload approved website icons, logos and static image files inside `assets/`. Do not put passwords, private documents, database secrets or confidential student/teacher files here.
-
----
-
-## 14. Staging → Live Development Workflow
-
-```text
-Requirement / Correction
-          │
-          ▼
-Inspect current GitHub file
-          │
-          ▼
-Plan change
-          │
-          ▼
-Update staging repository
-          │
-          ├───────────────┐
-          ▼               ▼
-Update affected       Update README
-page/code             documentation
-          │               │
-          └───────┬───────┘
-                  ▼
-          Staging GitHub Pages
-                  │
-                  ▼
-             User Testing
-                  │
-          ┌───────┴───────┐
-          │               │
-       Correction       Approved
-          │               │
-          └──→ staging   ▼
-                    Promote to live
-                         │
-                         ▼
-                   Production site
-```
-
-### Repository roles
-
-- **Staging:** `zzpsah/umv-tetahali-staging`
-- **Live:** `zzpsah/umv-tetahali`
-
-Never treat an unfinished staging change as production-ready.
-
----
-
-## 15. Change Documentation Rule
-
-Whenever we modify the project:
-
-1. Inspect the current file first.
-2. Make the change in **staging**.
-3. If the change affects page purpose, navigation, URL, architecture, integration, security, repository structure, workflow or assets, update this README too.
-4. Test the staging page.
-5. Only after approval should the change be promoted to live.
-6. Never modify the database merely because a frontend page changed.
-
-This keeps the README useful as a project handover document for anyone with basic web/IT knowledge.
-
----
-
-## 16. Security Rules
+## 13. Security Rules
 
 - Never commit passwords, API secrets, service-role keys or private tokens.
-- BEPC credentials remain server-side.
-- Private/confidential documents must not be stored in the public repository.
-- Supabase authorization must be enforced for restricted operations.
-- Production Smart Class access must not rely on the temporary staging JWT-disabled troubleshooting state.
-- Public pages may show public metadata but must not expose private records.
-- AI agents must use controlled, permissioned tools.
-- Sensitive actions should be auditable and, where appropriate, require human approval.
+- BEPC credentials stay server-side.
+- Private student/teacher/admin documents never go into public GitHub.
+- Public GitHub Pages is not private storage.
+- Production Smart Class authorization must be enforced.
+- AI agents use controlled tools and permissions.
+- Sensitive actions should be auditable and may require human approval.
+- Database changes are not authorized unless explicitly requested.
 
 ---
 
-## 17. Future Digital School Office Roadmap
+## 14. Staging → Production Workflow
+
+- Staging: `zzpsah/umv-tetahali-staging`
+- Production: `zzpsah/umv-tetahali`
+- Staging URL: `https://zzpsah.github.io/umv-tetahali-staging/`
 
 ```text
-PHASE 1 — Foundation
-│
-├── GitHub Pages
-├── Public website
-├── Official documents
-├── Forms / PDF workflow
-├── Auth foundation
-└── BEPC Smart Class backend integration
-
-PHASE 2 — Controlled Office
-│
-├── Role-based access
-├── Admin dashboard
-├── Private Drive integration
-├── Audit logs
-└── Document management
-
-PHASE 3 — Automation
-│
-├── OCR pipelines
-├── PDF generation
-├── Drive automation
-├── Portal data preparation
-└── Scheduled workflows
-
-PHASE 4 — AI Agents
-│
-├── Document Agent
-├── Student Data Agent
-├── Portal Agent
-├── Drive Agent
-├── Notification Agent
-└── Human approval workflow
-
-PHASE 5 — Digital School Office
-│
-└── Authenticated end-to-end school administration platform
+Requirement
+   ↓
+Inspect current GitHub file
+   ↓
+Update staging
+   ↓
+Update README + knowledge-base when applicable
+   ↓
+Test staging
+   ↓
+User approval
+   ↓
+Promote to live
 ```
 
 ---
 
-## 18. Design Principles
+## 15. Documentation Files
 
-1. **Simple for the operator.**
-2. **PDF-first for official documents.**
-3. **Original source remains the source of truth.**
-4. **Current student submission is primary for student registration workflows.**
-5. **Reference data verifies; it does not silently overwrite.**
-6. **Portal links and document records stay separate.**
-7. **Public and private information stay physically/logically separated.**
-8. **Authentication comes before restricted automation.**
-9. **AI assists; humans approve important decisions.**
-10. **Staging first, live after approval.**
-11. **Every meaningful structural change is documented in this README.**
-12. **Do not change the database without explicit approval.**
+- `README.md` — concise living project map and rules.
+- `knowledge-base.md` — detailed operational memory, portal inventory, guide standards, verified links, workflows and maintenance rules.
+- `portal-guides.html` — public user-facing step-by-step portal guidance.
+- `margdarshika.html` — public मार्गदर्शिका hub.
+- `niyamawali.html` — rules/regulations.
+
+**Documentation rule:** meaningful page, portal, URL, workflow, security or architecture changes must be reflected in README/KB.
 
 ---
 
-## 19. Quick Start for a New Contributor
-
-Someone with basic HTML/GitHub knowledge should be able to understand the project using this sequence:
-
-```text
-1. Read README.md
-       ↓
-2. Open index.html
-       ↓
-3. Follow navigation to understand modules
-       ↓
-4. Read the Page Catalogue above
-       ↓
-5. Read IT Services + authentication sections
-       ↓
-6. Read Drive + PDF-first architecture
-       ↓
-7. Make changes only in staging
-       ↓
-8. Update README if the architecture/page map changes
-       ↓
-9. Test staging
-       ↓
-10. Promote only approved work to live
-```
-
----
-
-## 20. Current Status Summary
+## 16. Current Status — 07 September 2026
 
 | Area | Status |
 |---|---|
 | Public school website | Active staging |
-| Hindi-only main navigation | Defined |
-| Bilingual dropdown items | Defined |
-| Official Documents architecture | Defined |
-| BSEB dedicated module | Active |
-| Secondary page | Active |
-| Intermediate page | Active |
-| Notice/Circular centre | Active foundation |
-| Education Department page | Active foundation |
-| DEO Siwan page | Active foundation |
-| DEO Darbhanga page | Active foundation |
-| Forms / प्रपत्र | Active foundation |
-| Vetan Vipatra | Listed |
-| Google Drive file-server architecture | Defined |
-| Private/Confidential workspace | Defined/restricted foundation |
-| Smart Class BEPC integration | Backend extraction foundation active |
-| Production BEPC authorization | **Must be re-enabled/enforced before production** |
-| AI/Agent automation | Roadmap / controlled architecture |
+| Important Portals | Active and categorized |
+| Portal Guidance Centre | **Created with current portal guides** |
+| Official PDF/resource references | Added where verified/available |
+| मार्गदर्शिका → Portal Guidance | Connected |
+| मार्गदर्शिका → Rules & Regulations | Connected |
+| BSEB module | Active |
+| Smart Class BEPC backend | Extraction foundation active |
+| Production BEPC authorization | **Must be enforced before production** |
+| AI Workbench | Active staging page; left unchanged in latest portal work |
+| Google Drive architecture | Defined |
+| Private document architecture | Defined/restricted foundation |
 | Database changes | **Not authorized by default** |
-| Assets folder | Available for approved icons/images |
-
----
-
-## 21. Useful Project Links
-
-- **Staging website:** `https://zzpsah.github.io/umv-tetahali-staging/`
-- **Staging repository:** `https://github.com/zzpsah/umv-tetahali-staging`
-- **Live repository:** `https://github.com/zzpsah/umv-tetahali`
-- **Google Drive root:** `https://drive.google.com/drive/folders/1NfTXy76MbZwCII4E1_A90gpw6qntDal?usp=sharing`
 
 ---
 
 ## Final Principle
 
-> **The website is the interface. Documents are the source. Authentication controls access. Automation reduces repetitive work. AI assists controlled workflows. Humans remain responsible for important verification and approval.**
+> **The website is the interface. Documents are the source. Authentication controls access. Portal guides explain the current process. Automation reduces repetitive work. AI assists controlled workflows. Humans remain responsible for important verification and approval.**

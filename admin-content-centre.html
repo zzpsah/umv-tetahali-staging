@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="hi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Content Control Centre</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-slate-100 text-slate-800 min-h-screen"><header class="bg-slate-900 text-white p-5"><div class="max-w-6xl mx-auto"><h1 class="text-2xl font-bold">⚙️ सामग्री प्रबंधन / Content Control Centre</h1><p class="text-slate-300 mt-1">बिना HTML बदले विद्यालय की सामग्री व्यवस्थित करने का प्रशासनिक ढांचा</p></div></header>
+<main class="max-w-6xl mx-auto p-5 space-y-6">
+<section class="bg-white rounded-2xl p-5 shadow"><h2 class="text-xl font-bold">कहाँ क्या अपडेट होगा?</h2><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+<div class="border rounded-xl p-4"><b>🌐 Portal Manager</b><p class="text-sm mt-2">Portal name, home/login/registration URL, session, dates, official source, status और verification.</p><button onclick="show('portal')" class="mt-3 px-3 py-2 rounded-lg bg-slate-900 text-white">Portal खोलें</button></div>
+<div class="border rounded-xl p-4"><b>📄 Document Manager</b><p class="text-sm mt-2">PDF metadata, department, portal, document date, order number, Drive location, public/private, archive.</p><button onclick="show('document')" class="mt-3 px-3 py-2 rounded-lg bg-slate-900 text-white">Document खोलें</button></div>
+<div class="border rounded-xl p-4"><b>📢 Notice Manager</b><p class="text-sm mt-2">Notice title, date, deadline, department, PDF, related portal और active/archive status.</p><button onclick="show('notice')" class="mt-3 px-3 py-2 rounded-lg bg-slate-900 text-white">Notice खोलें</button></div>
+<div class="border rounded-xl p-4"><b>📘 Portal Guide Editor</b><p class="text-sm mt-2">Purpose, audience, steps, required documents, precautions, official PDFs और related links.</p><button onclick="show('guide')" class="mt-3 px-3 py-2 rounded-lg bg-slate-900 text-white">Guide खोलें</button></div>
+<div class="border rounded-xl p-4"><b>🔎 Verify & Update</b><p class="text-sm mt-2">Official source से तुलना करके changes को review और approve करें.</p><a href="portal-verify.html" class="inline-block mt-3 px-3 py-2 rounded-lg bg-amber-600 text-white">Verification खोलें</a></div>
+<div class="border rounded-xl p-4"><b>🗃️ Archive</b><p class="text-sm mt-2">पुराने notices, expired sessions, historical PDFs और previous guide versions.</p><button onclick="show('archive')" class="mt-3 px-3 py-2 rounded-lg bg-slate-900 text-white">Archive खोलें</button></div>
+</div></section>
+<section id="workspace" class="bg-white rounded-2xl p-5 shadow"><h2 id="title" class="text-xl font-bold">डेटा एंट्री workspace</h2><p class="text-sm text-slate-600 mt-1">Phase 1 में यह interface/data model है। अभी कोई Supabase या वास्तविक Drive upload नहीं किया जा रहा है.</p><div id="form" class="mt-5"></div></section>
+<section class="bg-blue-50 border border-blue-200 rounded-2xl p-5"><h2 class="font-bold">प्रस्तावित hierarchy</h2><pre class="text-sm mt-3 whitespace-pre-wrap">Admin Login
+  ↓
+Admin Control Centre
+  ├─ Portal Manager → Portal Guidance + Important Links
+  ├─ Document Manager → Official Documents / Notices / Forms
+  ├─ Notice Manager → Notices page
+  ├─ Portal Guide Editor → portal-guides.html content
+  ├─ Verify & Update → review queue
+  └─ Archive → historical content
+        ↓
+   बाद में Supabase CMS
+        ├─ portals
+        ├─ documents
+        ├─ notices
+        ├─ portal_guides
+        └─ audit_log</pre></section>
+</main>
+<script>
+const templates={portal:['Portal Name','Home URL','Login URL','Registration URL','Current Session','Important Dates','Official Source URL','Status','Last Verified'],document:['Document Title','Category','Department','Related Portal','Document Date','Notification / Order No.','Official Source URL','Google Drive Folder','Visibility (Public / Private)','Archive Status'],notice:['Notice Title','Notice Date','Department','Deadline','Related Portal','PDF / Document','Official Source URL','Status (Active / Archive)'],guide:['Portal Name','Purpose','Who is it for?','Registration / Login','Step-by-step Procedure','Required Documents','Precautions','Official PDFs / Resources','Related Links','Last Verified'],archive:['Content Type','Title','Original Location','Archive Date','Reason / Session','Replacement / Current Version']};
+function show(type){document.getElementById('title').textContent=type==='portal'?'🌐 Portal Manager':type==='document'?'📄 Document Manager':type==='notice'?'📢 Notice Manager':type==='guide'?'📘 Portal Guide Editor':'🗃️ Archive Manager';document.getElementById('form').innerHTML='<div class="grid md:grid-cols-2 gap-4">'+templates[type].map((x,i)=>'<label class="block"><span class="text-sm font-semibold">'+x+'</span>'+(x.includes('Procedure')||x.includes('Precautions')||x.includes('Purpose')||x.includes('Required')||x.includes('Resources')?'<textarea class="w-full mt-1 border rounded-lg p-3 min-h-28" placeholder="यहाँ जानकारी दर्ज करें"></textarea>':'<input class="w-full mt-1 border rounded-lg p-3" placeholder="'+x+'">')+'</label>').join('')+'</div><div class="mt-5 flex gap-3"><button onclick="saveDraft()" class="px-4 py-2 rounded-lg bg-slate-900 text-white">Save Draft</button><button onclick="approve()" class="px-4 py-2 rounded-lg bg-emerald-600 text-white">Review & Approve</button></div><p id="msg" class="mt-3 text-sm"></p>'}
+function saveDraft(){document.getElementById('msg').textContent='Draft interface तैयार है। वास्तविक storage integration Phase 2 में जोड़ी जाएगी.'}function approve(){document.getElementById('msg').textContent='Approval workflow placeholder: admin approval के बाद ही public content बदलेगा.'}show('portal');
+</script></body></html>

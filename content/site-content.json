@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "school": {
+    "name": "उच्च माध्यमिक विद्यालय, तेतहली",
+    "english": "UCHCH MADHYAMIK VIDYALAYA, TETAHALI",
+    "udise": "10160203806"
+  },
+  "sourceOfTruth": "GitHub staging CMS configuration",
+  "navigationManagedBy": "admin-cms.html",
+  "note": "This configuration is the structured CMS layer. Public HTML pages should be wired to this file in the next integration step before production publishing."
+}

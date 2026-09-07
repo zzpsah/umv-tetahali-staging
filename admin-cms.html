@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin CMS | UMV Tetahali</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+ body{font-family:Arial,"Noto Sans Devanagari",sans-serif;background:#f8fafc;color:#172033}
+ .navy{background:#0f172a}.panel{box-shadow:0 8px 24px rgba(15,23,42,.07)}
+ .active{background:#e0e7ff;color:#3730a3;border-left:4px solid #4f46e5}
+ .field{width:100%;border:1px solid #cbd5e1;border-radius:.65rem;padding:.65rem .75rem;background:#fff}
+ .field:focus{outline:2px solid #c7d2fe;border-color:#6366f1}
+</style>
+</head>
+<body>
+<header class="navy text-white px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+ <div><div class="text-xl font-bold">⚙️ सामग्री प्रबंधन केन्द्र</div><div class="text-sm text-slate-300">Admin CMS • UCHCH MADHYAMIK VIDYALAY, TETAHALI</div></div>
+ <div class="flex items-center gap-3"><span class="text-sm text-slate-300">Admin Session</span><button class="bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg">Logout</button></div>
+</header>
+<div class="max-w-7xl mx-auto p-4 md:p-6 grid md:grid-cols-[230px_1fr] gap-5">
+<aside class="panel bg-white rounded-2xl p-3 h-fit md:sticky md:top-4">
+ <div class="text-xs uppercase tracking-wide text-slate-400 px-3 py-2">CMS Modules</div>
+ <nav class="space-y-1 text-sm">
+  <button data-section="overview" class="navbtn active w-full text-left px-3 py-2.5 rounded-lg">📊 Dashboard</button>
+  <button data-section="portals" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">🌐 Portal Management</button>
+  <button data-section="documents" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">📄 Document Management</button>
+  <button data-section="notices" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">📢 Notice Management</button>
+  <button data-section="guides" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">📘 Portal Guide Editor</button>
+  <button data-section="verify" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">✅ Verify & Update</button>
+  <button data-section="archive" class="navbtn w-full text-left px-3 py-2.5 rounded-lg">🗃️ Archive</button>
+ </nav>
+ <div class="mt-5 p-3 rounded-xl bg-amber-50 text-xs text-amber-800">Design phase: अभी data केवल form/local preview के लिए है। Supabase या Drive में कोई बदलाव नहीं किया जा रहा।</div>
+</aside>
+<main>
+<section id="overview" class="section">
+ <h1 class="text-2xl font-bold">CMS Dashboard</h1><p class="text-slate-500 mt-1">एक जगह से वेबसाइट की सामग्री और आधिकारिक जानकारी व्यवस्थित करें।</p>
+ <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+  <div class="panel bg-white p-5 rounded-2xl"><div class="text-3xl font-bold">13</div><div class="text-sm text-slate-500">Portal Guides</div></div>
+  <div class="panel bg-white p-5 rounded-2xl"><div class="text-3xl font-bold">0</div><div class="text-sm text-slate-500">Documents to publish</div></div>
+  <div class="panel bg-white p-5 rounded-2xl"><div class="text-3xl font-bold">0</div><div class="text-sm text-slate-500">Active Notices</div></div>
+  <div class="panel bg-white p-5 rounded-2xl"><div class="text-3xl font-bold">13</div><div class="text-sm text-slate-500">Verification records</div></div>
+ </div>
+ <div class="panel bg-white rounded-2xl p-5 mt-5"><h2 class="font-bold">Recommended workflow</h2><div class="grid md:grid-cols-5 gap-3 mt-4 text-sm"> <div class="p-3 rounded-xl bg-slate-50">1️⃣ Source/PDF<br><span class="text-slate-500">Upload or reference</span></div><div class="p-3 rounded-xl bg-slate-50">2️⃣ Metadata<br><span class="text-slate-500">Title, date, category</span></div><div class="p-3 rounded-xl bg-slate-50">3️⃣ Review<br><span class="text-slate-500">Check extracted data</span></div><div class="p-3 rounded-xl bg-slate-50">4️⃣ Approve<br><span class="text-slate-500">Human approval</span></div><div class="p-3 rounded-xl bg-slate-50">5️⃣ Publish<br><span class="text-slate-500">Website catalogue</span></div></div></div>
+</section>
+<section id="portals" class="section hidden"><h1 class="text-2xl font-bold">🌐 Portal Management</h1><p class="text-slate-500 mt-1">Portal की सभी बदलने योग्य जानकारी एक रिकॉर्ड में रखें।</p><form class="panel bg-white rounded-2xl p-5 mt-5 grid md:grid-cols-2 gap-4">
+ <label>Portal Name<input class="field mt-1" placeholder="e.g. UDISE+"></label><label>Category<select class="field mt-1"><option>School Administration</option><option>BSEB</option><option>Scholarship</option><option>Student Services</option></select></label>
+ <label>Home Page URL<input class="field mt-1" placeholder="https://..."></label><label>Official Source URL<input class="field mt-1" placeholder="https://..."></label>
+ <label>Login URL<input class="field mt-1" placeholder="https://..."></label><label>Registration URL<input class="field mt-1" placeholder="https://..."></label>
+ <label>Current Session<input class="field mt-1" placeholder="2026-27"></label><label>Last Verified<input type="date" class="field mt-1"></label>
+ <label class="md:col-span-2">Services / Current Status<textarea class="field mt-1" rows="3" placeholder="Current workflow, active services, status..."></textarea></label>
+ <label class="md:col-span-2">Guide Steps<textarea class="field mt-1" rows="5" placeholder="1. Login...&#10;2. Select...&#10;3. Submit..."></textarea></label>
+ <div class="md:col-span-2 flex gap-2"><button type="button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white">Save Draft</button><button type="button" class="px-4 py-2 rounded-lg bg-emerald-600 text-white">Submit for Review</button></div>
+ </form></section>
+<section id="documents" class="section hidden"><h1 class="text-2xl font-bold">📄 Document Management</h1><p class="text-slate-500 mt-1">PDF/official document को metadata के साथ catalogue करें।</p><div class="panel bg-white rounded-2xl p-5 mt-5 space-y-5"><div class="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center"><div class="text-4xl">📥</div><h2 class="font-bold mt-2">Upload / Select Document</h2><p class="text-sm text-slate-500">PDF-first workflow • actual Drive upload बाद के चरण में</p><input type="file" accept="application/pdf,.pdf" class="mt-4"></div><div class="grid md:grid-cols-2 gap-4"><label>Document Title<input class="field mt-1" placeholder="Official notification title"></label><label>Category<select class="field mt-1"><option>Education Department</option><option>DEO</option><option>BSEB</option><option>School</option><option>Rules & Regulations</option></select></label><label>Department<input class="field mt-1" placeholder="Department / Office"></label><label>Portal<select class="field mt-1"><option>None / General</option><option>UDISE+</option><option>e-Shikshakosh</option><option>BSEB</option><option>OFSS</option></select></label><label>Document Date<input type="date" class="field mt-1"></label><label>Notification / Order No.<input class="field mt-1"></label><label>Official Source URL<input class="field mt-1" placeholder="https://..."></label><label>Google Drive Location<input class="field mt-1" placeholder="Drive folder / file reference"></label></div><label>Visibility<select class="field mt-1"><option>Public</option><option>Private</option><option>Internal / Admin Only</option></select></label><div class="flex gap-2"><button type="button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white">Save Draft</button><button type="button" class="px-4 py-2 rounded-lg bg-emerald-600 text-white">Review & Approve</button></div></div></section>
+<section id="notices" class="section hidden"><h1 class="text-2xl font-bold">📢 Notice Management</h1><p class="text-slate-500 mt-1">सूचना, deadline और PDF reference अलग record में रखें।</p><form class="panel bg-white rounded-2xl p-5 mt-5 grid md:grid-cols-2 gap-4"><label>Notice Title<input class="field mt-1"></label><label>Notice Date<input type="date" class="field mt-1"></label><label>Department<input class="field mt-1"></label><label>Deadline<input type="date" class="field mt-1"></label><label>Related Portal<input class="field mt-1" placeholder="Portal name"></label><label>PDF / Official Source<input class="field mt-1" placeholder="URL or Drive reference"></label><label class="md:col-span-2">Notice Summary<textarea class="field mt-1" rows="4"></textarea></label><label>Status<select class="field mt-1"><option>Active</option><option>Archive</option><option>Draft</option></select></label><div class="flex items-end"><button type="button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white">Save Notice</button></div></form></section>
+<section id="guides" class="section hidden"><h1 class="text-2xl font-bold">📘 Portal Guide Editor</h1><p class="text-slate-500 mt-1">Portal guide का content modular fields में manage करें।</p><form class="panel bg-white rounded-2xl p-5 mt-5 grid gap-4"><label>Select Portal<select class="field mt-1"><option>UDISE+</option><option>e-Shikshakosh Bihar</option><option>OFSS Bihar</option><option>BSEB Secondary</option><option>BSEB Intermediate</option><option>SHVR</option></select></label><label>Purpose<textarea class="field mt-1" rows="2"></textarea></label><label>Who is it for?<textarea class="field mt-1" rows="2"></textarea></label><label>Registration / Login<textarea class="field mt-1" rows="3"></textarea></label><label>Step-by-step Procedure<textarea class="field mt-1" rows="6"></textarea></label><label>Required Documents<textarea class="field mt-1" rows="3"></textarea></label><label>Precautions<textarea class="field mt-1" rows="3"></textarea></label><label>Official PDFs / Resources<textarea class="field mt-1" rows="3" placeholder="Document IDs or official URLs"></textarea></label><label>Related Links<textarea class="field mt-1" rows="3"></textarea></label><label>Verification Date<input type="date" class="field mt-1"></label><div class="flex gap-2"><button type="button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white">Save Draft</button><button type="button" class="px-4 py-2 rounded-lg bg-emerald-600 text-white">Approve Update</button></div></form></section>
+<section id="verify" class="section hidden"><h1 class="text-2xl font-bold">✅ Verify & Update</h1><p class="text-slate-500 mt-1">Official source से compare करें; approval के बिना public content न बदलें।</p><div class="panel bg-white rounded-2xl p-5 mt-5"><div class="grid md:grid-cols-3 gap-3"><div class="p-4 rounded-xl bg-emerald-50">Verified<br><b>0</b></div><div class="p-4 rounded-xl bg-amber-50">Review Required<br><b>0</b></div><div class="p-4 rounded-xl bg-slate-100">Blocked / Error<br><b>0</b></div></div><div class="mt-5 border rounded-xl p-4"><b>Review Queue</b><p class="text-sm text-slate-500 mt-1">Portal changes, new PDFs और notices यहाँ approval के लिए आएँगे।</p></div></div></section>
+<section id="archive" class="section hidden"><h1 class="text-2xl font-bold">🗃️ Archive</h1><p class="text-slate-500 mt-1">पुराने notices, previous sessions और expired documents को सुरक्षित रखें।</p><div class="panel bg-white rounded-2xl p-5 mt-5 grid md:grid-cols-3 gap-4"><div class="p-4 rounded-xl bg-slate-50"><b>Old Notices</b><p class="text-sm text-slate-500">Historical notices</p></div><div class="p-4 rounded-xl bg-slate-50"><b>Previous Sessions</b><p class="text-sm text-slate-500">Old portal guides</p></div><div class="p-4 rounded-xl bg-slate-50"><b>Expired PDFs</b><p class="text-sm text-slate-500">Retained source records</p></div></div></section>
+</main></div>
+<script>
+const buttons=document.querySelectorAll('.navbtn'), sections=document.querySelectorAll('.section');
+buttons.forEach(btn=>btn.addEventListener('click',()=>{buttons.forEach(b=>b.classList.remove('active'));btn.classList.add('active');sections.forEach(s=>s.classList.add('hidden'));document.getElementById(btn.dataset.section).classList.remove('hidden');history.replaceState(null,'','#'+btn.dataset.section)}));
+const hash=location.hash.slice(1);if(hash&&document.getElementById(hash)){document.querySelector(`[data-section="${hash}"]`).click();}
+</script>
+</body></html>

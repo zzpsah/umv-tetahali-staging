@@ -1,99 +1,78 @@
-# Current Official-Source Updates
+# Current Official Updates — 08 September 2026
 
-**School:** UCHCH MADHYAMIK VIDYALAY, TETAHALI  
-**UDISE:** `10160203806`  
-**Review date:** 08 September 2026  
-**Scope:** Publicly accessible official sources relevant to school administration, students, admissions, examinations, scholarships, school data and district education notices.
+This file is a dated research register for current official/public information relevant to UMV Tetahali.
 
-> This register is a dated research snapshot, not an automatic live feed. A current official portal/PDF must be checked again before payment, final submission or other irreversible action.
+## Important rule
+
+Fee information is not duplicated here. All Admission, Registration and Examination fee amounts belong on:
+
+`शैक्षणिक गतिविधियाँ → शुल्क संरचना → fee-structure.html`
+
+This register may mention a fee-related notice/source, but the public fee amount and source status should be maintained on the canonical fee page.
+
+## Current source areas
+
+- BSEB Secondary
+- BSEB Intermediate
+- OFSS Bihar
+- UDISE+
+- SHVR
+- e-Shikshakosh
+- Bihar e-Kalyan / scholarship services
+- Siwan district education notices
+- BEPC / Smart Class
 
 ## BSEB Secondary
 
-Official portal: `https://www.biharboardonline.org/`
+Official source: `https://www.biharboardonline.org/`
 
-Current public portal identifies **Online Application for Secondary Registration 2026 for Exam 2027** and lists:
+Current source review identified the Secondary Registration 2026 / Annual Exam 2027 cycle, associated forms and extension notices. Historical deadlines must remain archived and must not be presented as current unless the official portal publishes a new extension.
 
-- school login/payment/student/form workflow;
-- registration/permission application form;
-- extension advertisements;
-- dummy registration-card related notices;
-- registration-form submission extended through **22 August 2026**;
-- registration-fee payment extended through **22 August 2026**.
+Fee details: see `fee-structure.html` and `BSEB-FEE-REFERENCE.md`.
 
-Status on 08 Sep 2026: **the 22 Aug deadline is past; retain as current-cycle historical reference, not an open deadline.**
+## OFSS Intermediate Admission
 
-## OFSS Intermediate Admission — Session 2026–28
+Official source: `https://ofssbihar.net/`
 
-Official portal: `https://ofssbihar.net/`
+Official Common Prospectus 2026–28 provides the admission workflow and source-backed CAF payment details. Current selection/spot-admission/cut-off/vacancy status should always be checked on the live OFSS portal.
 
-Official Common Prospectus states:
-
-- session: **2026–28**;
-- initial CAF application window: **08 Apr 2026–18 Apr 2026**;
-- applicant may give options for **minimum 10 and maximum 20 institutions**;
-- total CAF payment: **₹350** = ₹150 application fee + ₹200 institution fee;
-- payment may be made using the methods described by OFSS;
-- mobile number and email are used for workflow communication/OTP.
-
-The current OFSS site also lists spot-admission CAF, selection cut-offs, vacant-seat information and recent 2026 notices including spot-admission extensions. Always use the live OFSS page for the current spot-admission deadline.
-
-Student helpline shown on OFSS: **0612-2230009**.
+Fee details: see `fee-structure.html`.
 
 ## UDISE+
 
-Official portal: `https://udiseplus.gov.in/`
+Official source: `https://udiseplus.gov.in/`
 
-Current portal reports national AY 2025–26 statistics and lists a notice dated **03 Aug 2026** titled **“UDISE+ Data Completion for AY 2026–27 and a Separate Vertical for AWES School Reporting.”**
+Current UDISE+ source review includes AY 2026–27 data-completion information and public school-information/reporting tools.
 
-Relevant public tools include Know Your School, PGI, UDISE-code status, Data Sharing Portal, Archive, Dashboard & Reports, GIS Capture and data-capture/publication resources.
+## SHVR
 
-School rule: never estimate or invent UDISE school/student/teacher/infrastructure data; use authoritative school records and the designated UDISE workflow.
+Official source: `https://shvr.education.gov.in/`
 
-## SHVR — Swachh Evam Harit Vidyalaya Rating
+Official resource centre includes guidelines, manuals, brochures and school self-assessment support material.
 
-Official portal: `https://shvr.education.gov.in/`
+## Bihar e-Kalyan / scholarship
 
-Official resource centre currently provides:
+Official source: `https://ekalyan.bihar.gov.in/`
 
-- Guidelines — Hindi and English;
-- Brochures — Hindi and English;
-- Bookmarks — Hindi and English;
-- User Manual for Schools (Web) — Hindi and English;
-- User Manual for Schools (Mobile) — Hindi and English;
-- technical/user videos.
+Eligibility, application windows and required documents are scheme-specific. Verify each student/category against the live official portal before action.
 
-Resource page last observed as current in 2026. School users should rely on the official resource centre rather than copied third-party instructions.
+## Siwan district
 
-## Bihar e-Kalyan / MVPY
+Official source: `https://siwan.nic.in/`
 
-Official portal: `https://ekalyan.bihar.gov.in/mvpy/`
+District notices are archived by date and scope. A district notice must not be assumed applicable to UMV Tetahali unless the notice scope clearly includes the school/category.
 
-The official **Mukhyamantri Vidyarthi Protsahan Yojana** portal currently states that the application portal is open. Public eligibility information includes Bihar residence, first-division qualification and scheme/category-specific conditions. For Intermediate, the official FAQ states eligibility for **Muslim girl students of BSEB** under the listed MVPY conditions.
+## Storage rule
 
-Required-document list shown publicly includes residence certificate, marksheet, passing certificate, registration card, photo/signature, Aadhaar and bank proof.
+Original official PDFs should be preserved in Google Drive under the relevant numbered official-document folders. BSEB fee/admission source PDFs belong under:
 
-Rule: scholarship eligibility is scheme-specific; verify the current official portal before advising any individual student.
+```text
+UMV Tetahali/01_Official_Documents/BSEB/Secondary/Fee_and_Admission_Source_PDFs/
+UMV Tetahali/01_Official_Documents/BSEB/Intermediate/Fee_and_Admission_Source_PDFs/
+```
 
-## Siwan District — recent education-related notices
+## Governance
 
-Official district portal: `https://siwan.nic.in/`
+`Official source → extract/compare → Review Queue → human verification → final permission → staging/public/backend update`
 
-Recent education-related notices found in the district notice system include:
-
-1. **Kasturba Gandhi Balika Vidyalaya employment notice** — start 11 Jun 2026, end 30 Jun 2026. Status: archived/expired.
-2. **Selection of teachers in Model Schools** — start 23 May 2026, end 31 May 2026. Status: archived/expired.
-
-These district notices are preserved as district-level references and **must not be presented as directly applicable to UMV Tetahali unless the notice scope actually includes the school.**
-
-## Verification policy
-
-Every current-information card on the school website should show, when appropriate:
-
-- source authority;
-- official URL/PDF;
-- issue/notice date;
-- applicable session/year;
-- last verification date;
-- status: `Verified`, `Current portal`, `Re-verify before action`, `Expired/Archived`, or `Review Required`.
-
-When an official source conflicts with an older school page, the older unsupported claim must be removed or archived rather than displayed alongside the official current information.
+This file is not an automatic live feed. Re-check official sources before payment, final submission or irreversible action.

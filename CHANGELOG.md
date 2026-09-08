@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-08 — Final web architecture alignment
+
+- Applied the full public navigation hierarchy to desktop and mobile menus.
+- Kept `शुल्क संरचना / Fee Structure` only under `शैक्षणिक गतिविधियाँ`.
+- Added structured dropdowns for BSEB, सेवाएँ and दस्तावेज़.
+- Updated Admin Change Map so `शैक्षणिक गतिविधियाँ` routes to `index.html`, `guide.html` and canonical `fee-structure.html`.
+- Updated BSEB Admin mapping so fee data points to the canonical fee page rather than duplicate fee tables.
+- Updated README to match the implemented public/Admin architecture.
+- No production or Supabase schema/data changes.
+
 ## 2026-09-08 — Academic fee structure consolidation
 
 - Added `fee-structure.html` as the single canonical public page for Admission, Registration and Examination fees.

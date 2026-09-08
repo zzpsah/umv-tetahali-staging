@@ -1,97 +1,123 @@
-# UMV Tetahali — Current Project Status
+# PROJECT STATUS — UMV Tetahali Staging
 
 **School:** UCHCH MADHYAMIK VIDYALAY, TETAHALI  
-**UDISE:** `10160203806`  
-**Environment:** Staging  
+**UDISE:** 10160203806  
+**Block:** Barharia  
+**District:** Siwan, Bihar  
 **Status date:** 08 September 2026
 
-## Current architecture
+## Current staging state
+
+### Public website
+
+Implemented canonical navigation:
 
 ```text
-Public School Portal
-  ├── Homepage / Latest Verified
-  ├── Current Official Updates
-  ├── BSEB / Fees
-  ├── Notices
-  ├── Portals / Guides
-  ├── Documents
-  ├── Smart Class
-  └── IT Services
-
-Admin Login
-  ↓
-Admin Dashboard
-  ↓
-Admin Control Centre
-  ↓
-Manage → Change Map → Review Queue → Final Permission
+विद्यालय
+शैक्षणिक गतिविधियाँ ▼
+  ├── माध्यमिक स्तर (कक्षा 9–10)
+  ├── उच्च माध्यमिक स्तर (कक्षा 11–12)
+  ├── अध्ययन सामग्री
+  └── शुल्क संरचना / Fee Structure
+IT Services
+सूचनाएँ
+BSEB ▼
+  ├── BSEB Centre
+  ├── Secondary
+  ├── Intermediate
+  ├── Forms & Notices
+  └── Archive
+महत्वपूर्ण पोर्टल
+Smart Class
+सेवाएँ ▼
+  ├── विद्यार्थी सेवाएँ
+  ├── शिक्षक सेवाएँ
+  ├── प्रमाण-पत्र एवं अभिलेख
+  └── प्रपत्र
+दस्तावेज़ ▼
+  ├── Official Documents Centre
+  ├── Education Department
+  ├── DEO Siwan
+  ├── BSEB Documents
+  └── Google Drive File Server
+मार्गदर्शिका
+संपर्क
 ```
 
-## Implemented in this update cycle
+Desktop and mobile navigation both follow this structure.
 
-| Area | Status |
-|---|---|
-| Mobile-friendly simplified homepage | Implemented |
-| Latest Verified strip | Implemented |
-| BSEB Fee Centre | Implemented |
-| Current Official Updates page | Implemented |
-| Official-source Markdown register | Implemented |
-| Notice source/status cleanup | Implemented |
-| Unsupported 16 Sep BSEB deadline | Removed/corrected |
-| Important Portals refresh | Implemented |
-| Portal Guidance current-source refresh | Implemented |
-| Siwan district education notice archive | Implemented |
-| Source maintenance guide | Implemented |
-| Changelog | Implemented |
-| Main README refresh | Implemented |
+### Fee Structure
 
-## Current verified/source-reviewed highlights
+`fee-structure.html` is the single canonical public page for:
 
-- BSEB Secondary Registration 2026 for Exam 2027: official public page lists final extension through **22 Aug 2026** for form submission and fee payment; now archived/past.
-- OFSS Intermediate 2026–28: official Common Prospectus records **₹350** CAF total, initial application window 08–18 Apr 2026 and 10–20 institution choices; live portal currently exposes spot-admission/cut-off/vacant-seat information.
-- UDISE+: official portal lists **03 Aug 2026** AY 2026–27 data-completion notice.
-- SHVR: official current resources include Hindi/English guidelines, brochures, bookmarks, web/mobile school manuals and videos.
-- Bihar e-Kalyan/MVPY: official portal currently states eligible candidates may apply; scheme/category eligibility must be checked individually.
-- Siwan District: recent education-related notices reviewed are retained as expired district references and are not assumed applicable to UMV Tetahali without scope verification.
+- Admission fee
+- Registration fee
+- Examination fee
+- official विज्ञप्ति / advertisement / prospectus links
+- verification status
+- Google Drive source archive links
 
-## Admin Control Centre
+BSEB, Secondary and Intermediate pages do not own separate fee tables; they link to this page.
 
-`admin-content.html` remains the canonical Admin Control Centre.
+Canonical Drive source folders:
 
-Current Phase-1 behavior:
+```text
+UMV Tetahali/
+└── 01_Official_Documents/
+    └── BSEB/
+        ├── Secondary/
+        │   └── Fee_and_Admission_Source_PDFs/
+        └── Intermediate/
+            └── Fee_and_Admission_Source_PDFs/
+```
 
-- browser-local proposal/review state;
-- selected website area;
-- before/after proposal;
-- source URL;
-- affected-output Change Map;
-- Review Required / Rejected / Approved — Final Permission Required statuses;
-- AI source inventory UI, but no live crawler yet.
+### Admin Control Centre
 
-No proposal can automatically publish/commit production content.
+Canonical path:
 
-## Backend state
+`admin-login.html → admin-dashboard.html → admin-content.html`
 
-Supabase structured CMS tables remain **planned**, not implemented by this update. No Supabase schema/data changes were made.
+Three main Admin views remain:
 
-Google Drive remains the intended original-document/file repository. No new CMS upload/publish integration was made in this update.
+1. Manage
+2. Review Queue
+3. AI Monitor
 
-## Next priorities
+The Admin Change Map follows the public hierarchy. `शैक्षणिक गतिविधियाँ` maps to:
 
-1. Browser/mobile test the refreshed public pages.
-2. Remove/archive redundant parallel admin prototypes after explicit cleanup approval.
-3. Finalize structured CMS entities and RLS before any Supabase implementation.
-4. Connect Drive-backed official-document ingestion.
-5. Add automatic official-source snapshots/change detection only with human approval gate.
-6. Add shared audit history.
-7. Promote to production only after staging review.
+- `index.html → academics`
+- `guide.html → study material`
+- `fee-structure.html → Admission / Registration / Examination fees`
 
-## Governance
+BSEB changes route to `bseb.html`, `secondary.html`, `intermediate.html`, `notices.html` and the canonical `fee-structure.html` where fee information is involved.
 
-- Official source/PDF first.
-- Record date/session/status.
-- Do not publish unsupported deadlines as current.
-- Do not expose credentials/private records.
-- Do not bypass OTP/CAPTCHA/access controls.
-- Payment/final-submit remains human-controlled.
-- Historical information is archived rather than silently deleted.
+### Official-source governance
+
+- Original official PDF/page remains source of truth.
+- AI/manual changes first enter Review Queue.
+- Approval does not itself publish.
+- Final permission is required before staging/public/backend application.
+- Production promotion remains separate.
+- Supabase schema/data changes remain unapproved unless explicitly authorized.
+- Government portal final submit/payment actions remain human-controlled.
+
+### Current supporting pages
+
+- `official-updates.html` — current source-checked information
+- `CURRENT-OFFICIAL-UPDATES.md` — dated research register
+- `BSEB-FEE-REFERENCE.md` — detailed fee verification notes
+- `README-OFFICIAL-SOURCES.md` — source rules
+- `README.md` — canonical architecture/project map
+- `CHANGELOG.md` — implementation history
+
+## Not yet implemented
+
+- Automatic live source crawler/change detection
+- Supabase content CMS tables
+- Google Drive automatic PDF ingestion/publishing
+- Full audit history backend
+- Production promotion of current staging changes
+
+## Final rule
+
+The public website should stay simple. Fee information has one home under `शैक्षणिक गतिविधियाँ → शुल्क संरचना`. Official PDFs belong in Google Drive. AI can prepare and compare changes; human approval controls publication and irreversible actions.

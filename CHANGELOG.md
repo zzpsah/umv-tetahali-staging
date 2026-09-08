@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-09 — Secondary registration base fee display
+
+- Updated `fee-structure.html` to show Secondary Registration 2027 base/normal totals **without late fee**.
+- Regular total is now shown as **₹350** and Independent/Private as **₹480**.
+- Removed the ₹100 late-fee row from the main total table.
+- Added a clear note that any BSEB late fee is separate and should be added only when a current notification applies it.
+- Added the user-provided `पत्र-पत्रांक संकलन` Facebook page as a supporting reference only; official BSEB notification/portal remains the final authority.
+- Updated `BSEB-FEE-REFERENCE.md` with the same rule.
+- No production or Supabase schema/data changes.
+
 ## 2026-09-08 — Final web architecture alignment
 
 - Applied the full public navigation hierarchy to desktop and mobile menus.

@@ -23,7 +23,7 @@ Status: **Verified from official prospectus/public source.**
 
 ## 2. Secondary Registration — Annual Exam 2027
 
-Current-cycle final-window reference:
+### Base / normal fee — late fee excluded
 
 | Component | Regular | Independent / Private |
 |---|---:|---:|
@@ -31,14 +31,20 @@ Current-cycle final-window reference:
 | Online data entry | ₹50 | ₹50 |
 | Registration | ₹250 | ₹250 |
 | Permission | — | ₹130 |
-| Late fee | ₹100 | ₹100 |
-| **Total** | **₹450** | **₹580** |
+| **Total without late fee** | **₹350** | **₹480** |
+
+**Late fee is not included in the totals above.** If BSEB applies a late fee in a current extension/notification, it must be added separately according to that notification.
 
 Official portal:
 - `https://www.biharboardonline.org/`
 
 Drive archive folder:
 - `https://drive.google.com/drive/folders/1OYVQmVmf8y31TiaOGZ4Mnoc4mA8J2z7g`
+
+Additional user-provided reference:
+- `https://www.facebook.com/people/%E0%A4%AA%E0%A4%A4%E0%A5%8D%E0%A4%B0-%E0%A4%AA%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%82%E0%A4%95-%E0%A4%B8%E0%A4%82%E0%A4%95%E0%A4%B2%E0%A4%A8-1/100064880493042/?sk=about`
+
+Note: the Facebook page is a supporting reference only; it is not the official payment authority. The applicable BSEB विज्ञप्ति/portal remains final.
 
 Status: **Re-verify from the applicable BSEB notification before payment.**
 
@@ -82,6 +88,8 @@ Status: **Current official notification required.**
 Fee amounts appear only on `fee-structure.html`.
 
 BSEB, Secondary and Intermediate pages should link to that canonical page instead of repeating fee tables.
+
+For Secondary Registration, public totals should show **base/normal fee without late fee**. Any late fee should be shown separately only when applicable under a current BSEB notification.
 
 Each fee record should show:
 

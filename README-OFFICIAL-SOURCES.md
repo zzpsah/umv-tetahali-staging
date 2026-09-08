@@ -1,27 +1,57 @@
-# Official-Source Maintenance Guide
+# Official Source Rules — UMV Tetahali
 
-Reviewed: 08 September 2026
+## Purpose
 
-Use this order for current public information:
+Keep government/BSEB information accurate, traceable and easy to update.
 
-1. Original official PDF / notice.
-2. Official government/board portal.
-3. Official district portal.
-4. School-verified record.
-5. AI/OCR extraction only as a proposal.
+## Source priority
 
-Every current item should record authority, URL/PDF, date, session/year, last verification date and one status: `Verified`, `Current portal`, `Re-verify before action`, `Expired/Archived`, `Review Required`.
+1. Original official विज्ञप्ति / advertisement / prospectus / PDF
+2. Official government/BSEB portal
+3. School verified record
+4. Admin-approved structured data
+5. AI/OCR suggestion
 
-Current source groups used by the website:
+## Fee information
 
-- BSEB Secondary: `https://www.biharboardonline.org/`
-- BSEB Exam: `https://exam.biharboardonline.org/`
-- BSEB Intermediate: `https://intermediate.biharboardonline.com/`
-- OFSS: `https://ofssbihar.net/`
-- UDISE+: `https://udiseplus.gov.in/`
-- SHVR: `https://shvr.education.gov.in/`
-- Bihar e-Kalyan/MVPY: `https://ekalyan.bihar.gov.in/`
-- Siwan District: `https://siwan.nic.in/`
-- BEPC Tracker: `https://tracker.bepcssa.in/`
+All Admission, Registration and Examination fee information belongs on one public page:
 
-Never publish an old deadline as current merely because it exists in a prior page or article. Payment, OTP, CAPTCHA and final-submit actions remain human-controlled.
+`शैक्षणिक गतिविधियाँ → शुल्क संरचना → fee-structure.html`
+
+Do not duplicate fee amounts across homepage, BSEB, Secondary or Intermediate pages.
+
+Each fee entry should record:
+
+- purpose
+- level/class
+- session/exam year
+- candidate/category
+- exact amount only when source-backed
+- official source URL/PDF
+- verification date/status
+- Google Drive archive path/link
+
+## PDF storage
+
+Canonical BSEB fee/admission source storage:
+
+```text
+UMV Tetahali/
+└── 01_Official_Documents/
+    └── BSEB/
+        ├── Secondary/Fee_and_Admission_Source_PDFs/
+        └── Intermediate/Fee_and_Admission_Source_PDFs/
+```
+
+When available, website records should provide both:
+
+- Official Source
+- School Drive Copy
+
+Never invent a Drive file link. If a PDF is not yet in Drive, link the official source and the canonical Drive folder only.
+
+## Publication rule
+
+`Official source → extract/compare → Review Queue → human verification → final permission → staging/public/backend application`
+
+AI/OCR may assist, but it must not silently replace verified government information.

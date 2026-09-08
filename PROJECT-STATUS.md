@@ -8,17 +8,17 @@
 
 ## Purpose
 
-This file records the **actual working project status** separately from long-term plans.
+This file records actual project readiness separately from long-term plans.
 
-Use these readiness labels consistently:
+Use these labels consistently:
 
-- **Documented** — described in README/knowledge base/design notes.
-- **Implemented** — code/page exists in the staging repository.
+- **Documented** — described in project documentation.
+- **Implemented** — code/page exists in staging.
 - **Tested** — behavior has been explicitly checked.
-- **Deployed** — confirmed on the staging/live deployment.
+- **Deployed** — confirmed on the applicable deployment.
 - **Planned** — intended but not yet implemented end-to-end.
 
-A file existing in GitHub does not by itself prove an integration is tested or deployed.
+A file existing in GitHub does not by itself prove that an integration is tested or deployed.
 
 ---
 
@@ -26,73 +26,159 @@ A file existing in GitHub does not by itself prove an integration is tested or d
 
 ```text
 Public Website / GitHub Pages
-          │
-          ├── Portal Guidance
-          ├── Documents / Notices
-          ├── IT Services / AI Workbench
-          └── Smart Class
+        │
+        ├── School pages
+        ├── Portals / Guides
+        ├── Documents / Notices
+        ├── IT Services / AI Workbench
+        └── Smart Class
 
 Admin Login
     ↓
 Admin Dashboard
     ↓
-Admin Content Control Centre
+Admin Control Centre
     ↓
-Browser-local draft records (current Phase-1 behavior)
+Manage → Change Map → Review Queue → Final Permission
 
-Future approved integration
+Future approved integrations
     ↓
 Supabase structured CMS data
 Google Drive document storage
-Audit / verification / publish workflow
+AI official-source monitoring
+Audit / publish workflow
 ```
 
 ---
 
-## Implemented in staging repository
+## Admin Control Centre — current behavior
 
-The following are present in the current staging source and should no longer be described only as future ideas:
+`admin-content.html` is the canonical Admin Control Centre.
 
-### Public / guidance foundation
+On 08 September 2026 it was simplified from a many-module screen into three workflow views:
 
-- School website structure and navigation
-- Important portal pages
-- Portal Guidance Centre
-- मार्गदर्शिका and नियमावली pages
-- Verify & Update human-verification dashboard
-- IT Services and AI Workbench pages
-- Smart Class module/foundation
-- Document and Drive-structure documentation
+```text
+Manage
+Review Queue
+AI Monitor
+```
 
-### Admin foundation
+### Manage
 
-- `admin-login.html` — Supabase Auth based admin sign-in page
-- `admin-dashboard.html` — authenticated admin dashboard
-- `admin-content.html` — **Admin Content Control Centre Phase-1 UI**
-- Additional admin CMS/content design or experimental pages in the staging repository
-- `admin-cms-design.md` — Admin CMS design reference
+The administrator selects one website area using the same hierarchy as the public website:
 
-### Admin Content Control Centre — current behavior
+```text
+विद्यालय
+शैक्षणिक गतिविधियाँ
+IT Services
+सूचनाएँ
+BSEB
+महत्वपूर्ण पोर्टल
+Smart Class
+सेवाएँ
+दस्तावेज़
+मार्गदर्शिका
+संपर्क
+Archive
+```
 
-`admin-content.html` currently provides a broad content-management UI organized around the website hierarchy and admin tools. It includes management areas for school/profile content, academics, IT services, notices, BSEB, portals, Smart Class, services, documents, guides, verification and archive-related content.
+The administrator then enters one proposed change with:
 
-**Important limitation:** the current Phase-1 control layer uses **browser-local draft storage**. Saving a draft does **not** automatically update public HTML, Google Drive or Supabase CMS records.
+- change title;
+- official source URL;
+- current value;
+- proposed value;
+- notes/evidence.
 
-Therefore the correct status is:
+A permanent **Change Map** shows:
 
-> **Admin Control Centre UI: Implemented in staging (Phase 1 / local-draft foundation).**  
-> **Full data-backed CMS: Planned / not yet end-to-end implemented.**
+- selected website area;
+- logical record type;
+- affected public outputs/pages;
+- intended storage/apply layer;
+- Review Queue and permission gate.
+
+### Review Queue
+
+The browser-local queue is now implemented as a Phase-1 workflow.
+
+Each item records:
+
+- origin;
+- selected area;
+- source;
+- current value;
+- proposed value;
+- affected outputs;
+- storage/apply plan;
+- status.
+
+Current statuses:
+
+```text
+Review Required
+Rejected
+Approved — Final Permission Required
+```
+
+Approval does not automatically publish or commit anything.
+
+### AI Monitor
+
+The AI Monitor contains the current official-source inventory and can create controlled review tasks.
+
+It is **not yet a live crawler** and does not claim live change detection.
+
+Future approved backend behavior may include:
+
+```text
+Official source
+    ↓
+Reachability/domain/title check
+    ↓
+New PDF/date/session detection
+    ↓
+Content fingerprint comparison
+    ↓
+AI proposal
+    ↓
+Review Queue
+    ↓
+Human approval
+```
+
+---
+
+## Implemented vs planned
+
+| Area | Current status | Notes |
+|---|---|---|
+| Public school website | Implemented / staging | Deployment behavior should still be checked after material changes |
+| Portal Guidance Centre | Implemented | Session-specific information requires ongoing verification |
+| Verify & Update dashboard | Implemented foundation | Human/local verification; not a live crawler |
+| Admin Login | Implemented foundation | Authentication exists; production authorization still requires review |
+| Admin Dashboard | Implemented | Entry to canonical Control Centre |
+| Admin Control Centre | **Implemented simplified Phase 1** | Canonical admin workflow |
+| Change Map | **Implemented** | Shows where a selected change is expected to apply |
+| Manual change entry | **Implemented Phase 1** | Generic controlled proposal form |
+| Local Review Queue | **Implemented Phase 1** | Browser-local, not shared backend state |
+| AI Monitor source inventory | **Implemented Phase-1 UI** | Creates review tasks; no automatic crawl yet |
+| Supabase CMS tables | Planned | Requires explicit authorization |
+| Google Drive CMS upload/publish | Planned | Project-memory Drive folder is separate and already in use |
+| Automatic source change detection | Planned | Human approval remains mandatory |
+| Audit history | Planned | Needed before mature publishing workflow |
+| Production promotion | Not automatic | Staging review + approval required |
 
 ---
 
 ## Connected backend state
 
-The connected Supabase project is:
+Connected Supabase project:
 
 - Project: `umv-db`
 - Region: `ap-south-1`
 
-Existing public-schema tables observed during the 2026-09-08 review include:
+Previously observed public-schema tables include:
 
 - `Class_XII_Students_2026_2027`
 - `Class_X_reg_2026_2027`
@@ -101,107 +187,61 @@ Existing public-schema tables observed during the 2026-09-08 review include:
 - `class_x_reg_safe`
 - `profiles`
 
-These existing tables do **not** mean the planned CMS tables (`portals`, `documents`, `notices`, `portal_guides`, `verification_records`, `audit_logs`, etc.) have been implemented.
+These tables do not mean the planned CMS entities have been created.
 
-**Database rule:** do not modify Supabase schema/data unless the user explicitly authorizes that specific change.
+**Database rule:** do not modify Supabase schema/data unless the user explicitly authorizes the specific change.
 
 ---
 
-## Google Drive project memory
+## Google Drive project reference
 
-Canonical project-reference storage is now maintained in Google Drive under:
+Canonical project-reference storage is maintained under:
 
 `UMV Tetahali / 00_Project_Memory_and_Reference`
 
-Current reference files include:
+Reference files include:
 
 - `01_Master_Project_Overview_2026-09-08.md`
 - `02_Consolidated_Project_README_2026-09-08.md`
 - `Archive_Old_Versions/`
 
-Purpose: preserve project decisions, architecture context and future-reference documentation outside chat history.
-
-Private student/staff documents, credentials, OTPs and secrets must never be added to public GitHub documentation.
+Private student/staff records, credentials, OTPs and secrets must not be added to public GitHub documentation.
 
 ---
 
-## Implemented vs planned
+## Next development milestone
 
-| Area | Current status | Notes |
-|---|---|---|
-| Public school website | Implemented / staging | Deployment behavior should still be tested after changes |
-| Portal Guidance Centre | Implemented | Government/session information requires ongoing official-source verification |
-| Verify & Update dashboard | Implemented foundation | Human verification; not an automatic government-portal crawler |
-| Admin Login | Implemented foundation | Authentication exists; authorization/RLS must be reviewed before production claims |
-| Admin Dashboard | Implemented | Links into content management |
-| Admin Content Control Centre UI | **Implemented Phase 1** | Browser-local drafts; not yet central persisted CMS |
-| Portal/Notice/Document/Guide editing UI | Implemented within Phase-1 control layer | Persistence/public publishing integration remains future work |
-| Supabase CMS tables | Planned | Requires explicit authorization and schema design |
-| Google Drive document upload from CMS | Planned | Drive project-memory folder is separate and already in use |
-| Audit history | Planned | Required before mature government-content publishing workflow |
-| Semi-automatic portal change detection | Planned | Human approval remains mandatory |
-| Review queue / publish workflow | Planned | Draft → Review → Verified → Published → Archived target model |
-| Production promotion | Not automatic | Staging test + user approval required |
+The next major milestone is **not another admin page**.
 
----
+Priority order:
 
-## Recommended next development milestone
-
-Do **not** create another parallel Admin Control Centre page unless needed.
-
-The next milestone should consolidate the existing admin pages around `admin-content.html` and make one small workflow work end-to-end:
-
-```text
-Admin Login
-   ↓
-Admin Dashboard
-   ↓
-Admin Content Control Centre
-   ↓
-Portal record
-   ↓
-Draft
-   ↓
-Preview
-   ↓
-Verify
-   ↓
-Persist to approved backend (later, after explicit DB authorization)
-   ↓
-Publish/update public view
-```
-
-Before backend integration, first stabilize:
-
-1. Admin navigation and duplicate/experimental admin pages.
-2. Portal record field model.
-3. Draft / Review Required / Verified / Published / Archived statuses.
-4. Preview behavior.
-5. Verification/source metadata.
-6. Which data belongs in Supabase versus Google Drive.
+1. Test the simplified Admin Control Centre on staging/mobile.
+2. Decide whether the remaining parallel prototype admin pages can be archived/removed.
+3. Finalize the structured record model for portals/notices/documents/guides.
+4. After explicit approval, create the Supabase CMS schema with RLS.
+5. Connect Google Drive file upload/document references.
+6. Add AI source snapshots and change detection.
+7. Add shared audit history and publish workflow.
+8. Promote only after staging verification and user approval.
 
 ---
 
 ## Development rules
 
 1. Staging first.
-2. Fetch the current GitHub file and SHA before modification.
+2. Fetch current GitHub file/SHA before modification.
 3. Do not modify production before staging approval.
 4. Do not modify Supabase schema/data without explicit authorization.
-5. Preserve original official PDFs and source references.
+5. Preserve original official PDFs/source references.
 6. AI/OCR suggestions require human verification.
-7. Never bypass OTP, CAPTCHA or access controls.
-8. Do not expose credentials, service-role keys, private student files or confidential staff records in GitHub or public pages.
-9. Keep historical government information archived instead of silently deleting it.
-10. Update README, knowledge base or this status file when a meaningful architecture/readiness decision changes.
+7. Never bypass OTP, CAPTCHA, credentials or access controls.
+8. Do not expose private student/staff/admin data in public GitHub.
+9. Archive historical government information rather than silently deleting it.
+10. Keep README/status documentation aligned with actual implementation.
 
 ---
 
-## Immediate working interpretation
-
-The project has moved beyond a purely static school website and beyond the point where the Admin Control Centre can be described as entirely planned.
-
-The accurate current direction is:
+## Current direction
 
 ```text
 Static Website
@@ -212,17 +252,15 @@ Portal Guidance + Verification
    ↓
 Admin Login / Dashboard
    ↓
-Admin Content Control Centre (Phase-1 UI implemented)
+Simplified Admin Control Centre
    ↓
-NEXT: stabilize content model and workflows
+Change Map + Review Queue
    ↓
-Approved Supabase CMS persistence
+NEXT: shared structured CMS persistence
    ↓
 Google Drive document integration
    ↓
-Audit / review / publish automation
+AI source monitoring + audit history
    ↓
 Production after testing and approval
 ```
-
-This file should be updated whenever the readiness state of a major feature changes.

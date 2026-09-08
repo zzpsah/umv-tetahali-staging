@@ -7,93 +7,45 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.navbtn{width:100%;text-align:left;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:800}.navbtn.active{background:#dbeafe;color:#1d4ed8}.sub{padding:5px 12px 5px 30px;font-size:12px;color:#64748b}.panel{display:none}.panel.active{display:block}.field{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;background:#fff}.label{display:block;font-size:12px;font-weight:800;color:#475569;margin-bottom:6px}.chip{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#f1f5f9;color:#475569}.card{border:1px solid #e2e8f0;border-radius:16px;padding:16px;background:white}.status-review{background:#fef3c7;color:#92400e}.status-draft{background:#e0e7ff;color:#3730a3}.status-ok{background:#d1fae5;color:#065f46}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.tab{padding:.7rem 1rem;border-radius:.8rem;font-size:.85rem;font-weight:800}.tab.active{background:#0f172a;color:white}.area{width:100%;text-align:left;padding:.75rem .85rem;border-radius:.8rem;font-size:.84rem;font-weight:800}.area.active{background:#dbeafe;color:#1d4ed8}.panel{display:none}.panel.active{display:block}.field{width:100%;border:1px solid #cbd5e1;border-radius:.8rem;padding:.7rem .8rem;background:#fff}.label{display:block;font-size:.72rem;font-weight:800;color:#475569;margin-bottom:.35rem}.chip{display:inline-flex;padding:.25rem .55rem;border-radius:999px;font-size:.68rem;font-weight:800}.step{border:1px solid #e2e8f0;border-radius:.85rem;padding:.75rem}.route-line{position:relative;padding-left:1.25rem}.route-line:before{content:"";position:absolute;left:.35rem;top:.1rem;bottom:-.9rem;border-left:2px solid #cbd5e1}.route-line:last-child:before{bottom:50%}.route-line:after{content:"";position:absolute;left:.05rem;top:.55rem;width:.65rem;height:.65rem;border-radius:999px;background:#0f172a}
 </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
-<header class="sticky top-0 z-50 bg-slate-950 text-white shadow-lg">
-  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-    <div><div class="text-[10px] tracking-widest text-blue-300 font-black">RESTRICTED ADMIN AREA</div><h1 class="text-xl md:text-2xl font-black">⚙️ Admin Control Centre</h1><p class="text-xs text-slate-400 mt-1">Website hierarchy जैसा navigation • AI + Manual management</p></div>
-    <div class="flex gap-2"><a href="admin-dashboard.html" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold">← Dashboard</a><button id="logout" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold">Logout</button></div>
-  </div>
-</header>
-<main class="max-w-7xl mx-auto px-3 sm:px-4 py-6">
-  <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 mb-6"><b>Approval rule:</b> AI या manual change पहले Draft/Review Queue में जाएगा। GitHub commit, public publish, Supabase update या Drive-backed publish से पहले आपकी explicit permission आवश्यक है।</div>
-  <div class="grid lg:grid-cols-[270px_1fr] gap-6">
-    <aside class="bg-white border rounded-3xl p-3 h-fit lg:sticky lg:top-24">
-      <div class="px-3 py-2 text-[10px] font-black tracking-widest text-slate-400">ADMIN WORKFLOW</div>
-      <button class="navbtn active" data-panel="overview">📊 Overview</button>
-      <button class="navbtn" data-panel="ai">🤖 AI Update Centre</button>
-      <button class="navbtn" data-panel="review">🔔 Review Queue</button>
-      <button class="navbtn" data-panel="manual">✍️ Manual Entry</button>
-      <hr class="my-3">
-      <div class="px-3 py-2 text-[10px] font-black tracking-widest text-slate-400">WEBSITE HIERARCHY</div>
-      <button class="navbtn" data-panel="school">🏫 विद्यालय</button>
-      <button class="navbtn" data-panel="academic">📚 शैक्षणिक गतिविधियाँ</button>
-      <div class="sub">↳ माध्यमिक 9–10</div><div class="sub">↳ उच्च माध्यमिक 11–12</div><div class="sub">↳ अध्ययन सामग्री</div>
-      <button class="navbtn" data-panel="it">⚙️ IT Services</button>
-      <button class="navbtn" data-panel="notices">📢 सूचनाएँ</button>
-      <button class="navbtn" data-panel="bseb">🏛️ BSEB</button>
-      <div class="sub">↳ BSEB Centre</div><div class="sub">↳ Secondary</div><div class="sub">↳ Intermediate</div><div class="sub">↳ Forms & Notices</div><div class="sub">↳ Year-wise Archive</div>
-      <button class="navbtn" data-panel="portals">🔗 महत्वपूर्ण पोर्टल</button>
-      <button class="navbtn" data-panel="smart">💻 Smart Class</button>
-      <button class="navbtn" data-panel="services">🧰 सेवाएँ</button>
-      <div class="sub">↳ विद्यार्थी सेवाएँ</div><div class="sub">↳ शिक्षक सेवाएँ</div><div class="sub">↳ प्रमाण-पत्र एवं अभिलेख</div><div class="sub">↳ प्रपत्र</div>
-      <button class="navbtn" data-panel="documents">📄 दस्तावेज़</button>
-      <div class="sub">↳ आधिकारिक दस्तावेज़ केन्द्र</div><div class="sub">↳ सूचना एवं परिपत्र</div><div class="sub">↳ शिक्षा विभाग</div><div class="sub">↳ DEO Siwan</div><div class="sub">↳ DEO Darbhanga</div><div class="sub">↳ BSEB Documents</div><div class="sub">↳ School & Office</div><div class="sub">↳ Forms</div><div class="sub">↳ Google Drive</div>
-      <button class="navbtn" data-panel="guides">📘 मार्गदर्शिका</button>
-      <button class="navbtn" data-panel="contact">☎️ संपर्क</button>
-      <hr class="my-3"><button class="navbtn" data-panel="archive">🗃️ Archive</button>
-    </aside>
+<header class="sticky top-0 z-50 bg-slate-950 text-white shadow-lg"><div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4"><div><div class="text-[10px] tracking-widest text-blue-300 font-black">RESTRICTED ADMIN AREA</div><h1 class="text-xl md:text-2xl font-black">⚙️ Admin Control Centre</h1><p class="text-xs text-slate-400 mt-1">एक जगह चुनें → बदलाव लिखें → कहाँ लागू होगा देखें → Review Queue</p></div><div class="flex gap-2"><a href="admin-dashboard.html" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold">← Dashboard</a><button id="logout" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold">Logout</button></div></div></header>
+<main class="max-w-7xl mx-auto px-3 sm:px-4 py-6 space-y-5">
+<div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><b>Approval rule:</b> कोई AI/manual proposal सीधे publish या commit नहीं होगा। पहले Review Queue, फिर approval, फिर final permission के बाद ही staging/public/backend change होगा।</div>
+<nav class="flex flex-wrap gap-2" aria-label="Admin workflow"><button class="tab active" data-view="manage">🛠️ Manage</button><button class="tab" data-view="review">🔔 Review Queue <span id="reviewBadge" class="ml-1 rounded-full bg-white/20 px-2 py-0.5">0</span></button><button class="tab" data-view="ai">🤖 AI Monitor</button></nav>
 
-    <section class="min-w-0 space-y-6">
-      <div id="overview" class="panel active bg-white border rounded-3xl p-6 shadow-sm">
-        <h2 class="text-2xl font-black">📊 Overview</h2><p class="text-sm text-slate-500 mt-1">एक ही जगह से AI proposals, manual drafts और website hierarchy manage करें।</p>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6"><div class="card"><div id="draftCount" class="text-3xl font-black">0</div><div class="text-sm text-slate-500">Local Drafts</div></div><div class="card"><div id="reviewCount" class="text-3xl font-black">0</div><div class="text-sm text-slate-500">Review Queue</div></div><div class="card"><div class="text-3xl font-black">13</div><div class="text-sm text-slate-500">Portal Sources</div></div><div class="card"><div class="text-3xl font-black">1</div><div class="text-sm text-slate-500">Approval Gate</div></div></div>
-        <div class="mt-6 rounded-2xl bg-slate-900 text-white p-5"><b>Preferred flow</b><div class="mt-3 text-sm text-slate-300">Official source / Manual entry → Draft → AI analysis → Review Queue → Edit/Reject/Approve → Final preview → Ask permission → Commit/Publish</div></div>
-      </div>
+<section id="manage" class="panel active">
+<div class="grid lg:grid-cols-[230px_minmax(0,1fr)_310px] gap-5 items-start">
+<aside class="bg-white border rounded-2xl p-3 lg:sticky lg:top-24">
+<div class="px-2 pb-2 text-[10px] font-black tracking-widest text-slate-400">WEBSITE AREAS</div>
+<div id="areaList" class="space-y-1"></div>
+</aside>
 
-      <div id="ai" class="panel bg-white border rounded-3xl p-6 shadow-sm">
-        <div class="flex flex-wrap items-start justify-between gap-3"><div><h2 class="text-2xl font-black">🤖 AI Update Centre</h2><p class="text-sm text-slate-500 mt-1">Official public sources से change proposal तैयार करने का controlled workflow.</p></div><span class="chip status-review">Phase 1 UI</span></div>
-        <div class="mt-5 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-900">यह page अभी live crawler नहीं है। Current phase में source profile, proposal queue और approval workflow तैयार है। Automatic fetch/change detection backend integration बाद में जोड़ा जाएगा।</div>
-        <div class="mt-5 grid md:grid-cols-2 gap-4" id="sourceCards"></div>
-      </div>
+<section class="bg-white border rounded-2xl p-5 min-w-0">
+<div class="flex flex-wrap items-start justify-between gap-3"><div><div class="text-xs font-black tracking-wide text-blue-700">SELECTED AREA</div><h2 id="areaTitle" class="text-2xl font-black mt-1"></h2><p id="areaHelp" class="text-sm text-slate-500 mt-1"></p></div><span id="originChip" class="chip bg-slate-100 text-slate-700">✍️ Manual</span></div>
+<form id="changeForm" class="grid gap-4 mt-6">
+<div><label class="label">Change title / क्या बदलना है?</label><input class="field" name="title" required placeholder="उदा. BSEB registration deadline update"></div>
+<div><label class="label">Official source URL</label><input class="field" name="source" type="url" placeholder="https://official-source.example/"></div>
+<div class="grid md:grid-cols-2 gap-4"><div><label class="label">Current value / अभी क्या है?</label><textarea class="field h-28" name="current" placeholder="Existing information"></textarea></div><div><label class="label">Proposed value / नया क्या होना चाहिए?</label><textarea class="field h-28" name="proposed" required placeholder="Proposed change"></textarea></div></div>
+<div><label class="label">Notes / reason</label><textarea class="field h-24" name="notes" placeholder="Source date, notification number, verification note..."></textarea></div>
+<div class="flex flex-wrap gap-2"><button class="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-black">Send to Review Queue</button><button id="clearForm" type="button" class="px-4 py-2.5 rounded-xl border font-bold">Clear</button></div>
+</form>
+</section>
 
-      <div id="review" class="panel bg-white border rounded-3xl p-6 shadow-sm">
-        <h2 class="text-2xl font-black">🔔 Review Queue</h2><p class="text-sm text-slate-500 mt-1">AI और manual changes यहाँ approval के लिए आएँगे।</p>
-        <div id="reviewList" class="mt-5 space-y-3"></div>
-      </div>
+<aside class="bg-white border rounded-2xl p-5 lg:sticky lg:top-24">
+<div class="text-xs font-black tracking-wide text-emerald-700">CHANGE MAP</div><h2 class="text-xl font-black mt-1">यह बदलाव कहाँ जाएगा?</h2>
+<div id="routeTree" class="mt-5 space-y-3"></div>
+<div class="mt-5 rounded-xl bg-slate-50 border p-4"><div class="text-xs font-black text-slate-500">STORAGE / APPLY PLAN</div><div id="storagePlan" class="mt-2 text-sm leading-6"></div></div>
+<div class="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-4 text-xs text-amber-900"><b>अभी:</b> browser-local review draft. <b>बाद में:</b> approved content → Supabase/Drive; code/template change → GitHub staging. Production automatic नहीं है।</div>
+</aside>
+</div>
+</section>
 
-      <div id="manual" class="panel bg-white border rounded-3xl p-6 shadow-sm">
-        <h2 class="text-2xl font-black">✍️ Manual Entry</h2><p class="text-sm text-slate-500 mt-1">AI unavailable होने पर भी same controlled workflow से content add करें।</p>
-        <form id="manualForm" class="grid md:grid-cols-2 gap-4 mt-5"><div><label class="label">Content Type</label><select class="field" name="type"><option>Portal</option><option>Document</option><option>Notice</option><option>Portal Guide</option><option>School Information</option></select></div><div><label class="label">Title / Name</label><input class="field" name="title" required></div><div class="md:col-span-2"><label class="label">Official Source URL</label><input class="field" name="source" placeholder="https://..."></div><div class="md:col-span-2"><label class="label">Proposed Information</label><textarea class="field h-32" name="details" required></textarea></div><div class="md:col-span-2"><button class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold">Save to Review Queue</button></div></form>
-      </div>
+<section id="review" class="panel bg-white border rounded-2xl p-5"><div class="flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-2xl font-black">🔔 Review Queue</h2><p class="text-sm text-slate-500 mt-1">हर proposal में source, before/after और affected outputs देखें।</p></div><button id="clearRejected" type="button" class="px-3 py-2 rounded-lg border text-xs font-bold">Remove Rejected</button></div><div id="reviewList" class="mt-5 space-y-4"></div></section>
 
-      <div id="school" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">🏫 विद्यालय</h2><p class="text-sm text-slate-500 mt-1">School profile, hero/about/footer information.</p><form class="grid md:grid-cols-2 gap-4 mt-5" data-form="school"><div><label class="label">School Name</label><input class="field" name="name" value="UCHCH MADHYAMIK VIDYALAY, TETAHALI"></div><div><label class="label">Hindi Name</label><input class="field" name="hindiName" value="उच्च माध्यमिक विद्यालय, तेतहली"></div><div><label class="label">UDISE</label><input class="field" name="udise" value="10160203806"></div><div><label class="label">Classes</label><input class="field" name="classes" value="9–12"></div><div><label class="label">District</label><input class="field" name="district" value="Siwan"></div><div><label class="label">Block</label><input class="field" name="block" value="Barharia"></div><div class="md:col-span-2"><label class="label">About School</label><textarea class="field h-28" name="about">उच्च माध्यमिक विद्यालय, तेतहली, प्रखंड- बड़हरिया, जिला- सिवान, बिहार में स्थित एक सह-शैक्षणिक सरकारी विद्यालय है। विद्यालय में कक्षा 9 से 12 तक की शिक्षा संचालित है।</textarea></div><div class="md:col-span-2"><button class="saveDraft px-4 py-2 rounded-xl bg-blue-600 text-white font-bold">Save Draft</button></div></form></div>
-
-      <div id="academic" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">📚 शैक्षणिक गतिविधियाँ</h2><p class="text-sm text-slate-500 mt-1">Secondary, Higher Secondary और study material labels/content.</p><form class="grid gap-4 mt-5" data-form="academic"><div><label class="label">Secondary 9–10</label><input class="field" name="secondary" value="माध्यमिक स्तर (कक्षा 9–10) / Secondary (Classes 9–10)"></div><div><label class="label">Higher Secondary 11–12</label><input class="field" name="higher" value="उच्च माध्यमिक स्तर (कक्षा 11–12) / Higher Secondary (Classes 11–12)"></div><div><label class="label">Study Material</label><input class="field" name="study" value="अध्ययन सामग्री / Study Material"></div><button class="saveDraft px-4 py-2 rounded-xl bg-blue-600 text-white font-bold w-fit">Save Draft</button></form></div>
-
-      <div id="it" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">⚙️ IT Services</h2><p class="text-sm text-slate-500 mt-1">Tool cards, labels, routes और visibility.</p><div class="mt-5 grid md:grid-cols-2 gap-3" id="itList"></div></div>
-
-      <div id="notices" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">📢 सूचनाएँ</h2><p class="text-sm text-slate-500 mt-1">Notice, deadline, PDF और related portal.</p><button class="mt-5 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold" onclick="openManual('Notice')">＋ Add Notice</button></div>
-
-      <div id="bseb" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">🏛️ BSEB</h2><p class="text-sm text-slate-500 mt-1">BSEB Centre, Secondary, Intermediate, Forms/Notices और archive mapping.</p><div class="mt-5 grid md:grid-cols-2 gap-3"><div class="card">BSEB Centre</div><div class="card">Secondary / माध्यमिक</div><div class="card">Intermediate / इंटरमीडिएट</div><div class="card">Forms & Notices</div><div class="card">Year-wise Archive</div></div></div>
-
-      <div id="portals" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">🔗 महत्वपूर्ण पोर्टल</h2><p class="text-sm text-slate-500 mt-1">Portal master record: official home, task URLs, session, dates, guide and verification metadata.</p><button class="mt-5 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold" onclick="openManual('Portal')">＋ Add / Propose Portal Update</button><a href="portal-verify.html" class="ml-2 mt-5 inline-block px-4 py-2 rounded-xl border font-bold">Open Verify & Update</a></div>
-
-      <div id="smart" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">💻 Smart Class</h2><p class="text-sm text-slate-500 mt-1">BEPC tracker public labels और integration status. Credentials हमेशा server-side रहें।</p><div class="mt-5 card"><b>Official tracker</b><div class="text-sm text-slate-500 mt-1">https://tracker.bepcssa.in/</div></div></div>
-
-      <div id="services" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">🧰 सेवाएँ</h2><div class="mt-5 grid md:grid-cols-2 gap-3"><div class="card">विद्यार्थी सेवाएँ / Student Services</div><div class="card">शिक्षक सेवाएँ / Teacher Services</div><div class="card">प्रमाण-पत्र एवं अभिलेख / Certificates & Records</div><div class="card">प्रपत्र / Forms</div></div></div>
-
-      <div id="documents" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">📄 दस्तावेज़</h2><p class="text-sm text-slate-500 mt-1">Original PDF + metadata + visibility + related portal. Private files public GitHub में नहीं जाएँगे।</p><div class="mt-5 grid md:grid-cols-2 gap-3"><div class="card">Official Documents Centre</div><div class="card">Notices & Circulars</div><div class="card">Education Department</div><div class="card">DEO Siwan</div><div class="card">DEO Darbhanga</div><div class="card">BSEB Documents</div><div class="card">School & Office</div><div class="card">Forms</div><div class="card">Google Drive</div></div><button class="mt-5 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold" onclick="openManual('Document')">＋ Add Document Draft</button></div>
-
-      <div id="guides" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">📘 मार्गदर्शिका</h2><p class="text-sm text-slate-500 mt-1">Portal guides, rules और how-to content. Portal master data duplicate न करें; guide-specific steps/resources रखें।</p><button class="mt-5 px-4 py-2 rounded-xl bg-slate-900 text-white font-bold" onclick="openManual('Portal Guide')">＋ Add Guide Draft</button></div>
-
-      <div id="contact" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">☎️ संपर्क</h2><p class="text-sm text-slate-500 mt-1">Only verified public contact details should be published. Unverified phone/email automatically add न करें।</p></div>
-
-      <div id="archive" class="panel bg-white border rounded-3xl p-6 shadow-sm"><h2 class="text-2xl font-black">🗃️ Archive</h2><p class="text-sm text-slate-500 mt-1">Expired notices, previous sessions और historical PDFs delete नहीं होंगे; archive status में जाएँगे।</p></div>
-    </section>
-  </div>
+<section id="ai" class="panel bg-white border rounded-2xl p-5"><div class="flex flex-wrap items-start justify-between gap-3"><div><h2 class="text-2xl font-black">🤖 AI Monitor</h2><p class="text-sm text-slate-500 mt-1">Official-source monitoring का simple control view.</p></div><span class="chip bg-amber-100 text-amber-800">Phase 1 — no live crawler</span></div><div class="mt-4 rounded-xl bg-blue-50 border border-blue-100 p-4 text-sm text-blue-900">इन sources की automatic reachability/PDF/date/change detection अभी backend से connected नहीं है। फिलहाल “Create review check” एक controlled review task बनाता है।</div><div id="sourceList" class="mt-5 divide-y border rounded-xl overflow-hidden"></div></section>
 </main>
 <div id="toast" class="hidden fixed right-4 bottom-4 rounded-xl bg-slate-900 text-white px-4 py-3 text-sm font-bold shadow-lg"></div>
 <script>
@@ -102,28 +54,47 @@ const SUPABASE_KEY='sb_publishable_NARdPew6T6Zk8gYfxY3Hog_G7jcceKw';
 const {createClient}=supabase;const client=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
 (async()=>{const {data,error}=await client.auth.getUser();if(error||!data.user){location.href='admin-login.html';}})();
 document.getElementById('logout').addEventListener('click',async()=>{await client.auth.signOut();location.href='admin-login.html';});
-const buttons=[...document.querySelectorAll('.navbtn[data-panel]')],panels=[...document.querySelectorAll('.panel')];
-function showPanel(id){buttons.forEach(b=>b.classList.toggle('active',b.dataset.panel===id));panels.forEach(p=>p.classList.toggle('active',p.id===id));history.replaceState(null,'','#'+id)}
-buttons.forEach(b=>b.addEventListener('click',()=>showPanel(b.dataset.panel)));
-const start=location.hash.slice(1);if(start&&document.getElementById(start))showPanel(start);
-const KEY='umv-admin-review-queue-v1';
+
+const areas={
+ school:{label:'🏫 विद्यालय',help:'School profile, hero/about/footer information.',record:'School profile record',outputs:['index.html → hero/about/footer'],store:'Content data: future Supabase; code layout: GitHub staging'},
+ academic:{label:'📚 शैक्षणिक गतिविधियाँ',help:'कक्षा 9–10, 11–12 और study material labels/content.',record:'Academic content record',outputs:['index.html → academics','guide.html → study material'],store:'Content data: future Supabase; page/template: GitHub staging'},
+ it:{label:'⚙️ IT Services',help:'Tool catalogue, routes, status and documentation links.',record:'IT service record',outputs:['it-services.html','related tool/docs pages'],store:'Service metadata: future Supabase; tool code: GitHub/Drive package'},
+ notices:{label:'📢 सूचनाएँ',help:'Notice, circular, deadline, PDF and action required.',record:'Notice record',outputs:['notices.html','related portal/guide if linked'],store:'Metadata: future Supabase; original PDF: Google Drive'},
+ bseb:{label:'🏛️ BSEB',help:'BSEB Centre, Secondary, Intermediate, forms/notices and sessions.',record:'BSEB portal/notice/guide records',outputs:['bseb.html','secondary.html','intermediate.html','notices.html','portal-guides.html'],store:'Content: future Supabase; PDFs: Google Drive; code only if layout changes'},
+ portals:{label:'🔗 महत्वपूर्ण पोर्टल',help:'Official home, task URLs, session, dates and guide linkage.',record:'Portal master record',outputs:['portals.html','portal-guides.html','portal-verify.html'],store:'Portal data: future Supabase; original PDFs: Google Drive'},
+ smart:{label:'💻 Smart Class',help:'BEPC tracker display/configuration and integration status.',record:'Smart Class configuration/content',outputs:['smart-class.html'],store:'Public content: future Supabase; integration code: Edge Function/GitHub'},
+ services:{label:'🧰 सेवाएँ',help:'Student, teacher, certificates/records and forms navigation.',record:'Service navigation record',outputs:['login.html','guide.html','prapatra.html'],store:'Content/navigation: future Supabase or GitHub template'},
+ documents:{label:'📄 दस्तावेज़',help:'Official document metadata, visibility, source and Drive location.',record:'Document metadata record',outputs:['official-documents.html','education-department.html','DEO/BSEB/notice/guide references as applicable'],store:'Original file: Google Drive; metadata: future Supabase'},
+ guides:{label:'📘 मार्गदर्शिका',help:'Portal guides, rules and how-to instructions.',record:'Guide record',outputs:['margdarshika.html','portal-guides.html','niyamawali.html when applicable'],store:'Guide content: future Supabase; source PDFs: Google Drive'},
+ contact:{label:'☎️ संपर्क',help:'Only verified public contact information.',record:'Public contact record',outputs:['index.html → contact/footer'],store:'Verified public content only; no private contact data'},
+ archive:{label:'🗃️ Archive',help:'Expired notices, old sessions and historical references.',record:'Archive status/history record',outputs:['archive/history views','old notice/session references'],store:'Metadata: future Supabase; historical files: Google Drive Archive'}
+};
+const areaOrder=['school','academic','it','notices','bseb','portals','smart','services','documents','guides','contact','archive'];
+let selected='portals';
+const areaList=document.getElementById('areaList');
+function renderAreas(){areaList.innerHTML=areaOrder.map(id=>`<button type="button" class="area ${id===selected?'active':''}" data-area="${id}">${areas[id].label}</button>`).join('');areaList.querySelectorAll('[data-area]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.area;renderAreas();renderMap()}));}
+function renderMap(){const a=areas[selected];document.getElementById('areaTitle').textContent=a.label;document.getElementById('areaHelp').textContent=a.help;document.getElementById('routeTree').innerHTML=[`Selected: ${a.label}`,`Record: ${a.record}`,...a.outputs.map(x=>`Output: ${x}`),'Review Queue','Permission Required'].map(x=>`<div class="route-line text-sm font-semibold">${escapeHtml(x)}</div>`).join('');document.getElementById('storagePlan').textContent=a.store;}
+
+const tabs=[...document.querySelectorAll('.tab[data-view]')],panels=[...document.querySelectorAll('.panel')];
+function showView(id){tabs.forEach(t=>t.classList.toggle('active',t.dataset.view===id));panels.forEach(p=>p.classList.toggle('active',p.id===id));history.replaceState(null,'','#'+id)}
+tabs.forEach(t=>t.addEventListener('click',()=>showView(t.dataset.view)));
+const initial=location.hash.slice(1);if(['manage','review','ai'].includes(initial))showView(initial);
+
+const KEY='umv-admin-review-queue-v2';
 function queue(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}}
-function saveQueue(items){localStorage.setItem(KEY,JSON.stringify(items));renderQueue();counts()}
+function saveQueue(items){localStorage.setItem(KEY,JSON.stringify(items));renderQueue();}
+function escapeHtml(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2200)}
-function addReview(item){const items=queue();items.unshift({id:Date.now(),status:'Review Required',created:new Date().toLocaleString('en-IN'),...item});saveQueue(items);toast('Draft review queue में जोड़ा गया।')}
-function renderQueue(){const list=document.getElementById('reviewList');const items=queue();if(!items.length){list.innerHTML='<div class="rounded-2xl border border-dashed p-8 text-center text-slate-500">Review queue खाली है। AI या manual proposal यहाँ दिखाई देगा।</div>';return;}list.innerHTML=items.map(x=>`<div class="card"><div class="flex flex-wrap items-start justify-between gap-2"><div><span class="chip status-review">${x.status}</span><h3 class="font-black mt-2">${x.type}: ${x.title}</h3><div class="text-xs text-slate-500 mt-1">${x.created}</div></div><div class="flex gap-2"><button onclick="editItem(${x.id})" class="px-3 py-2 rounded-lg border text-xs font-bold">Edit</button><button onclick="rejectItem(${x.id})" class="px-3 py-2 rounded-lg border text-xs font-bold">Reject</button><button onclick="approveItem(${x.id})" class="px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold">Approve Draft</button></div></div><p class="text-sm mt-3 whitespace-pre-wrap">${escapeHtml(x.details||'')}</p>${x.source?`<div class="text-xs mt-3 text-blue-700 break-all">Source: ${escapeHtml(x.source)}</div>`:''}</div>`).join('')}
-function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function rejectItem(id){saveQueue(queue().map(x=>x.id===id?{...x,status:'Rejected'}:x));toast('Proposal rejected. कोई publish/commit नहीं हुआ।')}
-function approveItem(id){saveQueue(queue().map(x=>x.id===id?{...x,status:'Approved — Permission Required'}:x));toast('Draft approved. Final commit/publish से पहले आपकी permission जरूरी है।')}
-function editItem(id){const x=queue().find(i=>i.id===id);if(!x)return;openManual(x.type);document.querySelector('#manualForm [name=title]').value=x.title;document.querySelector('#manualForm [name=source]').value=x.source||'';document.querySelector('#manualForm [name=details]').value=x.details||'';}
-function counts(){const q=queue();document.getElementById('reviewCount').textContent=q.filter(x=>x.status==='Review Required').length;document.getElementById('draftCount').textContent=q.length}
-document.getElementById('manualForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);addReview({type:f.get('type'),title:f.get('title'),source:f.get('source'),details:f.get('details'),origin:'Manual'});e.target.reset();showPanel('review')});
-function openManual(type){showPanel('manual');document.querySelector('#manualForm [name=type]').value=type;document.querySelector('#manualForm [name=title]').focus()}
-const sourceProfiles=[['OFSS Bihar','https://ofssbihar.net/'],['e-Shikshakosh Bihar','https://eshikshakosh.bihar.gov.in/'],['UDISE+','https://udiseplus.gov.in/'],['SHVR','https://shvr.education.gov.in/'],['BSEB Secondary','https://www.biharboardonline.org/'],['BSEB Intermediate','https://intermediate.biharboardonline.com/'],['BEPC School Tracker','https://tracker.bepcssa.in/'],['National Scholarship Portal','https://nsp.gov.in/'],['Bihar e-Kalyan','https://ekalyan.bihar.gov.in/'],['Bihar PMS Institute','https://instpmsonline.bihar.gov.in/'],['SATHEE','https://sathee.iitk.ac.in/'],['Bihar VidyaSathi','https://www.biharvidyasathi.com/'],['विद्यार्थी सहयोग','https://vidyarthisahyog.bihar.gov.in/']];
-document.getElementById('sourceCards').innerHTML=sourceProfiles.map(p=>`<div class="card"><div class="flex items-start justify-between gap-2"><div><h3 class="font-black">${p[0]}</h3><a href="${p[1]}" target="_blank" rel="noopener" class="text-xs text-blue-700 break-all">${p[1]}</a></div><span class="chip status-review">Manual Check</span></div><div class="mt-3 text-xs text-slate-500">Future AI monitor: reachability, page title, dates, new PDFs, session and content fingerprint.</div><button onclick="addReview({type:'AI Source Check',title:'${p[0]}',source:'${p[1]}',details:'Official source review requested. Automatic crawler is not active yet; verify source and record only confirmed changes.',origin:'AI Centre'})" class="mt-3 px-3 py-2 rounded-lg border text-xs font-bold">Create Review Task</button></div>`).join('');
-const tools=['Photo & Signature Studio','Chandra OCR','Gemini Document Vision (technical)','Student Reference Matching','Google Drive Upload','BSEB Registration Assistant','BEPC Smart Class Automation','Smart Autofill Chrome Extension','AI Workbench','AI / Agent Automation'];document.getElementById('itList').innerHTML=tools.map(x=>`<div class="card text-sm font-bold">${x}</div>`).join('');
-document.querySelectorAll('form[data-form]').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();const data=Object.fromEntries(new FormData(form).entries());localStorage.setItem('umv-admin-draft-'+form.dataset.form,JSON.stringify(data));toast('Local draft saved. कोई public change या commit नहीं हुआ।')}));
-renderQueue();counts();
+function addReview(item){const items=queue();items.unshift({id:Date.now(),status:'Review Required',created:new Date().toLocaleString('en-IN'),...item});saveQueue(items);showView('review');toast('Review Queue में जोड़ा गया।')}
+function renderQueue(){const items=queue();document.getElementById('reviewBadge').textContent=items.filter(x=>x.status==='Review Required').length;const list=document.getElementById('reviewList');if(!items.length){list.innerHTML='<div class="rounded-xl border border-dashed p-8 text-center text-slate-500">Queue खाली है। Manage या AI Monitor से proposal जोड़ें।</div>';return;}list.innerHTML=items.map(x=>{const a=areas[x.area]||areas.portals;return `<article class="border rounded-2xl p-4"><div class="flex flex-wrap items-start justify-between gap-3"><div><div class="flex flex-wrap gap-2"><span class="chip bg-amber-100 text-amber-800">${escapeHtml(x.status)}</span><span class="chip bg-slate-100 text-slate-700">${escapeHtml(x.origin||'Manual')}</span></div><h3 class="font-black mt-2">${escapeHtml(a.label)} — ${escapeHtml(x.title)}</h3><div class="text-xs text-slate-500 mt-1">${escapeHtml(x.created)}</div></div><div class="flex flex-wrap gap-2"><button data-action="reject" data-id="${x.id}" class="px-3 py-2 rounded-lg border text-xs font-bold">Reject</button><button data-action="approve" data-id="${x.id}" class="px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold">Approve Draft</button></div></div><div class="grid md:grid-cols-2 gap-3 mt-4"><div class="rounded-xl bg-slate-50 p-3"><div class="text-[10px] font-black text-slate-500">CURRENT</div><div class="text-sm mt-1 whitespace-pre-wrap">${escapeHtml(x.current||'—')}</div></div><div class="rounded-xl bg-blue-50 p-3"><div class="text-[10px] font-black text-blue-700">PROPOSED</div><div class="text-sm mt-1 whitespace-pre-wrap">${escapeHtml(x.proposed||'—')}</div></div></div>${x.source?`<div class="text-xs mt-3 break-all"><b>Source:</b> ${escapeHtml(x.source)}</div>`:''}<div class="text-xs mt-3"><b>Affected outputs:</b> ${a.outputs.map(escapeHtml).join(' • ')}</div><div class="text-xs mt-2 text-slate-500"><b>Apply plan:</b> ${escapeHtml(a.store)}</div>${x.notes?`<div class="text-sm mt-3 whitespace-pre-wrap">${escapeHtml(x.notes)}</div>`:''}</article>`}).join('');list.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{const id=Number(b.dataset.id);if(b.dataset.action==='reject'){saveQueue(queue().map(x=>x.id===id?{...x,status:'Rejected'}:x));toast('Rejected — कोई publish/commit नहीं हुआ।')}else{saveQueue(queue().map(x=>x.id===id?{...x,status:'Approved — Final Permission Required'}:x));toast('Approved draft. Final apply/commit के लिए अलग permission जरूरी है।')}}));}
+document.getElementById('clearRejected').addEventListener('click',()=>saveQueue(queue().filter(x=>x.status!=='Rejected')));
+document.getElementById('changeForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);addReview({area:selected,title:f.get('title'),source:f.get('source'),current:f.get('current'),proposed:f.get('proposed'),notes:f.get('notes'),origin:'Manual'});e.target.reset();});
+document.getElementById('clearForm').addEventListener('click',()=>document.getElementById('changeForm').reset());
+
+const sources=[['OFSS Bihar','portals','https://ofssbihar.net/'],['e-Shikshakosh Bihar','portals','https://eshikshakosh.bihar.gov.in/'],['UDISE+','portals','https://udiseplus.gov.in/'],['SHVR','portals','https://shvr.education.gov.in/'],['BSEB Secondary','bseb','https://www.biharboardonline.org/'],['BSEB Intermediate','bseb','https://intermediate.biharboardonline.com/'],['BEPC School Tracker','smart','https://tracker.bepcssa.in/'],['National Scholarship Portal','portals','https://nsp.gov.in/'],['Bihar e-Kalyan','portals','https://ekalyan.bihar.gov.in/'],['Bihar PMS Institute','portals','https://instpmsonline.bihar.gov.in/'],['SATHEE','portals','https://sathee.iitk.ac.in/'],['Bihar VidyaSathi','portals','https://www.biharvidyasathi.com/'],['विद्यार्थी सहयोग','portals','https://vidyarthisahyog.bihar.gov.in/']];
+document.getElementById('sourceList').innerHTML=sources.map((s,i)=>`<div class="p-4 flex flex-wrap items-center justify-between gap-3"><div class="min-w-0"><div class="font-bold">${escapeHtml(s[0])}</div><a class="text-xs text-blue-700 break-all" href="${s[2]}" target="_blank" rel="noopener">${s[2]}</a></div><div class="flex items-center gap-2"><span class="chip bg-slate-100 text-slate-700">Not checked</span><button type="button" data-source="${i}" class="px-3 py-2 rounded-lg border text-xs font-bold">Create review check</button></div></div>`).join('');
+document.querySelectorAll('[data-source]').forEach(b=>b.addEventListener('click',()=>{const s=sources[Number(b.dataset.source)];addReview({area:s[1],title:`Official source review — ${s[0]}`,source:s[2],current:'Not checked in this browser session',proposed:'Review official source for URL/session/date/PDF/workflow changes.',notes:'Phase-1 AI Monitor task. No automatic crawling or publishing occurred.',origin:'AI Monitor Task'});}));
+renderAreas();renderMap();renderQueue();
 </script>
 </body>
 </html>

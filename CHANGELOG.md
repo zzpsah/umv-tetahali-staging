@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-09 — Hindi card design restoration
+
+- Restored the `महत्वपूर्ण पोर्टल` page to the earlier Hindi-first icon-card style.
+- Kept current verified portal links and current source context while removing unnecessary English-heavy labels.
+- Restored Hindi section headings such as `विद्यालय एवं विभागीय पोर्टल`, `BSEB पोर्टल`, `छात्रवृत्ति एवं कल्याण` and `ICT / Smart Class / अध्ययन`.
+- Updated homepage quick-service cards to Hindi-first wording while preserving the existing main navigation and dropdown structure.
+- Main navigation structure was not redesigned; only visible card/content presentation was adjusted.
+- No production or Supabase schema/data changes.
+
 ## 2026-09-09 — Secondary registration base fee display
 
 - Updated `fee-structure.html` to show Secondary Registration 2027 base/normal totals **without late fee**.

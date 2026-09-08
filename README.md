@@ -13,46 +13,73 @@
 >
 > Supabase schema/data changes are not authorized unless explicitly approved.
 
-## 1. Current public architecture
+## 1. Canonical public architecture
 
 ```text
-Homepage
-  ├── विद्यालय
-  ├── शैक्षणिक गतिविधियाँ
-  │    ├── माध्यमिक स्तर (9–10)
-  │    ├── उच्च माध्यमिक स्तर (11–12)
-  │    ├── अध्ययन सामग्री
-  │    └── शुल्क संरचना / Fee Structure
-  ├── Current Official Updates
-  ├── BSEB Centre
-  ├── Notices & Circulars
-  ├── Important Portals / Guides
-  ├── Official Documents
-  ├── Smart Class
-  └── IT Services
-
-Admin Login → Admin Dashboard → Admin Control Centre
-             Manage → Change Map → Review Queue → Final Permission
+HOME / index.html
+│
+├── विद्यालय
+│
+├── शैक्षणिक गतिविधियाँ ▼
+│   ├── माध्यमिक स्तर (कक्षा 9–10)
+│   ├── उच्च माध्यमिक स्तर (कक्षा 11–12)
+│   ├── अध्ययन सामग्री
+│   └── शुल्क संरचना / Fee Structure
+│       ├── Admission Fee
+│       ├── Registration Fee
+│       ├── Examination Fee
+│       ├── Official विज्ञप्ति / Advertisement / Prospectus
+│       └── Google Drive source archive
+│
+├── IT Services
+├── सूचनाएँ
+│
+├── BSEB ▼
+│   ├── BSEB Centre
+│   ├── Secondary / माध्यमिक
+│   ├── Intermediate / इंटरमीडिएट
+│   ├── Forms & Notices
+│   └── Archive
+│
+├── महत्वपूर्ण पोर्टल
+├── Smart Class
+│
+├── सेवाएँ ▼
+│   ├── विद्यार्थी सेवाएँ
+│   ├── शिक्षक सेवाएँ
+│   ├── प्रमाण-पत्र एवं अभिलेख
+│   └── प्रपत्र
+│
+├── दस्तावेज़ ▼
+│   ├── Official Documents Centre
+│   ├── Education Department
+│   ├── DEO Siwan
+│   ├── BSEB Documents
+│   └── Google Drive File Server
+│
+├── मार्गदर्शिका
+└── संपर्क
 ```
+
+The same hierarchy is used by the Admin Control Centre so the administrator does not need to learn a second structure.
 
 ## 2. Fee Structure ownership
 
 `fee-structure.html` is the **single canonical public page** for Admission, Registration and Examination fees.
 
-Fee amounts must not be duplicated across homepage, `bseb.html`, `secondary.html` or `intermediate.html`. Those pages link to the canonical fee page.
+Fee amounts must not be duplicated across the homepage, `bseb.html`, `secondary.html` or `intermediate.html`. Those pages only link to the canonical fee page.
 
-Current source-backed entries include:
+Every fee record should carry:
 
-- OFSS Intermediate Admission 2026–28 CAF: ₹350, verified from the official Common Prospectus.
-- Secondary Registration / Annual Exam 2027 final-window reference: ₹450 Regular / ₹580 Independent-Private; re-verify from the applicable BSEB notification before payment.
-- Matric Annual Examination 2026: ₹1,010 General / ₹895 SC-ST-EBC(BC-I), verified from official BSEB advertisement PDF.
-- Intermediate registration/examination: do not hard-code current fees without directly verifying the applicable official BSEB notice/advertisement.
-
-Every fee record should carry: purpose, level, session/year, category, source PDF/URL, verification date/status and Drive archive location.
+- purpose;
+- level/class;
+- session/exam year;
+- category;
+- official source PDF/URL;
+- verification date/status;
+- Google Drive archive location.
 
 ## 3. Canonical Google Drive source folders
-
-Created under the verified `UMV Tetahali` root:
 
 ```text
 UMV Tetahali/
@@ -64,15 +91,57 @@ UMV Tetahali/
             └── Fee_and_Admission_Source_PDFs/
 ```
 
-Secondary source folder:
+Secondary source folder:  
 `https://drive.google.com/drive/folders/1OYVQmVmf8y31TiaOGZ4Mnoc4mA8J2z7g`
 
-Intermediate source folder:
+Intermediate source folder:  
 `https://drive.google.com/drive/folders/1Bi2xzlwM-m1S8dmdD8iZd5lFBPpe9Nuy`
 
-The researched PDFs were not already present in Drive during this review, so public pages currently link to the official source PDF/portal plus the canonical Drive folder. Replace/add individual Drive-file links once those source PDFs are uploaded; never invent a Drive file link.
+Website records should link to the official source and, when available, the school Drive copy of the same PDF.
 
-## 4. Official-source update system
+## 4. Public page ownership
+
+| Page | Responsibility |
+|---|---|
+| `index.html` | main public navigation and school overview |
+| `fee-structure.html` | canonical Admission / Registration / Examination fee structure |
+| `official-updates.html` | current source-checked intelligence |
+| `notices.html` | dated notices and archived deadlines |
+| `bseb.html` | BSEB service/portal hub; links to fee structure |
+| `secondary.html` | Secondary portals/forms/notices; links to fee structure |
+| `intermediate.html` | OFSS/Intermediate portals/forms/notices; links to fee structure |
+| `portals.html` | official portal home pages |
+| `portal-guides.html` | task guidance and source context |
+| `official-documents.html` | official document catalogue |
+| `education-department.html` | Education Department records |
+| `deo-siwaan.html` | Siwan district education archive |
+| `smart-class.html` | BEPC Smart Class integration |
+| `it-services.html` | school tools and automation catalogue |
+| `admin-content.html` | canonical Admin Control Centre |
+
+## 5. Admin Control Centre
+
+Canonical page: `admin-content.html`
+
+```text
+Admin Login
+  ↓
+Admin Dashboard
+  ↓
+Admin Control Centre
+  ↓
+Manage → Change Map → Review Queue → Final Permission
+```
+
+The Admin Change Map follows the same public hierarchy. For `शैक्षणिक गतिविधियाँ`, it explicitly maps to:
+
+- `index.html → academics`
+- `guide.html → study material`
+- `fee-structure.html → Admission / Registration / Examination fees`
+
+For BSEB, the Change Map links to the canonical fee page instead of duplicating fee data.
+
+## 6. Official-source update system
 
 - `official-updates.html` — public current-information centre.
 - `CURRENT-OFFICIAL-UPDATES.md` — detailed dated research register.
@@ -82,37 +151,6 @@ The researched PDFs were not already present in Drive during this review, so pub
 - `CHANGELOG.md` — repository change history.
 
 Every current-information item should record authority/source, official URL/PDF, notice date, session/exam year, last verification date and status (`Verified`, `Re-verify before action`, `Expired/Archived`, `Review Required`).
-
-## 5. Public page ownership
-
-| Page | Responsibility |
-|---|---|
-| `index.html` | school identity, navigation and high-value links; no duplicated fee tables |
-| `fee-structure.html` | **canonical Admission / Registration / Examination fee structure** |
-| `official-updates.html` | current source-checked intelligence |
-| `notices.html` | dated notices and archived deadlines |
-| `bseb.html` | BSEB service/portal hub; links to fee structure |
-| `secondary.html` | Secondary portals/forms/notices; links to fee structure |
-| `intermediate.html` | OFSS/Intermediate portals/forms/notices; links to fee structure |
-| `portals.html` | official home pages |
-| `portal-guides.html` | task guidance and source context |
-| `deo-siwaan.html` | Siwan district education notice archive |
-| `smart-class.html` | BEPC Smart Class integration |
-| `admin-content.html` | canonical Admin Control Centre |
-
-## 6. Admin Control Centre
-
-Canonical page: `admin-content.html`
-
-```text
-Manage
-Review Queue
-AI Monitor
-```
-
-Manage shows a permanent Change Map. Review Queue records before/after/source/affected outputs. Approval never means automatic publication; final permission is still required.
-
-AI Monitor is a Phase-1 control UI only. Live crawling/change detection remains planned.
 
 ## 7. Data ownership
 
@@ -134,4 +172,4 @@ Google Drive → original PDFs, official documents, forms and restricted/private
 
 ## Final principle
 
-> The website is the interface. Official विज्ञप्ति/advertisement/prospectus PDFs are the evidence. Fee information has one canonical page under शैक्षणिक गतिविधियाँ. Source files belong in Google Drive; humans verify and approve important government information and irreversible actions.
+> The website is the interface. Official विज्ञप्ति/advertisement/prospectus PDFs are the evidence. Fee information has one canonical page under शैक्षणिक गतिविधियाँ. Source files belong in Google Drive. AI may prepare changes; humans verify and approve important actions.

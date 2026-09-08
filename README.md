@@ -24,6 +24,7 @@ Staging/development repository for **UCHCH MADHYAMIK VIDYALAY, TETAHALI**, Barha
 Public Website / GitHub Pages
         │
         ├── School pages
+        ├── BSEB / Fees
         ├── Important Portals
         ├── Portal Guidance
         ├── Documents / Notices
@@ -36,7 +37,7 @@ Admin Dashboard
     ↓
 Admin Control Centre
     ↓
-Manage → Review Queue → Final Permission
+Manage → Change Map → Review Queue → Final Permission
     ↓
 Future approved integrations
     ├── Supabase structured CMS data
@@ -49,8 +50,6 @@ Public GitHub Pages must never be treated as private storage.
 ---
 
 ## 2. Main Website Navigation
-
-Admin management follows the same top-level order as the public website so the administrator does not have to learn a second hierarchy.
 
 ```text
 विद्यालय
@@ -66,13 +65,19 @@ Smart Class
 संपर्क
 ```
 
+The homepage now also includes:
+
+- a mobile-friendly menu;
+- a **Latest Verified** strip for high-value current information;
+- a lightweight **Quick Search** across core school portal destinations;
+- simpler primary cards for BSEB, Notices, Portals and IT Services.
+
 Rules:
 
-- Main navigation labels are primarily Hindi.
-- Dropdown contents are Hindi + English where useful.
 - BSEB remains separate from Education Department.
 - Portal links and official documents are different records.
 - `portals.html` normally uses official Home Pages; task-specific links belong in Portal Guidance.
+- Public pages should show source/verification status for sensitive government information.
 
 ---
 
@@ -80,7 +85,11 @@ Rules:
 
 | Page | Purpose |
 |---|---|
-| `index.html` | Main public website |
+| `index.html` | Main public website; mobile navigation, Latest Verified, Quick Search |
+| `bseb.html` | BSEB central module + admission/registration/exam fee summary |
+| `secondary.html` | BSEB Secondary / Matric fee and portal details |
+| `intermediate.html` | OFSS admission + BSEB Intermediate fee verification view |
+| `BSEB-FEE-REFERENCE.md` | Detailed fee/source/verification reference |
 | `it-services.html` | IT tools and automation directory |
 | `ai-workbench.html` | AI-assisted controlled workspace |
 | `notices.html` | Notices/circulars |
@@ -88,9 +97,6 @@ Rules:
 | `education-department.html` | Education Department documents |
 | `deo-siwaan.html` | DEO Siwan documents |
 | `deo-darbhanga.html` | DEO Darbhanga documents |
-| `bseb.html` | BSEB central module |
-| `secondary.html` | BSEB Secondary |
-| `intermediate.html` | BSEB Intermediate |
 | `portals.html` | Important government/education portals |
 | `portal-guides.html` | Step-by-step Portal Guidance Centre |
 | `portal-verify.html` | Human portal verification dashboard |
@@ -104,17 +110,79 @@ Rules:
 | `admin-content.html` | **Canonical Admin Control Centre** |
 | `private-documents.html` | Restricted/private workspace foundation |
 
-Older/parallel Admin CMS prototype files may remain temporarily for reference. Do not use them as the canonical workflow. Their removal/archive requires a separate cleanup decision.
+Older/parallel Admin CMS prototype files may remain temporarily for reference. They are not the canonical workflow.
 
 ---
 
-## 4. Admin Control Centre — Simplified Phase 1
+## 4. BSEB Fee Structure — Reviewed 08 September 2026
+
+Detailed source notes are maintained in `BSEB-FEE-REFERENCE.md`.
+
+### Intermediate Admission — OFSS 2026–28
+
+**Official CAF application fee: ₹350**
+
+Official source: `https://ofssbihar.net/Higher-Education/index.html`
+
+Status: **Verified from official OFSS public page.**
+
+Important distinction: ₹350 is the OFSS application fee, not necessarily the final school/college admission charge.
+
+### Matric Registration — Annual Exam 2027 / Session 2026–27
+
+Current final-window fee reference:
+
+| Component | Regular | Independent / Private |
+|---|---:|---:|
+| Online registration application | ₹50 | ₹50 |
+| Online data entry | ₹50 | ₹50 |
+| Registration | ₹250 | ₹250 |
+| Permission | — | ₹130 |
+| Late fee | ₹100 | ₹100 |
+| **Total** | **₹450** | **₹580** |
+
+Official portal: `https://www.biharboardonline.org/`
+
+The public BSEB portal directly confirms the 2027 cycle and that the final registration-fee payment deadline was extended through **22 August 2026**. The component table is retained as a current-cycle reference and must be reconfirmed from the applicable BSEB notice before a new payment.
+
+Status: **Re-verify before payment.**
+
+### Matric Annual Examination 2026 — Official BSEB Advertisement
+
+| Fee component | General | SC/ST/EBC (BC-I) |
+|---|---:|---:|
+| Online application | ₹70 | ₹70 |
+| Examination | ₹115 | — |
+| Miscellaneous | ₹430 | ₹430 |
+| Marksheet | ₹170 | ₹170 |
+| Provisional certificate | ₹110 | ₹110 |
+| Science internal | ₹55 | ₹55 |
+| Subtotal | ₹950 | ₹835 |
+| Practical (where applicable) | ₹30 | ₹30 |
+| Online institution fee | ₹30 | ₹30 |
+| **Grand total** | **₹1,010** | **₹895** |
+
+Official PDF: `https://examapi.biharboardonline.org/files/others/exam-advertisement.pdf`
+
+Status: **Verified from official BSEB PDF.**
+
+### Intermediate Registration / Examination
+
+Official portal: `https://intermediate.biharboardonline.com/`
+
+The public portal exposes registration-payment and form workflows but does not currently expose a complete fee table in a form that has been directly verified for every category.
+
+A current 2027 main-exam reference of **₹1,430** (₹1,400 committee + ₹30 institution charge) is shown on the Intermediate page with an explicit **Re-verify before payment** label. Special categories have different fees.
+
+Do not hard-code old Intermediate registration fees as current without the applicable official notification.
+
+---
+
+## 5. Admin Control Centre — Simplified Phase 1
 
 **Canonical page:** `admin-content.html`
 
-The Admin Control Centre was simplified on **08 September 2026** because the previous version exposed too many modules at once.
-
-The canonical UI now has only three workflow views:
+The canonical UI has three workflow views:
 
 ```text
 1. Manage
@@ -123,8 +191,6 @@ The canonical UI now has only three workflow views:
 ```
 
 ### Manage
-
-The administrator selects one website area using the same hierarchy as the public navigation, then enters one proposed change.
 
 ```text
 Select website area
@@ -139,32 +205,18 @@ Proposed value
       ↓
 Notes / evidence
       ↓
+Change Map shows affected outputs
+      ↓
 Send to Review Queue
 ```
 
-A permanent **Change Map** shows before saving:
-
-- selected website area;
-- logical record type;
-- exact public pages/outputs likely to be affected;
-- intended storage/apply layer;
-- whether the change belongs to future Supabase content, Google Drive files, or GitHub code/templates.
-
-The goal is that the administrator thinks **“I need to update BSEB information”**, not **“Which HTML files do I need to edit?”**
+The administrator should think **“update BSEB information”**, not **“which HTML files should I edit?”**
 
 ### Review Queue
 
-Every proposal shows:
+Every proposal shows origin, source, current value, proposed value, affected outputs, storage/apply plan and approval state.
 
-- origin (manual or AI-monitor task);
-- official source;
-- current value;
-- proposed value;
-- affected outputs;
-- apply/storage plan;
-- approval state.
-
-Current local statuses include:
+Current statuses:
 
 ```text
 Review Required
@@ -172,37 +224,17 @@ Rejected
 Approved — Final Permission Required
 ```
 
-**Approval is not publication.** An approved draft still requires final permission before any staging commit, public publish, Supabase write, or Drive-backed publish.
+**Approval is not publication.** Final permission is still required before staging commit, public publish, Supabase write, Drive-backed publish or production promotion.
 
 ### AI Monitor
 
-The current AI Monitor is a **Phase-1 control UI**, not a live crawler.
+Current AI Monitor is a Phase-1 control UI, not a live crawler. Future work may add official-source reachability, new-PDF/date/session detection, content fingerprints and AI change proposals.
 
-It contains the official-source inventory and can create controlled review tasks. Future backend work may add:
-
-```text
-Official source
-    ↓
-Reachability / domain / title check
-    ↓
-New PDF / date / session detection
-    ↓
-Content fingerprint comparison
-    ↓
-AI change proposal
-    ↓
-Review Queue
-    ↓
-Human approval
-```
-
-No OTP bypass, CAPTCHA bypass, credential bypass, or unauthorized authenticated scraping is allowed.
+No OTP/CAPTCHA/credential bypass is allowed.
 
 ---
 
-## 5. Content Routing Principle
-
-The future system should separate code, structured content, and original files:
+## 6. Content Routing Principle
 
 ```text
 GitHub
@@ -219,23 +251,9 @@ A normal content change should not require editing multiple HTML pages once the 
 
 ---
 
-## 6. Portal Guidance and Official Sources
+## 7. Portal Guidance and Official Sources
 
-Current portal-guide inventory includes:
-
-- OFSS Bihar
-- e-Shikshakosh Bihar
-- UDISE+
-- SHVR
-- BSEB Secondary
-- BSEB Intermediate
-- BEPC School Tracker
-- National Scholarship Portal
-- Bihar e-Kalyan
-- Bihar PMS Institute
-- SATHEE
-- Bihar VidyaSathi
-- विद्यार्थी सहयोग
+Current portal-guide inventory includes OFSS Bihar, e-Shikshakosh, UDISE+, SHVR, BSEB Secondary, BSEB Intermediate, BEPC School Tracker, NSP, Bihar e-Kalyan, Bihar PMS Institute, SATHEE, Bihar VidyaSathi and विद्यार्थी सहयोग.
 
 For every government-related update:
 
@@ -259,61 +277,21 @@ Preserve historical notices/PDFs as archive references instead of silently delet
 
 ---
 
-## 7. PDF-First Document Rule
+## 8. PDF-First Document Rule
 
-```text
-Original official PDF/image
-        ↓
-Extract / OCR / AI
-        ↓
-Human verification
-        ↓
-Metadata
-        ↓
-Google Drive
-        ↓
-Website catalogue / related guide / notice
-```
+`Original official PDF/image → Extract/OCR/AI → Human verification → Metadata → Google Drive → Website catalogue/guide/notice`
 
 Original files remain authoritative. Private student/staff/admin files must not be committed to public GitHub.
 
 ---
 
-## 8. Smart Class and AI Workbench
+## 9. Smart Class and AI Workbench
 
-### AI Workbench
+**AI Workbench** public workflow: `Read → Extract → Diagnose → Suggest → Draft → Human Review`.
 
-Public name: **AI Workbench**.
+Official BEPC tracker: `https://tracker.bepcssa.in/`.
 
-Target workflow:
-
-`Read → Extract → Diagnose → Suggest → Draft → Human Review`
-
-Never expose API keys in frontend code, GitHub, or public documentation.
-
-### Smart Class
-
-Official BEPC tracker: `https://tracker.bepcssa.in/`
-
-The existing integration foundation uses a server-side Supabase Edge Function. Credentials must remain server-side. Production authentication/authorization must be enforced before production use is claimed.
-
----
-
-## 9. Google Drive
-
-Google Drive is the preferred file repository for school documents.
-
-Canonical project-reference area currently in use:
-
-```text
-UMV Tetahali/
-└── 00_Project_Memory_and_Reference/
-    ├── 01_Master_Project_Overview_2026-09-08.md
-    ├── 02_Consolidated_Project_README_2026-09-08.md
-    └── Archive_Old_Versions/
-```
-
-Operational document structure remains organized under numbered folders such as `01_Official_Documents`, `02_Forms`, `03_Notices_Circulars`, `05_Private_Documents`, `07_AI_Automation`, and `99_Archive`.
+Credentials remain server-side. Production authentication/authorization must be enforced before production use is claimed.
 
 ---
 
@@ -321,13 +299,12 @@ Operational document structure remains organized under numbered folders such as 
 
 - Never commit passwords, OTPs, API secrets, service-role keys, or private tokens.
 - Never place confidential student/staff/admin files in public GitHub.
-- BEPC credentials remain server-side.
 - AI/OCR output is never silently authoritative.
 - Government information requires source verification.
 - Important changes require human approval.
 - Production promotion is separate from staging implementation.
 - Supabase schema/data changes require explicit authorization.
-- Final government-portal submit buttons must remain human-controlled.
+- Final government-portal submit buttons remain human-controlled.
 
 ---
 
@@ -335,34 +312,39 @@ Operational document structure remains organized under numbered folders such as 
 
 | Area | Status |
 |---|---|
-| Public school website | Active staging |
+| Public homepage | Simplified; mobile menu + Latest Verified + Quick Search |
+| BSEB fee centre | **Updated in staging** |
+| OFSS 2026–28 application fee | **Officially verified: ₹350** |
+| Matric 2026 exam fee | **Officially verified from BSEB PDF** |
+| Matric 2027 registration fee | Current-cycle reference; re-verify before payment |
+| Intermediate fee table | Partial/review reference; current official notice required |
 | Portal Guidance Centre | Implemented |
 | Portal Verify dashboard | Implemented human/local foundation |
 | Admin Login | Implemented foundation |
 | Admin Dashboard | Implemented |
-| Admin Control Centre | **Implemented simplified Phase-1 UI** |
-| Change Map / affected-output preview | **Implemented in Admin Control Centre** |
-| Local Review Queue | **Implemented Phase 1** |
-| AI Monitor source inventory | **Implemented Phase-1 UI; no live crawler** |
+| Admin Control Centre | Implemented simplified Phase-1 UI |
+| Change Map / affected-output preview | Implemented |
+| Local Review Queue | Implemented Phase 1 |
+| AI Monitor | Phase-1 UI; no live crawler |
 | Supabase CMS tables | Planned; explicit approval required |
 | Google Drive CMS upload/publish | Planned |
 | Automatic official-source change detection | Planned |
-| Audit history | Planned |
 | Production promotion | Requires staging test + approval |
 
 ---
 
 ## 12. Documentation
 
-- `README.md` — short living project map.
+- `README.md` — concise living project map.
 - `knowledge-base.md` — detailed operational knowledge and portal guidance reference.
+- `BSEB-FEE-REFERENCE.md` — fee/source/verification reference.
 - `PROJECT-STATUS.md` — implementation/readiness status.
 - `admin-cms-design.md` — design reference/history.
 
-Update documentation whenever architecture, workflow, security, page ownership, or readiness changes materially.
+Update documentation whenever architecture, workflow, security, page ownership, fee structure, source verification or readiness changes materially.
 
 ---
 
 ## Final Principle
 
-> **The website is the interface. Original documents are the evidence. Structured data should have one source of truth. AI prepares and detects; humans verify and approve. The Admin Control Centre should tell the administrator where a change will appear instead of requiring manual HTML knowledge.**
+> **The website is the interface. Original documents are the evidence. Structured data should have one source of truth. AI prepares and detects; humans verify and approve. Fees must always show purpose, session, source and verification status.**

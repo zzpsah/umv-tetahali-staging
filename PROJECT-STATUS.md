@@ -1,266 +1,97 @@
 # UMV Tetahali — Current Project Status
 
 **School:** UCHCH MADHYAMIK VIDYALAY, TETAHALI  
-**Hindi:** उच्च माध्यमिक विद्यालय, तेतहली  
 **UDISE:** `10160203806`  
-**Environment:** Staging / development  
-**Status date:** 2026-09-08
-
-## Purpose
-
-This file records actual project readiness separately from long-term plans.
-
-Use these labels consistently:
-
-- **Documented** — described in project documentation.
-- **Implemented** — code/page exists in staging.
-- **Tested** — behavior has been explicitly checked.
-- **Deployed** — confirmed on the applicable deployment.
-- **Planned** — intended but not yet implemented end-to-end.
-
-A file existing in GitHub does not by itself prove that an integration is tested or deployed.
-
----
+**Environment:** Staging  
+**Status date:** 08 September 2026
 
 ## Current architecture
 
 ```text
-Public Website / GitHub Pages
-        │
-        ├── School pages
-        ├── Portals / Guides
-        ├── Documents / Notices
-        ├── IT Services / AI Workbench
-        └── Smart Class
+Public School Portal
+  ├── Homepage / Latest Verified
+  ├── Current Official Updates
+  ├── BSEB / Fees
+  ├── Notices
+  ├── Portals / Guides
+  ├── Documents
+  ├── Smart Class
+  └── IT Services
 
 Admin Login
-    ↓
+  ↓
 Admin Dashboard
-    ↓
+  ↓
 Admin Control Centre
-    ↓
+  ↓
 Manage → Change Map → Review Queue → Final Permission
-
-Future approved integrations
-    ↓
-Supabase structured CMS data
-Google Drive document storage
-AI official-source monitoring
-Audit / publish workflow
 ```
 
----
+## Implemented in this update cycle
 
-## Admin Control Centre — current behavior
+| Area | Status |
+|---|---|
+| Mobile-friendly simplified homepage | Implemented |
+| Latest Verified strip | Implemented |
+| BSEB Fee Centre | Implemented |
+| Current Official Updates page | Implemented |
+| Official-source Markdown register | Implemented |
+| Notice source/status cleanup | Implemented |
+| Unsupported 16 Sep BSEB deadline | Removed/corrected |
+| Important Portals refresh | Implemented |
+| Portal Guidance current-source refresh | Implemented |
+| Siwan district education notice archive | Implemented |
+| Source maintenance guide | Implemented |
+| Changelog | Implemented |
+| Main README refresh | Implemented |
 
-`admin-content.html` is the canonical Admin Control Centre.
+## Current verified/source-reviewed highlights
 
-On 08 September 2026 it was simplified from a many-module screen into three workflow views:
+- BSEB Secondary Registration 2026 for Exam 2027: official public page lists final extension through **22 Aug 2026** for form submission and fee payment; now archived/past.
+- OFSS Intermediate 2026–28: official Common Prospectus records **₹350** CAF total, initial application window 08–18 Apr 2026 and 10–20 institution choices; live portal currently exposes spot-admission/cut-off/vacant-seat information.
+- UDISE+: official portal lists **03 Aug 2026** AY 2026–27 data-completion notice.
+- SHVR: official current resources include Hindi/English guidelines, brochures, bookmarks, web/mobile school manuals and videos.
+- Bihar e-Kalyan/MVPY: official portal currently states eligible candidates may apply; scheme/category eligibility must be checked individually.
+- Siwan District: recent education-related notices reviewed are retained as expired district references and are not assumed applicable to UMV Tetahali without scope verification.
 
-```text
-Manage
-Review Queue
-AI Monitor
-```
+## Admin Control Centre
 
-### Manage
+`admin-content.html` remains the canonical Admin Control Centre.
 
-The administrator selects one website area using the same hierarchy as the public website:
+Current Phase-1 behavior:
 
-```text
-विद्यालय
-शैक्षणिक गतिविधियाँ
-IT Services
-सूचनाएँ
-BSEB
-महत्वपूर्ण पोर्टल
-Smart Class
-सेवाएँ
-दस्तावेज़
-मार्गदर्शिका
-संपर्क
-Archive
-```
-
-The administrator then enters one proposed change with:
-
-- change title;
-- official source URL;
-- current value;
-- proposed value;
-- notes/evidence.
-
-A permanent **Change Map** shows:
-
+- browser-local proposal/review state;
 - selected website area;
-- logical record type;
-- affected public outputs/pages;
-- intended storage/apply layer;
-- Review Queue and permission gate.
+- before/after proposal;
+- source URL;
+- affected-output Change Map;
+- Review Required / Rejected / Approved — Final Permission Required statuses;
+- AI source inventory UI, but no live crawler yet.
 
-### Review Queue
+No proposal can automatically publish/commit production content.
 
-The browser-local queue is now implemented as a Phase-1 workflow.
+## Backend state
 
-Each item records:
+Supabase structured CMS tables remain **planned**, not implemented by this update. No Supabase schema/data changes were made.
 
-- origin;
-- selected area;
-- source;
-- current value;
-- proposed value;
-- affected outputs;
-- storage/apply plan;
-- status.
+Google Drive remains the intended original-document/file repository. No new CMS upload/publish integration was made in this update.
 
-Current statuses:
+## Next priorities
 
-```text
-Review Required
-Rejected
-Approved — Final Permission Required
-```
+1. Browser/mobile test the refreshed public pages.
+2. Remove/archive redundant parallel admin prototypes after explicit cleanup approval.
+3. Finalize structured CMS entities and RLS before any Supabase implementation.
+4. Connect Drive-backed official-document ingestion.
+5. Add automatic official-source snapshots/change detection only with human approval gate.
+6. Add shared audit history.
+7. Promote to production only after staging review.
 
-Approval does not automatically publish or commit anything.
+## Governance
 
-### AI Monitor
-
-The AI Monitor contains the current official-source inventory and can create controlled review tasks.
-
-It is **not yet a live crawler** and does not claim live change detection.
-
-Future approved backend behavior may include:
-
-```text
-Official source
-    ↓
-Reachability/domain/title check
-    ↓
-New PDF/date/session detection
-    ↓
-Content fingerprint comparison
-    ↓
-AI proposal
-    ↓
-Review Queue
-    ↓
-Human approval
-```
-
----
-
-## Implemented vs planned
-
-| Area | Current status | Notes |
-|---|---|---|
-| Public school website | Implemented / staging | Deployment behavior should still be checked after material changes |
-| Portal Guidance Centre | Implemented | Session-specific information requires ongoing verification |
-| Verify & Update dashboard | Implemented foundation | Human/local verification; not a live crawler |
-| Admin Login | Implemented foundation | Authentication exists; production authorization still requires review |
-| Admin Dashboard | Implemented | Entry to canonical Control Centre |
-| Admin Control Centre | **Implemented simplified Phase 1** | Canonical admin workflow |
-| Change Map | **Implemented** | Shows where a selected change is expected to apply |
-| Manual change entry | **Implemented Phase 1** | Generic controlled proposal form |
-| Local Review Queue | **Implemented Phase 1** | Browser-local, not shared backend state |
-| AI Monitor source inventory | **Implemented Phase-1 UI** | Creates review tasks; no automatic crawl yet |
-| Supabase CMS tables | Planned | Requires explicit authorization |
-| Google Drive CMS upload/publish | Planned | Project-memory Drive folder is separate and already in use |
-| Automatic source change detection | Planned | Human approval remains mandatory |
-| Audit history | Planned | Needed before mature publishing workflow |
-| Production promotion | Not automatic | Staging review + approval required |
-
----
-
-## Connected backend state
-
-Connected Supabase project:
-
-- Project: `umv-db`
-- Region: `ap-south-1`
-
-Previously observed public-schema tables include:
-
-- `Class_XII_Students_2026_2027`
-- `Class_X_reg_2026_2027`
-- `Siwan _Teachers_Details`
-- `Teachers_Udise`
-- `class_x_reg_safe`
-- `profiles`
-
-These tables do not mean the planned CMS entities have been created.
-
-**Database rule:** do not modify Supabase schema/data unless the user explicitly authorizes the specific change.
-
----
-
-## Google Drive project reference
-
-Canonical project-reference storage is maintained under:
-
-`UMV Tetahali / 00_Project_Memory_and_Reference`
-
-Reference files include:
-
-- `01_Master_Project_Overview_2026-09-08.md`
-- `02_Consolidated_Project_README_2026-09-08.md`
-- `Archive_Old_Versions/`
-
-Private student/staff records, credentials, OTPs and secrets must not be added to public GitHub documentation.
-
----
-
-## Next development milestone
-
-The next major milestone is **not another admin page**.
-
-Priority order:
-
-1. Test the simplified Admin Control Centre on staging/mobile.
-2. Decide whether the remaining parallel prototype admin pages can be archived/removed.
-3. Finalize the structured record model for portals/notices/documents/guides.
-4. After explicit approval, create the Supabase CMS schema with RLS.
-5. Connect Google Drive file upload/document references.
-6. Add AI source snapshots and change detection.
-7. Add shared audit history and publish workflow.
-8. Promote only after staging verification and user approval.
-
----
-
-## Development rules
-
-1. Staging first.
-2. Fetch current GitHub file/SHA before modification.
-3. Do not modify production before staging approval.
-4. Do not modify Supabase schema/data without explicit authorization.
-5. Preserve original official PDFs/source references.
-6. AI/OCR suggestions require human verification.
-7. Never bypass OTP, CAPTCHA, credentials or access controls.
-8. Do not expose private student/staff/admin data in public GitHub.
-9. Archive historical government information rather than silently deleting it.
-10. Keep README/status documentation aligned with actual implementation.
-
----
-
-## Current direction
-
-```text
-Static Website
-   ↓
-Digital School Portal
-   ↓
-Portal Guidance + Verification
-   ↓
-Admin Login / Dashboard
-   ↓
-Simplified Admin Control Centre
-   ↓
-Change Map + Review Queue
-   ↓
-NEXT: shared structured CMS persistence
-   ↓
-Google Drive document integration
-   ↓
-AI source monitoring + audit history
-   ↓
-Production after testing and approval
-```
+- Official source/PDF first.
+- Record date/session/status.
+- Do not publish unsupported deadlines as current.
+- Do not expose credentials/private records.
+- Do not bypass OTP/CAPTCHA/access controls.
+- Payment/final-submit remains human-controlled.
+- Historical information is archived rather than silently deleted.

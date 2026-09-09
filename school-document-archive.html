@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>विद्यालय दस्तावेज़ अभिलेख | उच्च माध्यमिक विद्यालय, तेतहली</title>
+  <meta name="description" content="समीक्षित और प्रकाशन के लिए अनुमोदित विद्यालयी दस्तावेज़ों का खोज योग्य सार्वजनिक अभिलेख।">
+  <style>
+    :root{color-scheme:light;--ink:#172033;--muted:#64748b;--line:#dbe3ee;--blue:#1558d6;--paper:#fff;--wash:#f5f7fb;--urgent:#b42318;--high:#b54708}
+    *{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+    a{color:var(--blue)}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.top{background:#0f172a;color:#fff}.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0}.brand small{display:block;color:#93c5fd;font-weight:700;letter-spacing:.04em}.brand h1{font-size:clamp(1.25rem,4vw,1.8rem);margin:3px 0}.back{color:#fff;font-weight:700;text-decoration:none;white-space:nowrap}
+    main{padding:28px 0 48px}.intro,.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}.intro{margin-bottom:18px}.intro p{margin:7px 0 0;color:var(--muted)}
+    .filters{display:grid;grid-template-columns:minmax(180px,2fr) repeat(2,minmax(150px,1fr));gap:12px}.field label{display:block;font-size:.78rem;font-weight:800;margin-bottom:5px}.field input,.field select{width:100%;border:1px solid #bac7d8;border-radius:10px;padding:11px;background:#fff;color:var(--ink);font:inherit}.summary{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0 10px;color:var(--muted);font-size:.9rem}.summary button{border:0;background:transparent;color:var(--blue);font-weight:750;cursor:pointer}
+    .table-wrap{overflow-x:auto}.records{width:100%;border-collapse:collapse;background:#fff}.records th,.records td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:.9rem}.records th{background:#eef3f9;font-size:.78rem;white-space:nowrap}.subject{min-width:260px;font-weight:750}.desc{display:block;color:var(--muted);font-weight:400;margin-top:4px}.badge{display:inline-block;border-radius:999px;padding:3px 8px;background:#e8eef7;font-size:.73rem;font-weight:800}.badge.URGENT{background:#fee4e2;color:var(--urgent)}.badge.HIGH{background:#ffead5;color:var(--high)}.file{font-weight:750;white-space:nowrap}.unavailable{color:var(--muted);font-size:.82rem}.state{text-align:center;padding:38px 16px;color:var(--muted)}.error{color:#b42318;background:#fff0ee;border:1px solid #ffc7c2;border-radius:10px;padding:12px}.foot{margin-top:18px;color:var(--muted);font-size:.82rem}
+    @media(max-width:720px){.top .wrap{align-items:flex-start}.filters{grid-template-columns:1fr}.records thead{display:none}.records,.records tbody,.records tr,.records td{display:block}.records tr{border:1px solid var(--line);border-radius:13px;margin:12px 0;padding:10px}.records td{border:0;padding:5px 4px}.records td:before{content:attr(data-label);display:block;color:var(--muted);font-size:.7rem;font-weight:800;text-transform:uppercase}.subject{min-width:0}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap"><div class="brand"><small>APPROVED DOCUMENT ARCHIVE</small><h1>विद्यालय दस्तावेज़ अभिलेख</h1><div>उच्च माध्यमिक विद्यालय, तेतहली</div></div><a class="back" href="index.html">← Home</a></div></header>
+  <main class="wrap">
+    <section class="intro"><strong>केवल मानव समीक्षा के बाद अनुमोदित सार्वजनिक रिकॉर्ड</strong><p>नाम, विषय, विवरण, श्रेणी या जारीकर्ता से खोजें। निजी Drive फाइल, OCR पाठ और संवेदनशील रिकॉर्ड इस पृष्ठ पर उपलब्ध नहीं होते।</p></section>
+    <section class="panel" aria-labelledby="archive-heading">
+      <h2 id="archive-heading" style="margin-top:0">Search Documents</h2>
+      <div class="filters">
+        <div class="field"><label for="search">खोज / Search</label><input id="search" type="search" placeholder="BSEB, registration, circular…" autocomplete="off"></div>
+        <div class="field"><label for="category">श्रेणी / Category</label><select id="category"><option value="">सभी श्रेणियाँ</option></select></div>
+        <div class="field"><label for="priority">प्राथमिकता / Priority</label><select id="priority"><option value="">सभी</option><option>URGENT</option><option>HIGH</option><option>NORMAL</option><option>LOW</option></select></div>
+      </div>
+      <div class="summary"><span id="count" aria-live="polite">रिकॉर्ड लोड हो रहे हैं…</span><button id="clear" type="button">Clear filters</button></div>
+      <div id="status" class="state">कृपया प्रतीक्षा करें…</div>
+      <div class="table-wrap" id="tableWrap" hidden>
+        <table class="records"><thead><tr><th>#</th><th>Date</th><th>Category</th><th>Priority</th><th>Subject / Description</th><th>Required Action</th><th>Deadline</th><th>Document</th></tr></thead><tbody id="rows"></tbody></table>
+      </div>
+      <p class="foot">किसी फाइल का link तभी दिखेगा जब उसे अलग से सार्वजनिक उपयोग के लिए अनुमोदित किया गया हो। गलत या संवेदनशील जानकारी दिखे तो विद्यालय कार्यालय को सूचित करें।</p>
+    </section>
+  </main>
+  <script>
+    'use strict';
+    const SUPABASE_URL='https://sxfnrwugsyfypqgfglzc.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY='sb_publishable_NARdPew6T6Zk8gYfxY3Hog_G7jcceKw';
+    const endpoint=SUPABASE_URL+'/rest/v1/approved_public_documents?select=id,reference_number,issue_date,issuing_authority,subject,short_description,category,priority,required_action,deadline,public_file_url,published_at&order=published_at.desc&limit=500';
+    const state={records:[]};
+    const el={search:document.querySelector('#search'),category:document.querySelector('#category'),priority:document.querySelector('#priority'),count:document.querySelector('#count'),status:document.querySelector('#status'),wrap:document.querySelector('#tableWrap'),rows:document.querySelector('#rows')};
+    function text(value){return value===null||value===undefined||value===''?'—':String(value)}
+    function escapeHtml(value){return text(value).replace(/[&<>'"]/g,function(char){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]})}
+    function safeUrl(value){try{const url=new URL(value);return url.protocol==='https:'?url.href:''}catch(error){return ''}}
+    function render(){const query=el.search.value.trim().toLocaleLowerCase('hi-IN');const category=el.category.value;const priority=el.priority.value;const filtered=state.records.filter(function(record){const haystack=[record.subject,record.short_description,record.issuing_authority,record.reference_number,record.category].join(' ').toLocaleLowerCase('hi-IN');return (!query||haystack.includes(query))&&(!category||record.category===category)&&(!priority||record.priority===priority)});el.count.textContent=filtered.length+' अनुमोदित रिकॉर्ड';el.rows.innerHTML=filtered.map(function(record,index){const url=safeUrl(record.public_file_url);const file=url?'<a class="file" target="_blank" rel="noopener noreferrer" href="'+escapeHtml(url)+'">Open file ↗</a>':'<span class="unavailable">Not publicly available</span>';return '<tr><td data-label="Serial">'+(index+1)+'</td><td data-label="Date">'+escapeHtml(record.issue_date)+'</td><td data-label="Category">'+escapeHtml(record.category)+'</td><td data-label="Priority"><span class="badge '+escapeHtml(record.priority)+'">'+escapeHtml(record.priority)+'</span></td><td data-label="Subject" class="subject">'+escapeHtml(record.subject)+'<span class="desc">'+escapeHtml(record.short_description)+'</span><span class="desc">Issued by: '+escapeHtml(record.issuing_authority)+'</span></td><td data-label="Action">'+escapeHtml(record.required_action)+'</td><td data-label="Deadline">'+escapeHtml(record.deadline)+'</td><td data-label="Document">'+file+'</td></tr>'}).join('');el.status.hidden=filtered.length>0;el.status.textContent=filtered.length?'':'कोई मेल खाता अनुमोदित रिकॉर्ड नहीं मिला।';el.wrap.hidden=filtered.length===0}
+    async function load(){try{const response=await fetch(endpoint,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:'Bearer '+SUPABASE_PUBLISHABLE_KEY,Accept:'application/json'}});if(!response.ok)throw new Error('HTTP '+response.status);state.records=await response.json();const categories=[...new Set(state.records.map(function(record){return record.category}).filter(Boolean))].sort();categories.forEach(function(category){const option=document.createElement('option');option.value=category;option.textContent=category;el.category.appendChild(option)});render()}catch(error){el.count.textContent='लोड नहीं हुआ';el.status.hidden=false;el.status.className='error';el.status.textContent='अभिलेख अभी लोड नहीं हो सका। कृपया बाद में पुनः प्रयास करें।';console.error('Document archive load failed:',error)}}
+    [el.search,el.category,el.priority].forEach(function(control){control.addEventListener('input',render)});document.querySelector('#clear').addEventListener('click',function(){el.search.value='';el.category.value='';el.priority.value='';render();el.search.focus()});load();
+  </script>
+</body>
+</html>

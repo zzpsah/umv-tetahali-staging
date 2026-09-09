@@ -160,7 +160,26 @@ Supabase (future, after explicit approval) → structured content/audit metadata
 Google Drive → original PDFs, official documents, forms and restricted/private files
 ```
 
-## 8. Security / governance
+## 8. Telegram document archive integration
+
+The private intake workflow is maintained in the `automation-suite` repository. Its Drive structure is:
+
+```text
+All Education Department Letters/
+└── Automation System/
+    ├── 01_Inbox
+    ├── 02_Processing
+    ├── 03_Reviewed_Archive
+    └── 04_Manual_Review
+```
+
+The movement is `Telegram -> Apps Script -> private Drive -> Supabase metadata -> human review -> approved portal record`. The public portal reads only approved public-safe records; it never receives Telegram identifiers, private Drive IDs, OCR text, or server credentials.
+
+Telegram confirms registration, but the bot must not claim review, archive, or publication until the corresponding Drive and Supabase transitions are verified. Gemini may optionally suggest a first-page title, description, category, priority, and display filename; the original file remains unchanged until a human approves the suggestion.
+
+For clean testing, delete only explicitly identified test rows/files. Do not clear the full archive as a shortcut, and do not silently delete historical official records.
+
+## 9. Security / governance
 
 - No passwords, OTPs, service-role keys or private tokens in GitHub.
 - No confidential student/staff documents in public Pages.

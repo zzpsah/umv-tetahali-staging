@@ -4,14 +4,13 @@
   function apiBase(config) { return config.supabaseUrl.replace(/\/$/, ''); }
 
   function archiveEndpoint(config) {
-    // These are the actual columns exposed by approved_public_documents.
     const fields = [
       'id','reference_number','issue_date','issuing_authority','subject','short_description',
       'category_key','category','category_aliases','priority','required_action','deadline',
-      'public_file_url','published_at','public_revision','listing_status','review_path','search_text'
+      'public_file_url','published_at','public_revision','listing_status','review_path','search_text','received_at'
     ].join(',');
     return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields +
-      '&order=published_at.desc.nullslast,issue_date.desc.nullslast&limit=' +
+      '&order=received_at.desc.nullslast,published_at.desc.nullslast,issue_date.desc.nullslast&limit=' +
       encodeURIComponent(config.recordLimit || 1000);
   }
 
@@ -107,7 +106,7 @@
           '<td data-label="Letter Type" class="letter-type">'+escapeHtml(letterType(r))+'</td>'+
           '<td data-label="Issuing Authority" class="authority-cell">'+escapeHtml(r.issuing_authority || '—')+'</td>'+
           '<td data-label="Issued Date" class="date-cell">'+escapeHtml(formatDate(r.issue_date))+'</td>'+
-          '<td data-label="Upload Date" class="date-cell upload-date">'+escapeHtml(formatDate(r.published_at))+'</td>'+
+          '<td data-label="Upload Date" class="date-cell upload-date">'+escapeHtml(formatDate(r.received_at || r.published_at))+'</td>'+
           '<td data-label="Subject" class="subject-cell">'+escapeHtml(subject(r))+'</td>'+
           '<td data-label="Download" class="download-cell">'+action+'</td></tr>';
       }).join('') : '<tr><td colspan="7" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';

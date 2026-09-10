@@ -8,11 +8,13 @@
   function archiveEndpoint(config) {
     const fields = [
       'id','reference_number','issue_date','issuing_authority','subject','short_description',
-      'category_key','category','category_aliases','priority','required_action','deadline',
-      'public_file_url','published_at','public_revision','listing_status','review_path','search_text'
+      'detailed_summary','received_at','category_key','category','category_aliases','priority',
+      'required_action','deadline','public_file_url','published_at','public_revision',
+      'listing_status','review_path','search_text'
     ].join(',');
     return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields +
-      '&order=issue_date.desc.nullslast,published_at.desc&limit=' + encodeURIComponent(config.recordLimit || 1000);
+      '&order=received_at.desc.nullslast,published_at.desc.nullslast,issue_date.desc.nullslast&limit=' +
+      encodeURIComponent(config.recordLimit || 1000);
   }
 
   async function fetchJson(url, config, timeoutMs) {
@@ -65,6 +67,11 @@
     const s = String(value).trim();
     const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
     if (m) return m[3] + '/' + m[2] + '/' + m[1];
+    const d = new Date(s);
+    if (!Number.isNaN(d.getTime())) {
+      return String(d.getDate()).padStart(2, '0') + '/' +
+        String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+    }
     return s;
   }
 
@@ -77,7 +84,7 @@
       record.search_text
     ].join(' '));
 
-    if (/allotment|आवंटन|विमुक्ति|स्वीकृति/.test(raw)) return 'ALLOTMENT';
+    if (/allotment|आवंटन|विमुक्ति|स्वीकृति/.test(raw)) return 'Allotment';
     if (/circular|परिपत्र|सर्कुलर/.test(raw)) return 'Circular';
     if (/order|आदेश|ज्ञाप|स्थानांतरण|निलंबन|विभागीय कार्रवाई/.test(raw)) return 'Order';
     if (/notice|सूचना|विज्ञप्ति/.test(raw)) return 'Notice';
@@ -87,17 +94,46 @@
     return value ? String(value) : 'Letter';
   }
 
+  function cleanSubject(value) {
+    let subject = String(value || '')
+      .replace(/[\r\n]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/^(?:विषय|विषयः|subject|sub\.?)\s*[:：;\-–—]?\s*/i, '')
+      .trim();
+
+    if (!subject) return '';
+
+    const looksLikeOcrDump = subject.length > 220 ||
+      /(?:https?:\/\/|www\.|qrcso|raldotfo|f\+arq|Gsr\{|\{.*\}|\|)/i.test(subject);
+
+    if (looksLikeOcrDump) {
+      const first = subject.split(/[।!?]+/)[0].trim();
+      if (first.length >= 8 && first.length <= 160 && !/[{}<>|]/.test(first)) {
+        subject = first;
+      } else {
+        return '';
+      }
+    }
+
+    return subject
+      .replace(/[|{}<>[\]~`^_=+\\]{2,}/g, ' ')
+      .replace(/\s+/g, ' ')
+      .replace(/[\-:：;,. ]+$/g, '')
+      .trim()
+      .slice(0, 180);
+  }
+
   function subject(record) {
-    // Subject is the primary public field. Do not expose the generated
-    // "Document issued by ..." description when a real subject is present.
-    const value = String(record.subject || '').trim();
+    const value = cleanSubject(record.subject);
     if (value && !/^official\s+(school\s+)?document$/i.test(value) && !/^official\s+letter/i.test(value)) {
       return value;
     }
+    return 'विभागीय पत्र / सूचना';
+  }
 
-    // Temporary fallback for older records until they are reprocessed.
-    const fallback = String(record.detailed_summary || record.short_description || '').trim();
-    return fallback || value || '—';
+  function issuingAuthority(record) {
+    return String(record.issuing_authority || '').trim() || '—';
   }
 
   function init(root, config) {
@@ -120,7 +156,7 @@
       const terms = normalize(controls.search.value).split(' ').filter(Boolean);
       return state.records.filter(function (r) {
         const hay = normalize([
-          r.subject, r.short_description, r.issuing_authority,
+          r.subject, r.short_description, r.detailed_summary, r.issuing_authority,
           r.reference_number, r.required_action, r.category,
           r.category_key, (r.category_aliases || []).join(' '), r.search_text
         ].join(' '));
@@ -142,7 +178,8 @@
         const reviewUrl = r.review_path ? safeUrl(r.review_path) : '';
         const serial = start + index + 1;
         const type = letterType(r);
-        const date = formatDate(r.issue_date);
+        const issuedDate = formatDate(r.issue_date);
+        const uploadDate = formatDate(r.received_at || r.published_at);
         const title = subject(r);
 
         let action = '';
@@ -159,11 +196,13 @@
         return '<tr>' +
           '<td data-label="Sr.No.">' + serial + '</td>' +
           '<td data-label="Letter Type" class="letter-type">' + escapeHtml(type) + '</td>' +
-          '<td data-label="Date" class="date-cell">' + escapeHtml(date) + '</td>' +
+          '<td data-label="Issuing Authority" class="authority-cell">' + escapeHtml(issuingAuthority(r)) + '</td>' +
+          '<td data-label="Issued Date" class="date-cell">' + escapeHtml(issuedDate) + '</td>' +
+          '<td data-label="Upload Date" class="date-cell upload-date">' + escapeHtml(uploadDate) + '</td>' +
           '<td data-label="Subject" class="subject-cell">' + escapeHtml(title) + '</td>' +
           '<td data-label="Download" class="download-cell">' + action + '</td>' +
           '</tr>';
-      }).join('') : '<tr><td colspan="5" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';
+      }).join('') : '<tr><td colspan="7" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';
 
       controls.status.hidden = filtered.length > 0;
       controls.status.textContent = filtered.length > 0

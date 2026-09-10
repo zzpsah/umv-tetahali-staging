@@ -6,8 +6,8 @@
   }
 
   function archiveEndpoint(config) {
-    const fields = ['id','reference_number','issue_date','issuing_authority','subject','short_description','category_key','category','category_aliases','priority','required_action','deadline','public_file_url','published_at','public_revision','search_text'].join(',');
-    return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields + '&order=published_at.desc&limit=' + encodeURIComponent(config.recordLimit || 1000);
+    const fields = ['id','reference_number','issue_date','issuing_authority','subject','short_description','category_key','category','category_aliases','priority','required_action','deadline','public_file_url','published_at','public_revision','listing_status','review_path','search_text'].join(',');
+    return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields + '&order=published_at.desc,issue_date.desc&limit=' + encodeURIComponent(config.recordLimit || 1000);
   }
 
   function categoryEndpoint(config) {
@@ -20,59 +20,29 @@
     try {
       const response = await fetch(url, {
         method: 'GET',
-        headers: {
-          apikey: config.publishableKey,
-          Authorization: 'Bearer ' + config.publishableKey,
-          Accept: 'application/json'
-        },
-        cache: 'no-store',
-        signal: controller.signal
+        headers: { apikey: config.publishableKey, Authorization: 'Bearer ' + config.publishableKey, Accept: 'application/json' },
+        cache: 'no-store', signal: controller.signal
       });
       const body = await response.text();
-      if (!response.ok) {
-        throw new Error('HTTP ' + response.status + (body ? ': ' + body.slice(0, 240) : ''));
-      }
+      if (!response.ok) throw new Error('HTTP ' + response.status + (body ? ': ' + body.slice(0, 240) : ''));
       return body ? JSON.parse(body) : [];
-    } finally {
-      clearTimeout(timer);
-    }
+    } finally { clearTimeout(timer); }
   }
 
-  function normalize(value) {
-    return String(value || '').toLocaleLowerCase('hi-IN').replace(/\s+/g, ' ').trim();
-  }
-
-  function text(value) {
-    return value === null || value === undefined || value === '' ? '—' : String(value);
-  }
-
-  function escapeHtml(value) {
-    return text(value).replace(/[&<>'"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[c]));
-  }
-
-  function safeUrl(value) {
-    try {
-      const u = new URL(value);
-      return u.protocol === 'https:' ? u.href : '';
-    } catch (e) {
-      return '';
-    }
-  }
-
-  function find(root, role) {
-    return root.querySelector('[data-archive-role="' + role + '"]');
-  }
+  function normalize(value) { return String(value || '').toLocaleLowerCase('hi-IN').replace(/\s+/g, ' ').trim(); }
+  function text(value) { return value === null || value === undefined || value === '' ? '—' : String(value); }
+  function escapeHtml(value) { return text(value).replace(/[&<>'"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[c])); }
+  function safeUrl(value) { try { const u = new URL(value, window.location.href); return u.protocol === 'https:' ? u.href : ''; } catch (e) { return ''; } }
+  function find(root, role) { return root.querySelector('[data-archive-role="' + role + '"]'); }
 
   function init(root, config) {
     if (!root || !config || !config.supabaseUrl || !config.publishableKey) return;
-
     const controls = {
       search: find(root, 'search'), category: find(root, 'category'), priority: find(root, 'priority'),
       count: find(root, 'count'), status: find(root, 'status'), tableWrap: find(root, 'table-wrap'),
       rows: find(root, 'rows'), clear: find(root, 'clear'), pagination: find(root, 'pagination'),
       pageInfo: find(root, 'page-info'), prev: find(root, 'prev'), next: find(root, 'next')
     };
-
     const state = { records: [], categories: [], page: 1, pageSize: 15 };
 
     function filteredRecords() {
@@ -91,20 +61,25 @@
       if (state.page > totalPages) state.page = totalPages;
       const start = (state.page - 1) * state.pageSize;
       const pageRows = filtered.slice(start, start + state.pageSize);
-
       controls.count.textContent = filtered.length + ' सार्वजनिक रिकॉर्ड';
-      controls.rows.innerHTML = pageRows.length
-        ? pageRows.map(r => {
-            const url = safeUrl(r.public_file_url);
-            const actions = url
-              ? '<div class="actions"><a class="file" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(url) + '">देखें ↗</a><a class="file" href="' + escapeHtml(url) + '" download>डाउनलोड PDF</a></div>'
-              : '<span class="unavailable">PDF उपलब्ध नहीं</span>';
-            return '<tr><td data-label="दिनांक">' + escapeHtml(r.issue_date) + '</td><td data-label="जारी करने वाला कार्यालय">' + escapeHtml(r.issuing_authority) + '</td><td data-label="विवरण" class="subject">' + escapeHtml(r.subject || '—') + '<span class="desc">' + escapeHtml(r.short_description) + '</span></td><td data-label="संदर्भ संख्या">' + escapeHtml(r.reference_number) + '</td><td data-label="PDF">' + actions + '</td></tr>';
-          }).join('')
-        : '<tr><td colspan="5" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';
-
+      controls.rows.innerHTML = pageRows.length ? pageRows.map(r => {
+        const url = safeUrl(r.public_file_url);
+        const reviewUrl = r.review_path ? safeUrl(r.review_path) : '';
+        let actions;
+        if (r.listing_status === 'Processing Failed') {
+          actions = reviewUrl
+            ? '<div class="actions"><span class="unavailable">प्रसंस्करण विफल</span><a class="file" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(reviewUrl) + '">समीक्षा करें ↗</a></div>'
+            : '<span class="unavailable">समीक्षा लिंक उपलब्ध नहीं</span>';
+        } else if (url) {
+          actions = '<div class="actions"><a class="file" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(url) + '">देखें ↗</a><a class="file" href="' + escapeHtml(url) + '" download>डाउनलोड PDF</a></div>';
+        } else {
+          actions = '<span class="unavailable">PDF उपलब्ध नहीं</span>';
+        }
+        const status = r.listing_status === 'Processing Failed' ? '<span class="status-badge failed">प्रसंस्करण विफल</span>' : '<span class="status-badge published">प्रकाशित</span>';
+        return '<tr><td data-label="दिनांक">' + escapeHtml(r.issue_date) + '</td><td data-label="जारी करने वाला कार्यालय">' + escapeHtml(r.issuing_authority) + '</td><td data-label="विवरण" class="subject">' + escapeHtml(r.subject || '—') + '<span class="desc">' + escapeHtml(r.short_description) + '</span></td><td data-label="संदर्भ संख्या">' + escapeHtml(r.reference_number) + '</td><td data-label="PDF">' + actions + '<div class="record-status">' + status + '</div></td></tr>';
+      }).join('') : '<tr><td colspan="5" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';
       controls.status.hidden = filtered.length > 0;
-      controls.status.textContent = filtered.length > 0 ? '' : (state.records.length ? 'कोई मेल खाता सार्वजनिक रिकॉर्ड नहीं मिला।' : 'अभी कोई सार्वजनिक दस्तावेज़ प्रकाशित नहीं है।');
+      controls.status.textContent = filtered.length > 0 ? '' : (state.records.length ? 'कोई मेल खाता रिकॉर्ड नहीं मिला।' : 'अभी कोई सार्वजनिक दस्तावेज़ प्रकाशित नहीं है।');
       controls.tableWrap.hidden = false;
       controls.pagination.hidden = filtered.length === 0;
       controls.pageInfo.textContent = 'पृष्ठ ' + state.page + ' / ' + totalPages;
@@ -117,43 +92,21 @@
       controls.status.className = 'state';
       controls.status.textContent = 'सार्वजनिक दस्तावेज़ लोड हो रहे हैं…';
       try {
-        // The archive data must not depend on the optional category catalogue.
-        // If categories fail, documents still render and the category filter simply stays at “सभी”.
         state.records = await fetchJson(archiveEndpoint(config), config, 12000) || [];
-        try {
-          state.categories = await fetchJson(categoryEndpoint(config), config, 8000) || [];
-        } catch (categoryError) {
-          state.categories = [];
-          console.warn('Category catalogue unavailable; continuing with documents.', categoryError);
-        }
-
-        state.categories.forEach(c => {
-          const o = document.createElement('option');
-          o.value = c.category_key;
-          o.textContent = c.display_name;
-          controls.category.appendChild(o);
-        });
+        try { state.categories = await fetchJson(categoryEndpoint(config), config, 8000) || []; }
+        catch (categoryError) { state.categories = []; console.warn('Category catalogue unavailable; continuing with documents.', categoryError); }
+        state.categories.forEach(c => { const o = document.createElement('option'); o.value = c.category_key; o.textContent = c.display_name; controls.category.appendChild(o); });
         render();
       } catch (error) {
-        controls.count.textContent = 'लोड नहीं हुआ';
-        controls.tableWrap.hidden = true;
-        controls.pagination.hidden = true;
-        controls.status.hidden = false;
-        controls.status.className = 'state error';
-        controls.status.textContent = 'अभिलेख लोड नहीं हो सका। Supabase API या नेटवर्क कनेक्शन जाँचें।';
+        controls.count.textContent = 'लोड नहीं हुआ'; controls.tableWrap.hidden = true; controls.pagination.hidden = true;
+        controls.status.hidden = false; controls.status.className = 'state error';
+        controls.status.textContent = 'अभिलेख लोड नहीं हो सका। Supabase API या नेटवर्क कनेक्शन जाँचें.';
         console.error('UMV public archive load failed:', error);
       }
     }
 
     [controls.search, controls.category, controls.priority].forEach(c => c.addEventListener('input', () => { state.page = 1; render(); }));
-    controls.clear.addEventListener('click', () => {
-      controls.search.value = '';
-      controls.category.value = '';
-      controls.priority.value = '';
-      state.page = 1;
-      render();
-      controls.search.focus();
-    });
+    controls.clear.addEventListener('click', () => { controls.search.value = ''; controls.category.value = ''; controls.priority.value = ''; state.page = 1; render(); controls.search.focus(); });
     controls.prev.addEventListener('click', () => { if (state.page > 1) { state.page--; render(); } });
     controls.next.addEventListener('click', () => { state.page++; render(); });
     load();

@@ -162,6 +162,28 @@ Google Drive → original PDFs, official documents, forms and restricted/private
 
 ## 8. Telegram document archive integration
 
+### Current private manager
+
+`private-documents.html` is deployed on staging main with
+`assets/private-document-manager.js`. It authenticates with Supabase, reads the
+documents table, displays original/display filename, size, source message ID,
+database/AI statuses, Drive link and creation time, filters records, subscribes
+to Realtime, and queues Run AI Review through a protected RPC.
+
+Configuration is in `assets/document-archive-config.js` (publishable values only).
+Profile admins or trusted JWT reviewer/admin roles are required. Signed-in
+browser rendering/button verification is still pending; deployed assets and
+database authorization were verified separately.
+
+Telegram now uses one-minute polling; Drive OCR/rules review runs every five
+minutes. OCR completion does not mean publication. First-page PDF isolation,
+human acceptance/editing, approved renaming and completion notifications remain
+unfinished. The private table is limited to 500 loaded rows and filename/message
+ID search. Keep these limits visible in development planning.
+
+The complete operational handoff, exact SQL, configuration and test evidence are
+maintained in [automation-suite current deployment](https://github.com/zzpsah/automation-suite/blob/feature/resilient-document-taxonomy/school-document-pipeline/docs/current-deployment.md).
+
 The private intake workflow is maintained in the `automation-suite` repository. Its Drive structure is:
 
 ```text

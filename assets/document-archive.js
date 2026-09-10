@@ -6,12 +6,13 @@
   }
 
   function archiveEndpoint(config) {
-    const fields = ['id','reference_number','issue_date','issuing_authority','subject','short_description','category_key','category','category_aliases','priority','required_action','deadline','public_file_url','published_at','public_revision','listing_status','review_path','search_text'].join(',');
-    return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields + '&order=published_at.desc,issue_date.desc&limit=' + encodeURIComponent(config.recordLimit || 1000);
-  }
-
-  function categoryEndpoint(config) {
-    return apiBase(config) + '/rest/v1/document_category_definitions?select=category_key,display_name,aliases,sort_order&active=eq.true&valid_to=is.null&order=sort_order.asc';
+    const fields = [
+      'id','reference_number','issue_date','issuing_authority','subject','short_description',
+      'category_key','category','category_aliases','priority','required_action','deadline',
+      'public_file_url','published_at','public_revision','listing_status','review_path','search_text'
+    ].join(',');
+    return apiBase(config) + '/rest/v1/approved_public_documents?select=' + fields +
+      '&order=issue_date.desc.nullslast,published_at.desc&limit=' + encodeURIComponent(config.recordLimit || 1000);
   }
 
   async function fetchJson(url, config, timeoutMs) {
@@ -20,38 +21,110 @@
     try {
       const response = await fetch(url, {
         method: 'GET',
-        headers: { apikey: config.publishableKey, Authorization: 'Bearer ' + config.publishableKey, Accept: 'application/json' },
-        cache: 'no-store', signal: controller.signal
+        headers: {
+          apikey: config.publishableKey,
+          Authorization: 'Bearer ' + config.publishableKey,
+          Accept: 'application/json'
+        },
+        cache: 'no-store',
+        signal: controller.signal
       });
       const body = await response.text();
       if (!response.ok) throw new Error('HTTP ' + response.status + (body ? ': ' + body.slice(0, 240) : ''));
       return body ? JSON.parse(body) : [];
-    } finally { clearTimeout(timer); }
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
-  function normalize(value) { return String(value || '').toLocaleLowerCase('hi-IN').replace(/\s+/g, ' ').trim(); }
-  function text(value) { return value === null || value === undefined || value === '' ? '—' : String(value); }
-  function escapeHtml(value) { return text(value).replace(/[&<>'"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[c])); }
-  function safeUrl(value) { try { const u = new URL(value, window.location.href); return u.protocol === 'https:' ? u.href : ''; } catch (e) { return ''; } }
-  function find(root, role) { return root.querySelector('[data-archive-role="' + role + '"]'); }
+  function normalize(value) {
+    return String(value || '').toLocaleLowerCase('hi-IN').replace(/\s+/g, ' ').trim();
+  }
+
+  function text(value) {
+    return value === null || value === undefined || value === '' ? '—' : String(value);
+  }
+
+  function escapeHtml(value) {
+    return text(value).replace(/[&<>'"]/g, function (c) {
+      return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[c];
+    });
+  }
+
+  function safeUrl(value) {
+    try {
+      const u = new URL(value, window.location.href);
+      return u.protocol === 'https:' ? u.href : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const s = String(value).trim();
+    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return m[3] + '/' + m[2] + '/' + m[1];
+    return s;
+  }
+
+  function letterType(record) {
+    const raw = normalize([
+      record.category_key,
+      record.category,
+      record.subject,
+      record.short_description,
+      record.search_text
+    ].join(' '));
+
+    if (/allotment|आवंटन|विमुक्ति|स्वीकृति/.test(raw)) return 'ALLOTMENT';
+    if (/circular|परिपत्र|सर्कुलर/.test(raw)) return 'Circular';
+    if (/order|आदेश|ज्ञाप|स्थानांतरण|निलंबन|विभागीय कार्रवाई/.test(raw)) return 'Order';
+    if (/notice|सूचना|विज्ञप्ति/.test(raw)) return 'Notice';
+    if (/letter|पत्र|पत्रांक|ज्ञापन/.test(raw)) return 'Letter';
+
+    const value = record.category || record.category_key;
+    return value ? String(value) : 'Letter';
+  }
+
+  function subject(record) {
+    // Subject is the primary public field. Do not expose the generated
+    // "Document issued by ..." description when a real subject is present.
+    const value = String(record.subject || '').trim();
+    if (value && !/^official\s+(school\s+)?document$/i.test(value) && !/^official\s+letter/i.test(value)) {
+      return value;
+    }
+
+    // Temporary fallback for older records until they are reprocessed.
+    const fallback = String(record.detailed_summary || record.short_description || '').trim();
+    return fallback || value || '—';
+  }
 
   function init(root, config) {
     if (!root || !config || !config.supabaseUrl || !config.publishableKey) return;
+
     const controls = {
-      search: find(root, 'search'), category: find(root, 'category'), priority: find(root, 'priority'),
-      count: find(root, 'count'), status: find(root, 'status'), tableWrap: find(root, 'table-wrap'),
-      rows: find(root, 'rows'), clear: find(root, 'clear'), pagination: find(root, 'pagination'),
-      pageInfo: find(root, 'page-info'), prev: find(root, 'prev'), next: find(root, 'next')
+      search: root.querySelector('[data-archive-role="search"]'),
+      pageSize: root.querySelector('[data-archive-role="page-size"]'),
+      count: root.querySelector('[data-archive-role="count"]'),
+      status: root.querySelector('[data-archive-role="status"]'),
+      tableWrap: root.querySelector('[data-archive-role="table-wrap"]'),
+      rows: root.querySelector('[data-archive-role="rows"]'),
+      prev: root.querySelector('[data-archive-role="prev"]'),
+      next: root.querySelector('[data-archive-role="next"]')
     };
-    const state = { records: [], categories: [], page: 1, pageSize: 15 };
+
+    const state = { records: [], page: 1, pageSize: 10 };
 
     function filteredRecords() {
       const terms = normalize(controls.search.value).split(' ').filter(Boolean);
-      const key = controls.category.value;
-      const priority = controls.priority.value;
-      return state.records.filter(r => {
-        const hay = normalize(r.search_text || [r.subject, r.short_description, r.issuing_authority, r.reference_number, r.required_action, r.category, (r.category_aliases || []).join(' ')].join(' '));
-        return terms.every(t => hay.includes(t)) && (!key || r.category_key === key) && (!priority || r.priority === priority);
+      return state.records.filter(function (r) {
+        const hay = normalize([
+          r.subject, r.short_description, r.issuing_authority,
+          r.reference_number, r.required_action, r.category,
+          r.category_key, (r.category_aliases || []).join(' '), r.search_text
+        ].join(' '));
+        return terms.every(function (t) { return hay.includes(t); });
       });
     }
 
@@ -59,30 +132,44 @@
       const filtered = filteredRecords();
       const totalPages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
       if (state.page > totalPages) state.page = totalPages;
+
       const start = (state.page - 1) * state.pageSize;
       const pageRows = filtered.slice(start, start + state.pageSize);
-      controls.count.textContent = filtered.length + ' सार्वजनिक रिकॉर्ड';
-      controls.rows.innerHTML = pageRows.length ? pageRows.map(r => {
+
+      controls.count.textContent = filtered.length + ' records';
+      controls.rows.innerHTML = pageRows.length ? pageRows.map(function (r, index) {
         const url = safeUrl(r.public_file_url);
         const reviewUrl = r.review_path ? safeUrl(r.review_path) : '';
-        let actions;
+        const serial = start + index + 1;
+        const type = letterType(r);
+        const date = formatDate(r.issue_date);
+        const title = subject(r);
+
+        let action = '';
         if (r.listing_status === 'Processing Failed') {
-          actions = reviewUrl
-            ? '<div class="actions"><span class="unavailable">प्रसंस्करण विफल</span><a class="file" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(reviewUrl) + '">समीक्षा करें ↗</a></div>'
-            : '<span class="unavailable">समीक्षा लिंक उपलब्ध नहीं</span>';
+          action = reviewUrl
+            ? '<a class="download-icon review" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(reviewUrl) + '" title="Review document" aria-label="Review document">↗</a>'
+            : '<span class="download-unavailable" title="Review link unavailable">—</span>';
         } else if (url) {
-          actions = '<div class="actions"><a class="file" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(url) + '">देखें ↗</a><a class="file" href="' + escapeHtml(url) + '" download>डाउनलोड PDF</a></div>';
+          action = '<a class="download-icon" target="_blank" rel="noopener noreferrer" href="' + escapeHtml(url) + '" title="Download document" aria-label="Download document">⇩</a>';
         } else {
-          actions = '<span class="unavailable">PDF उपलब्ध नहीं</span>';
+          action = '<span class="download-unavailable">—</span>';
         }
-        const status = r.listing_status === 'Processing Failed' ? '<span class="status-badge failed">प्रसंस्करण विफल</span>' : '<span class="status-badge published">प्रकाशित</span>';
-        return '<tr><td data-label="दिनांक">' + escapeHtml(r.issue_date) + '</td><td data-label="जारी करने वाला कार्यालय">' + escapeHtml(r.issuing_authority) + '</td><td data-label="विवरण" class="subject">' + escapeHtml(r.subject || '—') + '<span class="desc">' + escapeHtml(r.short_description) + '</span></td><td data-label="संदर्भ संख्या">' + escapeHtml(r.reference_number) + '</td><td data-label="PDF">' + actions + '<div class="record-status">' + status + '</div></td></tr>';
+
+        return '<tr>' +
+          '<td data-label="Sr.No.">' + serial + '</td>' +
+          '<td data-label="Letter Type" class="letter-type">' + escapeHtml(type) + '</td>' +
+          '<td data-label="Date" class="date-cell">' + escapeHtml(date) + '</td>' +
+          '<td data-label="Subject" class="subject-cell">' + escapeHtml(title) + '</td>' +
+          '<td data-label="Download" class="download-cell">' + action + '</td>' +
+          '</tr>';
       }).join('') : '<tr><td colspan="5" class="empty">अभी कोई सार्वजनिक दस्तावेज़ उपलब्ध नहीं है।</td></tr>';
+
       controls.status.hidden = filtered.length > 0;
-      controls.status.textContent = filtered.length > 0 ? '' : (state.records.length ? 'कोई मेल खाता रिकॉर्ड नहीं मिला।' : 'अभी कोई सार्वजनिक दस्तावेज़ प्रकाशित नहीं है।');
+      controls.status.textContent = filtered.length > 0
+        ? ''
+        : (state.records.length ? 'कोई मेल खाता रिकॉर्ड नहीं मिला।' : 'अभी कोई सार्वजनिक दस्तावेज़ प्रकाशित नहीं है।');
       controls.tableWrap.hidden = false;
-      controls.pagination.hidden = filtered.length === 0;
-      controls.pageInfo.textContent = 'पृष्ठ ' + state.page + ' / ' + totalPages;
       controls.prev.disabled = state.page <= 1;
       controls.next.disabled = state.page >= totalPages;
     }
@@ -93,25 +180,50 @@
       controls.status.textContent = 'सार्वजनिक दस्तावेज़ लोड हो रहे हैं…';
       try {
         state.records = await fetchJson(archiveEndpoint(config), config, 12000) || [];
-        try { state.categories = await fetchJson(categoryEndpoint(config), config, 8000) || []; }
-        catch (categoryError) { state.categories = []; console.warn('Category catalogue unavailable; continuing with documents.', categoryError); }
-        state.categories.forEach(c => { const o = document.createElement('option'); o.value = c.category_key; o.textContent = c.display_name; controls.category.appendChild(o); });
         render();
       } catch (error) {
-        controls.count.textContent = 'लोड नहीं हुआ'; controls.tableWrap.hidden = true; controls.pagination.hidden = true;
-        controls.status.hidden = false; controls.status.className = 'state error';
-        controls.status.textContent = 'अभिलेख लोड नहीं हो सका। Supabase API या नेटवर्क कनेक्शन जाँचें.';
+        controls.count.textContent = 'लोड नहीं हुआ';
+        controls.tableWrap.hidden = true;
+        controls.status.hidden = false;
+        controls.status.className = 'state error';
+        controls.status.textContent = 'अभिलेख लोड नहीं हो सका। Supabase API या नेटवर्क कनेक्शन जाँचें।';
         console.error('UMV public archive load failed:', error);
       }
     }
 
-    [controls.search, controls.category, controls.priority].forEach(c => c.addEventListener('input', () => { state.page = 1; render(); }));
-    controls.clear.addEventListener('click', () => { controls.search.value = ''; controls.category.value = ''; controls.priority.value = ''; state.page = 1; render(); controls.search.focus(); });
-    controls.prev.addEventListener('click', () => { if (state.page > 1) { state.page--; render(); } });
-    controls.next.addEventListener('click', () => { state.page++; render(); });
+    controls.search.addEventListener('input', function () {
+      state.page = 1;
+      render();
+    });
+
+    controls.pageSize.addEventListener('change', function () {
+      state.pageSize = Number(controls.pageSize.value) || 10;
+      state.page = 1;
+      render();
+    });
+
+    controls.prev.addEventListener('click', function () {
+      if (state.page > 1) {
+        state.page--;
+        render();
+      }
+    });
+
+    controls.next.addEventListener('click', function () {
+      const totalPages = Math.max(1, Math.ceil(filteredRecords().length / state.pageSize));
+      if (state.page < totalPages) {
+        state.page++;
+        render();
+      }
+    });
+
     load();
   }
 
   window.UMVDocumentArchive = Object.freeze({ init: init });
-  document.addEventListener('DOMContentLoaded', () => document.querySelectorAll('[data-document-archive]').forEach(root => init(root, window.UMV_DOCUMENT_ARCHIVE_CONFIG)));
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-document-archive]').forEach(function (root) {
+      init(root, window.UMV_DOCUMENT_ARCHIVE_CONFIG);
+    });
+  });
 }());

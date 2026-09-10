@@ -5,7 +5,7 @@
 <header class="bg-slate-900 text-white"><div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between gap-4"><div><div class="text-xs text-red-300 font-semibold">RESTRICTED • ADMIN ONLY</div><h1 class="text-xl md:text-2xl font-black mt-1">निजी एवं गोपनीय दस्तावेज़</h1><p class="text-sm text-slate-400">उच्च माध्यमिक विद्यालय, तेतहली</p></div><button id="logout" class="px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-sm font-bold">Logout</button></div></header>
 <main class="max-w-6xl mx-auto px-4 py-8">
 <div id="loading" class="bg-white border rounded-3xl p-6">सुरक्षित सत्र जाँचा जा रहा है…</div>
-<div id="app" class="hidden">
+<div id="app" class="hidden" data-private-document-manager>
 <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm text-amber-900"><b>सुरक्षा:</b> यह पृष्ठ केवल authenticated admin session के लिए है। वास्तविक Google Drive files को भी private रखना होगा; Drive access बाद में authenticated server-side/Apps Script workflow से दिया जाएगा।</div>
 <section class="mt-6 bg-white border rounded-3xl p-6"><div class="flex items-start gap-4"><div class="text-3xl">📁</div><div><h2 class="text-xl font-black">Google Drive — File Server Structure</h2><p class="text-sm text-slate-500 mt-1">पहले से तय path के अनुसार files/folders व्यवस्थित किए जाएँगे।</p></div></div>
 <div class="mt-6 grid md:grid-cols-2 gap-4 text-sm">
@@ -18,13 +18,12 @@
 <div class="rounded-2xl bg-violet-50 p-5"><b>07_AI_Automation</b><div class="mt-2 text-slate-600">Input · Processing · Output · Logs</div></div>
 <div class="rounded-2xl bg-slate-100 p-5"><b>99_Archive</b><div class="mt-2 text-slate-600">पुराने records और year/session-wise archive</div></div>
 </div></section>
-<div class="mt-6 rounded-2xl border bg-white p-5 text-sm"><b>अगला integration चरण:</b> Drive में folder path के आधार पर folder auto-create → file upload → Drive File ID/URL → metadata → authorised admin view. Public pages पर केवल वही official documents दिखेंगे जिन्हें public किया गया हो।</div>
+<section class="mt-6 rounded-3xl border bg-white p-5 md:p-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4"><div><div class="text-xs font-black text-blue-700">LIVE SUPABASE REVIEW QUEUE</div><h2 class="text-xl font-black mt-1">Document Management</h2><p class="text-sm text-slate-500 mt-1">Telegram uploads, Drive links और AI/OCR review status.</p></div><button data-role="refresh" class="rounded-xl border px-4 py-2 text-sm font-bold">Refresh</button></div>
+<div class="grid md:grid-cols-3 gap-3 mt-5"><label class="text-xs font-bold">Search<input data-role="search" type="search" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm" placeholder="Filename or Telegram ID"></label><label class="text-xs font-bold">Database Status<select data-role="status-filter" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm"><option value="">All</option><option>Needs Manual Review</option><option>Queued</option><option>Processing</option><option>Reviewed</option><option>Completed</option><option>Processing Failed</option></select></label><label class="text-xs font-bold">AI Status<select data-role="ai-filter" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm"><option value="">All</option><option>Not Requested</option><option>Requested</option><option>Processing</option><option>Completed</option><option>Failed</option></select></label></div>
+<div data-role="message" class="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600">Loading documents…</div>
+<div class="mt-4 overflow-x-auto"><table class="w-full min-w-[980px] text-sm"><thead class="bg-slate-100 text-left text-xs"><tr><th class="p-3">File Name</th><th class="p-3">Size</th><th class="p-3">Telegram Message ID</th><th class="p-3">Database Status</th><th class="p-3">AI Status</th><th class="p-3">Drive</th><th class="p-3">Created</th><th class="p-3">Action</th></tr></thead><tbody data-role="rows"></tbody></table></div>
+</section>
 <a href="admin-dashboard.html" class="inline-flex mt-6 rounded-xl bg-slate-900 text-white px-5 py-3 text-sm font-bold">← Admin Dashboard</a>
 </div></main>
-<script>
-const SUPABASE_URL='https://sxfnrwugsyfypqgfglzc.supabase.co';
-const SUPABASE_KEY='sb_publishable_NARdPew6T6Zk8gYfxY3Hog_G7jcceKw';
-const {createClient}=supabase;const client=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
-(async()=>{const {data,error}=await client.auth.getUser();if(error||!data.user){location.href='admin-login.html';return;}document.getElementById('loading').classList.add('hidden');document.getElementById('app').classList.remove('hidden');})();
-document.getElementById('logout').addEventListener('click',async()=>{await client.auth.signOut();location.href='admin-login.html';});
-</script></body></html>
+<script src="assets/document-archive-config.js"></script><script src="assets/private-document-manager.js"></script></body></html>

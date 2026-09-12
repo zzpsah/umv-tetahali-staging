@@ -1,29 +1,99 @@
 <!doctype html>
 <html lang="hi">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>निजी एवं गोपनीय दस्तावेज़ | Admin</title><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
-<body class="min-h-screen bg-slate-50 text-slate-800">
-<header class="bg-slate-900 text-white"><div class="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between gap-4"><div><div class="text-xs text-red-300 font-semibold">RESTRICTED • ADMIN ONLY</div><h1 class="text-xl md:text-2xl font-black mt-1">निजी एवं गोपनीय दस्तावेज़</h1><p class="text-sm text-slate-400">उच्च माध्यमिक विद्यालय, तेतहली</p></div><button id="logout" class="px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-sm font-bold">Logout</button></div></header>
-<main class="max-w-6xl mx-auto px-4 py-8">
-<div id="loading" class="bg-white border rounded-3xl p-6">सुरक्षित सत्र जाँचा जा रहा है…</div>
-<div id="app" class="hidden" data-private-document-manager>
-<div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm text-amber-900"><b>सुरक्षा:</b> यह पृष्ठ केवल authenticated admin session के लिए है। वास्तविक Google Drive files को भी private रखना होगा; Drive access बाद में authenticated server-side/Apps Script workflow से दिया जाएगा।</div>
-<section class="mt-6 bg-white border rounded-3xl p-6"><div class="flex items-start gap-4"><div class="text-3xl">📁</div><div><h2 class="text-xl font-black">Google Drive — File Server Structure</h2><p class="text-sm text-slate-500 mt-1">पहले से तय path के अनुसार files/folders व्यवस्थित किए जाएँगे।</p></div></div>
-<div class="mt-6 grid md:grid-cols-2 gap-4 text-sm">
-<div class="rounded-2xl bg-slate-50 p-5"><b>01_Official_Documents</b><div class="mt-2 text-slate-600">Education_Department · DEO_Siwan · DEO_Darbhanga · School · BSEB · Rules_Regulations</div></div>
-<div class="rounded-2xl bg-slate-50 p-5"><b>02_Forms</b><div class="mt-2 text-slate-600">Official_Forms · Editable_Forms · Generated_PDF</div></div>
-<div class="rounded-2xl bg-slate-50 p-5"><b>03_Notices_Circulars</b><div class="mt-2 text-slate-600">Education_Department · DEO · BSEB · School</div></div>
-<div class="rounded-2xl bg-slate-50 p-5"><b>04_School_Records</b><div class="mt-2 text-slate-600">विद्यालय के संरक्षित administrative records</div></div>
-<div class="rounded-2xl bg-red-50 p-5 border border-red-100"><b>05_Private_Documents</b><div class="mt-2 text-slate-600">Administration · Teachers · Students · Confidential</div></div>
-<div class="rounded-2xl bg-sky-50 p-5"><b>06_Smart_Class</b><div class="mt-2 text-slate-600">Smart Class / ICT related records and generated reports</div></div>
-<div class="rounded-2xl bg-violet-50 p-5"><b>07_AI_Automation</b><div class="mt-2 text-slate-600">Input · Processing · Output · Logs</div></div>
-<div class="rounded-2xl bg-slate-100 p-5"><b>99_Archive</b><div class="mt-2 text-slate-600">पुराने records और year/session-wise archive</div></div>
-</div></section>
-<section class="mt-6 rounded-3xl border bg-white p-5 md:p-6">
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-4"><div><div class="text-xs font-black text-blue-700">LIVE SUPABASE REVIEW QUEUE</div><h2 class="text-xl font-black mt-1">Document Management</h2><p class="text-sm text-slate-500 mt-1">Telegram uploads, Drive links और AI/OCR review status.</p></div><button data-role="refresh" class="rounded-xl border px-4 py-2 text-sm font-bold">Refresh</button></div>
-<div class="grid md:grid-cols-3 gap-3 mt-5"><label class="text-xs font-bold">Search<input data-role="search" type="search" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm" placeholder="Filename or Telegram ID"></label><label class="text-xs font-bold">Database Status<select data-role="status-filter" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm"><option value="">All</option><option>Needs Manual Review</option><option>Queued</option><option>Processing</option><option>Reviewed</option><option>Completed</option><option>Processing Failed</option></select></label><label class="text-xs font-bold">AI Status<select data-role="ai-filter" class="mt-1 w-full rounded-xl border px-3 py-2.5 text-sm"><option value="">All</option><option>Not Requested</option><option>Requested</option><option>Processing</option><option>Completed</option><option>Failed</option></select></label></div>
-<div data-role="message" class="mt-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600">Loading documents…</div>
-<div class="mt-4 overflow-x-auto"><table class="w-full min-w-[980px] text-sm"><thead class="bg-slate-100 text-left text-xs"><tr><th class="p-3">File Name</th><th class="p-3">Size</th><th class="p-3">Telegram Message ID</th><th class="p-3">Database Status</th><th class="p-3">AI Status</th><th class="p-3">Drive</th><th class="p-3">Created</th><th class="p-3">Action</th></tr></thead><tbody data-role="rows"></tbody></table></div>
-</section>
-<a href="admin-dashboard.html" class="inline-flex mt-6 rounded-xl bg-slate-900 text-white px-5 py-3 text-sm font-bold">← Admin Dashboard</a>
-</div></main>
-<script src="assets/document-archive-config.js"></script><script src="assets/private-document-manager.js"></script></body></html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Document Operations | Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .status-dot{width:.5rem;height:.5rem;border-radius:9999px;display:inline-block}
+  .glass{background:rgba(255,255,255,.88);backdrop-filter:blur(12px)}
+</style>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+<header class="sticky top-0 z-20 border-b border-slate-800 bg-slate-950 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-xl">▣</div>
+      <div>
+        <div class="flex items-center gap-2"><span class="text-[10px] font-black tracking-[.18em] text-amber-300">RESTRICTED • ADMIN</span><span class="rounded-full bg-emerald-400/10 px-2 py-0.5 text-[10px] font-bold text-emerald-300">PRIVATE</span></div>
+        <h1 class="text-lg sm:text-xl font-black">Document Operations</h1>
+        <p class="text-xs text-slate-400">निजी एवं गोपनीय दस्तावेज़ • उच्च माध्यमिक विद्यालय, तेतहली</p>
+      </div>
+    </div>
+    <button id="logout" class="rounded-xl border border-white/10 bg-white/10 px-4 py-2 text-sm font-bold hover:bg-white/15">Logout</button>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+  <div id="loading" class="glass rounded-2xl border border-slate-200 p-6 shadow-sm">सुरक्षित सत्र जाँचा जा रहा है…</div>
+  <div id="app" class="hidden" data-private-document-manager>
+
+    <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-950 shadow-sm">
+      <div class="flex gap-3"><span class="text-lg">🔐</span><div><b>Private workspace</b><p class="mt-1 text-amber-900/80">यह console केवल authenticated admin/reviewer workflow के लिए है। OCR/AI completion को human approval न समझें और private Drive files को सार्वजनिक न करें।</p></div></div>
+    </div>
+
+    <section class="mt-6 grid grid-cols-2 lg:grid-cols-5 gap-3" data-role="metrics">
+      <div class="glass rounded-2xl border border-slate-200 p-4 shadow-sm"><div class="text-xs font-bold text-slate-500">TOTAL LOADED</div><div data-metric="total" class="mt-1 text-2xl font-black">—</div></div>
+      <div class="glass rounded-2xl border border-amber-200 p-4 shadow-sm"><div class="text-xs font-bold text-amber-700">NEEDS REVIEW</div><div data-metric="review" class="mt-1 text-2xl font-black text-amber-800">—</div></div>
+      <div class="glass rounded-2xl border border-blue-200 p-4 shadow-sm"><div class="text-xs font-bold text-blue-700">AI PROCESSING</div><div data-metric="processing" class="mt-1 text-2xl font-black text-blue-800">—</div></div>
+      <div class="glass rounded-2xl border border-emerald-200 p-4 shadow-sm"><div class="text-xs font-bold text-emerald-700">AI COMPLETED</div><div data-metric="completed" class="mt-1 text-2xl font-black text-emerald-800">—</div></div>
+      <div class="glass rounded-2xl border border-red-200 p-4 shadow-sm"><div class="text-xs font-bold text-red-700">FAILED</div><div data-metric="failed" class="mt-1 text-2xl font-black text-red-800">—</div></div>
+    </section>
+
+    <section class="mt-6 glass rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="border-b border-slate-200 px-5 sm:px-6 py-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="text-[11px] font-black tracking-[.16em] text-blue-700">LIVE DOCUMENT QUEUE</div>
+            <h2 class="mt-1 text-xl font-black">Review & Processing</h2>
+            <p class="mt-1 text-sm text-slate-500">Telegram uploads • Drive intake • Supabase metadata • OCR/AI review</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700"><span class="status-dot bg-emerald-500"></span>Realtime</span>
+            <button data-role="refresh" class="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold hover:bg-slate-50">↻ Refresh</button>
+          </div>
+        </div>
+
+        <div class="mt-5 grid lg:grid-cols-[1fr_190px_170px] gap-3">
+          <label class="text-xs font-bold text-slate-600">Search<input data-role="search" type="search" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="Filename or Telegram message ID"></label>
+          <label class="text-xs font-bold text-slate-600">Database status<select data-role="status-filter" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm"><option value="">All statuses</option><option>Needs Manual Review</option><option>Queued</option><option>Processing</option><option>Reviewed</option><option>Completed</option><option>Processing Failed</option></select></label>
+          <label class="text-xs font-bold text-slate-600">AI status<select data-role="ai-filter" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm"><option value="">All AI states</option><option>Not Requested</option><option>Requested</option><option>Processing</option><option>Completed</option><option>Failed</option></select></label>
+        </div>
+      </div>
+
+      <div data-role="message" class="mx-5 sm:mx-6 mt-5 rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm text-slate-600">Loading documents…</div>
+
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full min-w-[1100px] text-sm">
+          <thead class="bg-slate-950 text-left text-[11px] uppercase tracking-wide text-slate-300"><tr><th class="px-4 py-3">Document</th><th class="px-4 py-3">Size</th><th class="px-4 py-3">Source</th><th class="px-4 py-3">Database</th><th class="px-4 py-3">AI Review</th><th class="px-4 py-3">Drive</th><th class="px-4 py-3">Received</th><th class="px-4 py-3">Action</th></tr></thead>
+          <tbody data-role="rows" class="bg-white"></tbody>
+        </table>
+      </div>
+      <div class="border-t border-slate-200 bg-slate-50 px-5 sm:px-6 py-3 text-xs text-slate-500 flex flex-col sm:flex-row justify-between gap-2"><span>Live queue is currently limited to the latest 500 loaded records.</span><span>OCR/AI completion ≠ human approval ≠ publication.</span></div>
+    </section>
+
+    <section class="mt-6 grid lg:grid-cols-2 gap-4">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="text-xs font-black tracking-wide text-slate-500">WORKFLOW</div><div class="mt-4 flex flex-wrap items-center gap-2 text-xs font-bold"><span class="rounded-full bg-slate-100 px-3 py-2">Telegram</span><span>→</span><span class="rounded-full bg-slate-100 px-3 py-2">Drive Inbox</span><span>→</span><span class="rounded-full bg-slate-100 px-3 py-2">Supabase</span><span>→</span><span class="rounded-full bg-blue-50 px-3 py-2 text-blue-700">Review</span><span>→</span><span class="rounded-full bg-emerald-50 px-3 py-2 text-emerald-700">Approved</span></div></div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="text-xs font-black tracking-wide text-slate-500">DRIVE ARCHIVE</div><p class="mt-2 text-sm text-slate-600">01_Inbox → 02_Processing → 03_Reviewed_Archive / 04_Manual_Review</p><p class="mt-2 text-xs text-slate-500">Final movement remains a controlled workflow; historical records must not be silently deleted.</p></div>
+    </section>
+
+    <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="flex items-center gap-3"><div class="text-2xl">📁</div><div><h2 class="font-black">Google Drive — File Server Structure</h2><p class="text-sm text-slate-500">Reference structure for official, private and automation records.</p></div></div>
+      <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+        <div class="rounded-xl bg-slate-50 p-4"><b>01_Official_Documents</b><p class="mt-1 text-xs text-slate-500">Education Department · DEO · School · BSEB</p></div>
+        <div class="rounded-xl bg-slate-50 p-4"><b>02_Forms</b><p class="mt-1 text-xs text-slate-500">Official · Editable · Generated PDF</p></div>
+        <div class="rounded-xl bg-slate-50 p-4"><b>03_Notices_Circulars</b><p class="mt-1 text-xs text-slate-500">Department · DEO · BSEB · School</p></div>
+        <div class="rounded-xl bg-red-50 p-4"><b>05_Private_Documents</b><p class="mt-1 text-xs text-red-700/70">Administration · Teachers · Students · Confidential</p></div>
+      </div>
+    </section>
+
+    <a href="admin-dashboard.html" class="inline-flex mt-6 rounded-xl bg-slate-950 text-white px-5 py-3 text-sm font-bold hover:bg-slate-800">← Admin Dashboard</a>
+  </div>
+</main>
+<script src="assets/document-archive-config.js"></script>
+<script src="assets/private-document-manager.js"></script>
+</body>
+</html>
